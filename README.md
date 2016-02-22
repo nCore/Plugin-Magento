@@ -1,4 +1,4 @@
-"# SYNERISE MAGENTO integration plugin" 
+# Synerise Plugin for MAGENTO
 version: 0.9.
 
 
@@ -32,14 +32,21 @@ Obecnie domyślnie jest to ścieżka głównego katalogu projektu do '/var/log/s
 
 4. Moduł:Newsletter
 4.1 Zapisanie się do newslettera:
+```php
+<?php
 $api = Mage::getModel("synerise_newsletter/subscriber");
 $api->subscribe($email, array('sex' => $sex));
+```
 
 5. Moduł:Kupony
+```php
+<?php
 $coupon = Mage::getModel('synerise_coupon/coupon');  
 $coupon->setCouponCode($couponCode); 
 $coupon->isSyneriseCoupon(); //sprawdza poprawność kodu i weryfikuje w synerise, czy kod może być użyty 
 $coupon->useCoupon(); // spalanie kuponyu
+```
+
 
 6. Moduł:Integration
 Moduł ten po za zapisaniem kluczy API i Tracking służy do zbierania danych.
