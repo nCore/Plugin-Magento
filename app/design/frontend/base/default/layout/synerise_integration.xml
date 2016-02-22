@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="footer">
+            <block type="synerise_integration/tracking" template="synerise/footer/tracking.phtml" name="synerise_tracking" />
+        </reference>
+    </default>
+</layout>

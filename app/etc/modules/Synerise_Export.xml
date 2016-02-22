@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Synerise_Export>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Synerise_Export>
+    </modules>
+</config>

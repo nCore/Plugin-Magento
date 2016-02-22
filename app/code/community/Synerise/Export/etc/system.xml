@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <synerise translate="label" module="synerise_export">
+            <label>Synerise</label>
+            <sort_order>102</sort_order>
+        </synerise>
+    </tabs>    
+   <sections>
+        <synerise_export translate="label" module="synerise_export">
+            <label>Export</label>
+            <tab>synerise</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <config translate="label">
+                    <label>Configuration</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hash translate="label,comment">
+                            <label>Unique Hash</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>This value is used for the feeds URLs generation</comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hash>
+                    </fields>
+                </config>
+<!--                <attr_core translate="label">
+                    <label>Mapping of the core attributes</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <avail_1_name translate="label">
+                            <label>Product is available when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_1_name>
+                        <avail_1_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_1_value>
+                        <avail_3_name translate="label">
+                            <label>Product will be available in 3 days when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_3_name>
+                        <avail_3_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_3_value>
+                        <avail_7_name translate="label">
+                            <label>Product will be available in a week when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_7_name>
+                        <avail_7_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_7_value>
+                        <avail_14_name translate="label">
+                            <label>Product will be available in more than week when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_14_name>
+                        <avail_14_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avail_14_value>
+                        <set_name translate="label">
+                            <label>Product is a set when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </set_name>
+                        <set_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </set_value>
+                        <basket_name translate="label">
+                            <label>Product is available for Buy in Ceneo when</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </basket_name>
+                        <basket_value translate="label">
+                            <label>equals</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </basket_value>
+                    </fields>
+                </attr_core>-->
+                <attr_other translate="label">
+                    <label>Mapping of the attributes for "Other" group</label>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <Producent translate="label,comment">
+                            <label>Producent</label>
+                            <comment>Producent danego produktu</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </Producent>
+                        <Kod_producenta translate="label,comment">
+                            <label>Kod_producenta</label>
+                            <comment>Kod nadawany przez producenta</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </Kod_producenta>
+                        <EAN translate="label,comment">
+                            <label>EAN</label>
+                            <comment>Kod paskowy występujący na produktach, opakowaniach</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>synerise_export/attribute</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </EAN>
+                    </fields>
+                </attr_other>
+            </groups>
+        </synerise_export>
+    </sections>
+</config>

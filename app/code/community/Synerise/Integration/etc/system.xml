@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <synerise translate="label" module="synerise_integration">
+            <label>Synerise</label>
+            <sort_order>102</sort_order>
+        </synerise>
+    </tabs>
+    <sections>
+        <synerise_integration translate="label" module="synerise_integration">
+            <label>Integration</label>
+            <tab>synerise</tab>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <api translate="label">
+                    <label>API</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <key translate="label,comment">
+                            <label>API key</label>
+                           <!-- <frontend_type>password</frontend_type>-->
+                            <comment>
+                                <![CDATA[You'll find your API key in <a href='https://app.synerise.com/setting/api' target='_blank'>profile settings</a> under API section.]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </key>
+                        <sandbox translate="label,comment">
+                            <label>Sandbox</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>Use default setting.</comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </sandbox>
+                    </fields>
+                </api>
+                <tracking translate="label">
+                    <label>Tracking codes config</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enable translate="label,comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </enable>
+                        <code translate="label,comment">
+                            <label>Code</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <model>synerise_integration/adminhtml_api</model>
+                            </comment>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </code>
+                    </fields>
+                </tracking>
+                <trackingevents translate="label">
+                    <label>Tracking events</label>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <customer_login translate="label,comment">
+                            <label>customer_login</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </customer_login>
+                    </fields>
+                    <fields>
+                        <customer_logout translate="label,comment">
+                            <label>customer_logout</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </customer_logout>
+                    </fields>
+                    <fields>
+                        <wishlist_product_add_after translate="label,comment">
+                            <label>wishlist_product_add_after</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </wishlist_product_add_after>
+                    </fields>
+                    <fields>
+                        <customer_register_success translate="label,comment">
+                            <label>customer_register_success</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </customer_register_success>
+                    </fields>
+                    <fields>
+                        <customer_save_before translate="label,comment">
+                            <label>customer_save_before</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </customer_save_before>
+                    </fields>
+                    <fields>
+                        <customer_save_after translate="label,comment">
+                            <label>customer_save_after</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </customer_save_after>
+                    </fields>
+                    <fields>
+                        <checkout_cart_add_product_complete translate="label,comment">
+                            <label>checkout_cart_add_product_complete</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </checkout_cart_add_product_complete>
+                    </fields>
+                    <fields>
+                        <sales_quote_remove_item translate="label,comment">
+                            <label>sales_quote_remove_item</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </sales_quote_remove_item>
+                    </fields>
+                    <fields>
+                        <sales_order_place_after translate="label,comment">
+                            <label>sales_order_place_after</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </sales_order_place_after>
+                    </fields>
+                    <fields>
+                        <sales_order_save_after translate="label,comment">
+                            <label>sales_order_save_after</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </sales_order_save_after>
+                    </fields>
+                </trackingevents>
+                <productattr translate="label">
+                    <label>Config product attr</label>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <attr translate="label,comment">
+                            <frontend_model>synerise_integration/customattributes</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <comment>
+                                <![CDATA[Zaznacz pole które będzie wysyłane do synerise, możesz dowolnie mapować pola wpisujać w input odpowiednia wartość.]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </attr>
+                    </fields>
+                </productattr>
+            </groups>
+        </synerise_integration>
+    </sections>
+</config>

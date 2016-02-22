@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Synerise_Coupon>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Synerise_Integration/>
+            </depends>
+        </Synerise_Coupon>
+    </modules>
+</config>

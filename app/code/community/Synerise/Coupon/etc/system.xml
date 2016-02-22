@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <synerise translate="label" module="synerise_coupon">
+            <label>Synerise</label>
+            <sort_order>102</sort_order>
+        </synerise>
+    </tabs>
+    <sections>
+        <synerise_coupon translate="label" module="synerise_coupon">
+            <label>Coupon</label>
+            <tab>synerise</tab>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enable translate="label,comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>                        
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>   
+                        </enable>
+                        <validate_format translate="label,comment">
+                            <label>Validate coupon code format</label>
+                            <comment>Default coupon code format is 10 digits</comment>
+                            <frontend_type>select</frontend_type>                        
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>   
+                        </validate_format>
+                    </fields>
+                </general>
+            </groups>
+        </synerise_coupon>
+    </sections>
+</config>

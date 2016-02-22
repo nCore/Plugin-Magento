@@ -1,0 +1,27 @@
+{
+    "name": "synerise/php-sdk",
+    "version": "2.0.1",
+    "description": "Synerise SDK for PHP",
+    "keywords": ["synerise", "sdk", "api"],
+    "type": "library",
+    "homepage": "https://github.com/Synerise/PHP-SDK",
+    "license": "Apache Version 2",
+    "authors": [
+        {
+            "name": "Synerise Team",
+            "homepage": "https://synerise.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "~5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Synerise": "src/"
+        }
+    }
+}

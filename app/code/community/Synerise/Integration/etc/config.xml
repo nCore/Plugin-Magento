@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <synerise_integration>
+            <version>0.3.1</version>
+        </synerise_integration>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <synerise_integration>
+                    <file>synerise_integration.xml</file>
+                </synerise_integration>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <synerise_integration>
+                    <files>
+                        <default>synerise_integration.csv</default>
+                    </files>
+                </synerise_integration>
+            </modules>
+        </translate>
+    </frontend>  
+    <global>
+        <blocks>
+            <synerise_integration>
+                <class>Synerise_Integration_Block</class>
+            </synerise_integration>
+        </blocks> 
+        <models>
+            <synerise_integration>
+                <class>Synerise_Integration_Model</class>
+            </synerise_integration>
+        </models>
+        <resources>
+            <synerise_integration_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </synerise_integration_write>
+            <synerise_integration_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </synerise_integration_read>
+        </resources>
+        <helpers>
+            <synerise_integration>
+                <class>Synerise_Integration_Helper</class>
+            </synerise_integration>
+        </helpers>
+
+        <events>
+            <customer_login>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerLogin</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </customer_login>
+
+
+
+
+            <!--<newsletter_subscriber_save_commit_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerSubscriberSaveAfter</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </newsletter_subscriber_save_commit_after>-->
+
+
+            <customer_logout>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerLogout</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </customer_logout>
+
+            <wishlist_product_add_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>wishlistProductAddAfter</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </wishlist_product_add_after>
+
+
+            <customer_register_success>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerRegisterSuccess</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </customer_register_success>
+
+
+            <customer_save_before>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerSaveBefore</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </customer_save_before>
+
+            <customer_save_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerSaveAfter</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </customer_save_after>
+
+            <checkout_cart_add_product_complete>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerAddToCart</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </checkout_cart_add_product_complete>
+
+            <sales_quote_remove_item>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerRemoveFromCart</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </sales_quote_remove_item>
+
+
+            <sales_order_place_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerOrderComplete</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </sales_order_place_after>
+
+            <sales_order_save_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>cancelOrderItem</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </sales_order_save_after>
+
+        </events>
+
+    </global>
+    <admin>
+      <routers>
+          <adminhtml>              
+              <args>
+                  <modules>
+                      <synerise_integration after="Mage_Adminhtml">Synerise_Integration_Adminhtml</synerise_integration>
+                  </modules>
+              </args>
+          </adminhtml>
+      </routers>
+    </admin>    
+    <adminhtml>          
+        <translate>
+            <modules>
+                <synerise_integration>
+                    <files>
+                        <default>synerise_integration.csv</default>
+                    </files>
+                </synerise_integration>
+            </modules>
+        </translate>      
+    </adminhtml>    
+</config>

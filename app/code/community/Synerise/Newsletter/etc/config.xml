@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Synerise_Newsletter>
+            <version>1.0</version>
+        </Synerise_Newsletter>
+    </modules>
+
+    <frontend>
+        <routers>
+            <newsletter>
+                <args>
+                    <modules>
+                        <Synerise_Newsletter before="Mage_Newsletter">Synerise_Newsletter</Synerise_Newsletter>
+                    </modules>
+                </args>
+            </newsletter>
+        </routers>
+    </frontend>
+
+    <global>
+        <models>
+            <synerise_newsletter>
+                <class>Synerise_Newsletter_Model</class>
+            </synerise_newsletter>
+        </models>
+        <blocks>
+            <synerise>
+                <class>Synerise_Newsletter_Block</class>
+            </synerise>
+        </blocks>
+    </global>
+</config>

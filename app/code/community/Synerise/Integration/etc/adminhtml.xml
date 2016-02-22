@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <synerise translate="title" module="synerise_integration">
+            <title>Synerise</title>
+            <sort_order>75</sort_order>
+            <action>adminhtml/mgt</action>
+            <children>
+                <synerise_integration translate="title" module="synerise_integration">
+                    <title>Integration</title>
+                    <action>adminhtml/system_config/edit/section/synerise_integration</action>                    
+                    <sort_order>280</sort_order>
+                </synerise_integration>
+            </children>
+        </synerise>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <synerise_integration>
+                                        <title>Synerise Integration</title>
+                                    </synerise_integration>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>    
+</config>
