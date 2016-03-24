@@ -1,17 +1,17 @@
 <?php if($this->enableTracking()): ?>
-<script type="text/javascript">
+    <script type="text/javascript">
         var _riseA = _riseA || [];
         _riseA.push([ 'setTracker', '<?php echo $this->getCode(); ?>' ]);
-    
+
         (function() {
             var snrs = document.createElement('script');
             snrs.type = 'text/javascript';
             snrs.async = true;
             snrs.src = ('https:' == document.location.protocol ? 'https://'
                     : 'http://')
-                    + '<?php echo $this->getHost(); ?>/snrs-2.0.js';
+                + '<?php echo $this->getHost(); ?>/snrs-2.0.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(snrs, s);
         })();
-</script>
+    </script>
 <?php endif;
