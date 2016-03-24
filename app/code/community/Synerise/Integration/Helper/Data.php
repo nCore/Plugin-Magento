@@ -47,10 +47,21 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
-        $productMediaConfig = Mage::getModel('catalog/product_media_config');
-        $result['image'] = (string)$productMediaConfig->getMediaUrl($product->getSmallImage());
+
+        if (method_exists($this->controller, $this->view)
+            && is_callable(array($this->controller, $this->view))) {
+
+        }
+
+        $result['image'] = $this->getImage($product);
 
         return $result;
+    }
+
+
+    public function getImage(Mage_Catalog_Model_Product $product) {
+        $productMediaConfig = Mage::getModel('catalog/product_media_config');
+        return (string)$productMediaConfig->getMediaUrl($product->getSmallImage());
     }
 
 

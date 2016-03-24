@@ -69,6 +69,8 @@ abstract class ProducerAbstract
 
         $message['ip'] = $this->getIp();
 
+        $message['userAgent'] = $this->getUserAgent();
+
         $snrsParams = $this->getSnrsParams();
         if($snrsParams) {
             $message['snr_params'] = $snrsParams;
@@ -99,6 +101,15 @@ abstract class ProducerAbstract
         }
 
         return $ip;
+    }
+
+    /**
+     * get user agent
+     *
+     * @return string
+     */
+    private function getUserAgent() {
+        return !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:'';
     }
 
 

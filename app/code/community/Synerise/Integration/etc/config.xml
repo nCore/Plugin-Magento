@@ -17,7 +17,7 @@
             <modules>
                 <synerise_integration>
                     <files>
-                        <default>synerise_integration.csv</default>
+                        <default>Synerise_Integration.csv</default>
                     </files>
                 </synerise_integration>
             </modules>

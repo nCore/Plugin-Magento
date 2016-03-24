@@ -29,7 +29,7 @@ class Client extends ProducerAbstract
     }
 
     public function logOut() {
-        $data['object'] = 'client.logIn';
+        $data['object'] = 'client.logOut';
         $this->enqueue($data);
     }
 

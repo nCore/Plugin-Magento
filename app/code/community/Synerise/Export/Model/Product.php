@@ -3,12 +3,48 @@
 class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
 
     protected $_categoryPath;
+    public $rootCategoryId;
+    public $offers;
+    
+    public function __construct() {
+        $this->offers = array('other' => array());  
+        $this->rootCategoryId = Mage::app()->getStore()->getRootCategoryId();
+    }
     
     protected function getConfig() {
         return Mage::getModel('synerise_export/config');
     }
+    
+    public function getStoreCategories() {
+        return Mage::getSingleton('synerise_export/category')->getStoreCategories();
+    }
+    
+    public function loadCategory($categoryId) {
+        $categories = $this->getStoreCategories();        
+        if(!$categories || !$category = $categories->getItemById($categoryId)) {
+            $category = Mage::getModel('catalog/category')->load($categoryId);
+        }
+        return $category;
+    }
+    
+    public function getCategoryNamesPath($categoryId) {
+        $category = $this->loadCategory($categoryId);
+        $path = array();
+        if(!$category || !$category->getId()) {
+            return $path;
+        }
+        do {
+            if ($category->getIsActive()) {
+                $path[] = $category->getName();
+            }
+            $category = $this->loadCategory($category->getParentId());
+        } while($category && $category->getId() && $category->getId() != $this->rootCategoryId);
 
-    public function getOffers() {
+        return array_reverse($path);
+    }
+    
+    public function getOffers($storeId) {  
+        
         $store = $this->getConfig()->getStore();
         $conditions = $this->getConfig()->getCoreAttributesConditions();
         $mappings = $this->getConfig()->getAttributesMappings();
@@ -22,10 +58,10 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                     }
                 }
             }
-        }
+        }        
         
-        $selectAttributes = array_merge(array('sku','weight'),$this->getAdditionalAttributes(true));
         $product_collection = $this->getNonFlatProductCollection();
+
         $product_collection
                 ->addStoreFilter($store->getStoreId())
                 ->addAttributeToSelect('price')
@@ -40,44 +76,49 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                 ->addAttributeToSelect('status')
                 ->addAttributeToFilter('status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED))                
                 ->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
-        
-        
+
+        $selectAttributes = array_merge(array('sku','weight'),$this->getAdditionalAttributes(true));        
+
         foreach($selectAttributes as $attr) {
             $product_collection->addAttributeToSelect($attr);
-        }        
-        
+        }
+
         foreach ($additional_attributes as $code => $options) {
             $product_collection->addAttributeToSelect($code);
         }       
-//        $product_collection = $this->addMediaGalleryAttributeToCollection($product_collection);
-        $offers = array('other' => array());
+
         $_stock = Mage::getModel('cataloginventory/stock_item');
 
         $images_url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product';
-        
+
         // create backend model object to append media gallery images in product collection
-        $backendModel = $product_collection->getResource()->getAttribute('media_gallery')->getBackend();        
-        
+        $mediaBackend = Mage::getModel('catalog/product_attribute_backend_media');
+        $mediaGalleryAttribute = Mage::getModel('eav/config')->getAttribute(Mage::getModel('catalog/product')->getResource()->getTypeId(), 'media_gallery');
+        $mediaBackend->setAttribute($mediaGalleryAttribute);                 
+
         // paging
         $product_collection->setPageSize(100); 
         $pages = $product_collection->getLastPageNumber();
         $currentPage = 1;         
-
+        
         do {
             $product_collection->setCurPage($currentPage);
             $product_collection->load();
 
             foreach ($product_collection as $product) {
+                $group = 'other';                    
+
                 if ($product->isVisibleInSiteVisibility() && $product->isVisibleInCatalog()) {
 
-                    // load images
-                    $backendModel->afterLoad($product);                  
-                    
+                    // load images                
+                    $mediaBackend->afterLoad($product);
+
                     $core_attrs = array();
                     $_stock = $_stock->loadByProduct($product);
                     if ($_stock->getManageStock()) {
                         $core_attrs['stock'] = (int) $_stock->getQty();
                     }
+                    
                     foreach ($conditions as $attr => $data) {
                         if (array_key_exists('code', $data)) {
                             if (!empty($data['code']) && $product->getData($data['code']) !== null) {
@@ -118,9 +159,9 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                                 $core_attrs[$attr] = $data['default'];
                             }
                         }
-                    }      
-                    $group = 'other';
-                    $group_attrs = array();
+                    }    
+
+                    $group_attrs = array();                 
                     foreach ($mappings[$group] as $attr => $mapping) {
                         if (!empty($mapping)) {
                             $value = $product->getData($mapping);
@@ -135,18 +176,6 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                         }
                     }
 
-                    // get category
-                    $categories = $product->getCategoryIds();
-                    $cat = array();
-                    if($categories && count($categories)) {
-                        foreach($categories as $category) {
-                            $_cat = $this->getMageCategoryPath($category);
-                            if(count($_cat) > count($cat)) {
-                                $cat = $_cat;
-                            }
-                        }
-                    }
-                
                     // get configurable attributes
                     if($product->getTypeId() == 'configurable') {
                         $productAttributeOptions = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
@@ -160,12 +189,12 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                     }
 
                     // get simple attributes
-                foreach($this->getAdditionalAttributes() as $attribute) {
+                    foreach($this->getAdditionalAttributes() as $attribute) {
                         if(!isset($group_attrs[$attribute->getStoreLabel()]) && !in_array($attribute->getAttributeCode(),array('sku','price')) ) {
-                        $group_attrs[$attribute->getStoreLabel()] = $product->getAttributeText($attribute->getAttributeCode());
+                            $group_attrs[$attribute->getStoreLabel()] = $product->getAttributeText($attribute->getAttributeCode());
                         }
                     }
-                
+
                     $imgs = array();
                     $media_gallery = $product->getMediaGallery();
                     $images = (isset($media_gallery['images'])) ? $media_gallery['images'] : array();
@@ -177,9 +206,21 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                         }
                         $i++;
                     }
-                
+
+                    // get category
+                    $categories = $product->getCategoryIds();
+                    $categoryNamesPath = array();
+                    if($categories && count($categories)) {
+                        foreach($categories as $categoryId) {
+                            $_cat = $this->getCategoryNamesPath($categoryId);
+                            if(count($_cat) > count($categoryNamesPath)) {
+                                $categoryNamesPath = $_cat;
+                            }
+                        }
+                    }                        
+                                      
                     $price = $this->getFinalPriceIncludingTax($product);
-                    $offers[$group][] = array(
+                    $this->offers[$group][$product->getId()] = array(
                         'id' => $product->getSku(),
                         'url' => $product->getProductUrl(),
                         'price' => $price,
@@ -187,65 +228,20 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                         'desc' => $product->getDescription() ? $product->getDescription() : $product->getShortDescription(),
                         'weight' => $product->getWeight(),
                         'imgs' => $imgs,
-                        'cat' => $cat,
+                        'cat' => $categoryNamesPath,
                         'group_attrs' => $group_attrs,
                         'core_attrs' => $core_attrs
                     );
                 }
             }
-            
+        
             $currentPage++;
             //clear collection and free memory
-            $product_collection->clear();              
-            
+            $product_collection->clear();  
+
         } while ($currentPage <= $pages);
-        return $offers;
-    }
-
-    public function addMediaGalleryAttributeToCollection($_productCollection) {
-        $all_ids = $_productCollection->getAllIds();
-        if (!empty($all_ids)) {
-            $_mediaGalleryAttributeId = Mage::getSingleton('eav/config')->getAttribute('catalog_product', 'media_gallery')->getAttributeId();
-            $_read = Mage::getSingleton('core/resource')->getConnection('catalog_read');
-
-            $_mediaGalleryData = $_read->fetchAll('
-				SELECT
-					main.entity_id, `main`.`value_id`, `main`.`value` AS `file`,
-					`value`.`label`, `value`.`position`, `value`.`disabled`, `default_value`.`label` AS `label_default`,
-					`default_value`.`position` AS `position_default`,
-					`default_value`.`disabled` AS `disabled_default`
-				FROM `' . Mage::getSingleton('core/resource')->getTableName('catalog_product_entity_media_gallery') . '` AS `main`
-					LEFT JOIN `' . Mage::getSingleton('core/resource')->getTableName('catalog_product_entity_media_gallery_value') . '` AS `value`
-						ON main.value_id=value.value_id AND value.store_id=' . Mage::app()->getStore()->getId() . '
-					LEFT JOIN `' . Mage::getSingleton('core/resource')->getTableName('catalog_product_entity_media_gallery_value') . '` AS `default_value`
-						ON main.value_id=default_value.value_id AND default_value.store_id=0
-				WHERE (
-					main.attribute_id = ' . $_read->quote($_mediaGalleryAttributeId) . ') 
-					AND (main.entity_id IN (' . $_read->quote($all_ids) . '))
-				ORDER BY IF(value.position IS NULL, default_value.position, value.position) ASC    
-			');
-
-
-            $_mediaGalleryByProductId = array();
-            foreach ($_mediaGalleryData as $_galleryImage) {
-                $k = $_galleryImage['entity_id'];
-                unset($_galleryImage['entity_id']);
-                if (!isset($_mediaGalleryByProductId[$k])) {
-                    $_mediaGalleryByProductId[$k] = array();
-                }
-                $_mediaGalleryByProductId[$k][] = $_galleryImage;
-            }
-            unset($_mediaGalleryData);
-            foreach ($_productCollection as &$_product) {
-                $_productId = $_product->getData('entity_id');
-                if (isset($_mediaGalleryByProductId[$_productId])) {
-                    $_product->setData('media_gallery', array('images' => $_mediaGalleryByProductId[$_productId]));
-                }
-            }
-            unset($_mediaGalleryByProductId);
-        }
-
-        return $_productCollection;
+        
+        return $this->offers;
     }
 
     public function getIdsByCategoryIds($category_ids = array()) {
@@ -284,7 +280,7 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
 
     public function getFinalPriceIncludingTax($product) {
         return Mage::helper('tax')->getPrice($product, $product->getFinalPrice(), 2);
-    }    
+    }
     
     public function getNonFlatProductCollection() {
         $flatHelper = Mage::helper('catalog/product_flat');
@@ -292,14 +288,14 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
             $process = $flatHelper->getProcess();
             $status = $process->getStatus();
             $process->setStatus(Mage_Index_Model_Process::STATUS_RUNNING);        
-            $collection = $this->getCollection();
+            $collection = Mage::getModel('catalog/product')->getCollection();
             $process->setStatus($status);        
         } else {
-            $collection = $this->getCollection();
+            $collection = Mage::getModel('catalog/product')->getCollection();
         }
         return $collection;
     }
-    
+/*    
     public function getMageCategoryPath($categoryId, $includeRoot = false) {
         if(isset($this->_categoryPath[$categoryId])) {
             $results = $this->_categoryPath[$categoryId];
@@ -327,7 +323,7 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
 
         return $results;        
     }
-
+*/
     public function getAdditionalAttributes($returnCodes = false) {
 
         /* @var $attributes Mage_Catalog_Model_Resource_Eav_Resource_Product_Attribute_Collection */
