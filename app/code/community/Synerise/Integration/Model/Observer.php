@@ -30,6 +30,11 @@ class Synerise_Integration_Model_Observer
 
             $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
+//            if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+//                $this->snr->client->customIdentify(
+//                    Mage::getSingleton('customer/session')->getCustomer()->getId()
+//                );
+//            }
         } catch (Exception $e) {
             Mage::logException($e);
         }
@@ -54,13 +59,6 @@ class Synerise_Integration_Model_Observer
 
             $dataSend = $this->helper->convertCustomerToDataSend($customer);
 
-            $dataSendSnrs = $this->snr->getSnrsParams();
-            if ($dataSendSnrs) {
-                $dataSendSnrs = @json_decode($dataSendSnrs);
-                if (is_array($dataSendSnrs) && !empty($dataSendSnrs['params'])) {
-                    $dataSend = array_merge($dataSend, $dataSendSnrs['params']);
-                }
-            }
             $this->snr->client->update($dataSend);
         } catch (Exception $e) {
             Mage::logException($e);
@@ -130,13 +128,9 @@ class Synerise_Integration_Model_Observer
 
             $order = $observer->getEvent()->getOrder();
 
-            if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
-                $this->snr->client->update(
-                    $this->helper->convertCustomerByOrderToDataSend($order)
-                );
-            }
-
-            $sendData = array();
+            $this->snr->client->update(
+                $this->helper->convertCustomerByOrderToDataSend($order)
+            );
 
             foreach ($order->getAllVisibleItems() as $key => $item) {
                 $products[$item->getSku()] = $this->helper->convertProductToDataSend($item->getProduct());
@@ -218,13 +212,15 @@ class Synerise_Integration_Model_Observer
      */
     public function customerLogin(Varien_Event_Observer $observer)
     {
+
+
         try {
 
             if(!$this->checkEventIsEnabled($observer)) {
                 return $this;
             }
 
-            $this->snr->event->track("Logged In");
+            $this->snr->client->logIn();
             $this->snr->client->update(
                 $this->helper->convertCustomerToDataSend(
                     $observer->getEvent()->getCustomer()
@@ -250,7 +246,7 @@ class Synerise_Integration_Model_Observer
                 return $this;
             }
 
-            $this->snr->event->track("Logged Out");
+            $this->snr->client->logOut();
         } catch (Exception $e) {
             Mage::logException($e);
         }
@@ -269,16 +265,34 @@ class Synerise_Integration_Model_Observer
                 return $this;
             }
 
+            $sendData = array();
+            $sendData['products'] = array();
             foreach ($observer->getItems() as $item) {
-                $this->snr->event->track("Add to favourites",
-                    $this->helper->convertProductToDataSend($item->getProduct())
-                );
+                $sendData['products'][] = $this->helper->convertProductToDataSend($item->getProduct());
             }
+
+            $this->snr->transaction->addFavoriteProduct(
+                $sendData
+            );
+
 
         } catch (Exception $e) {
             Mage::logException($e);
         }
 
+    }
+
+    /**
+     * Action for "customer_save_before" event
+     * @param $observer
+     */
+    public function customerSaveBefore(Varien_Event_Observer $observer)
+    {
+        try {
+            $observer->getEvent()->getCustomer()->setData('synerise_send_at',date('Y-m-d H:i:s'));
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
     }
 
     /**

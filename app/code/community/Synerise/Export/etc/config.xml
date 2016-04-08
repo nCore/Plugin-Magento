@@ -5,7 +5,7 @@
             <version>0.2.2</version>
         </Synerise_Export>
     </modules>
-<!--    <frontend>
+    <frontend>
         <routers>
             <synerise_export>
                 <use>standard</use>
@@ -24,7 +24,7 @@
                 </Synerise_Export>
             </modules>
         </translate>
-    </frontend>  -->
+    </frontend>  
     <global>
         <blocks>
             <synerise_export>
@@ -36,16 +36,18 @@
                 <class>Synerise_Export_Model</class>
             </synerise_export>
         </models>
-        <resources>
-            <synerise_export_setup>
-                <setup>
-                    <module>Synerise_Export</module>
-                </setup>
-            </synerise_export_setup>
-            <connection>
-                <use>default_setup</use>
-            </connection>
-        </resources>
+<!--        <resources>
+            <synerise_export_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </synerise_export_write>
+            <synerise_export_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </synerise_export_read>
+        </resources>-->
         <helpers>
             <synerise_export>
                 <class>Synerise_Export_Helper</class>
@@ -57,25 +59,8 @@
             <attr_other>
                 <Producent>manufacturer</Producent>
             </attr_other>
-<!--            <sort>
-                <default_sort_by>position</default_sort_by>
-                <default_dir>asc</default_dir>
-            </sort>-->
-            <generate>
-                    <enabled>0</enabled>				
-                    <!--<limit>10</limit>-->	
-                    <cron_schedule>0 0 * * *</cron_schedule>									
-            </generate>
         </synerise_export>
     </default>
-    <crontab>
-        <jobs>
-            <synerise_export_generate>
-                <schedule><config_path>synerise_export/generate/cron_schedule</config_path></schedule>
-                <run><model>synerise_export/observer::scheduledGenerateFeeds</model></run>
-            </synerise_export_generate>
-        </jobs>
-    </crontab>	    
     <adminhtml>
         <translate>
             <modules>
