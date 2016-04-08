@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <synerise_integration>
-            <version>0.3.1</version>
-        </synerise_integration>
+        <Synerise_Integration>
+            <version>1.0.0</version>
+        </Synerise_Integration>
     </modules>
     <frontend>
         <layout>
@@ -17,7 +17,7 @@
             <modules>
                 <synerise_integration>
                     <files>
-                        <default>Synerise_Integration.csv</default>
+                        <default>synerise_integration.csv</default>
                     </files>
                 </synerise_integration>
             </modules>
@@ -45,6 +45,14 @@
                     <use>core_read</use>
                 </connection>
             </synerise_integration_read>
+            <synerise_integration_setup>
+                <setup>
+                    <module>Synerise_Integration</module>
+                </setup>
+            </synerise_integration_setup>
+            <connection>
+                <use>default_setup</use>
+            </connection>            
         </resources>
         <helpers>
             <synerise_integration>

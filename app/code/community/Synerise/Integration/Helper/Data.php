@@ -23,6 +23,29 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
 
         $product = Mage::getModel('catalog/product')->load($product->getId());
         $attributes = $product->getAttributes();
+//
+//
+//        $keySend = [
+//            'size' => 'size',
+//            'type' => 'type',
+//            'color' => 'color',
+//            'colour' => 'colour',
+//            'colGroup' => 'colGroup',
+//            'skin' => 'skin',
+//            'material' => 'material',
+//            'col_group01' => 'colGroup01',
+//            'colGroup02' => 'colGroup02',
+//            'kind' => 'kind',
+//            'heelHeightCm' => 'heelHeightCm',
+//            'heelHeight' => 'heelHeight',
+//            'season' => 'season',
+//            'subcollection' => 'subCollection',
+//            'unit' => 'unit',
+//            'section' => 'section',
+//            'size' => 'size',
+//            'term' => 'term'
+//        ];
+
 
         $productattrAttr = Mage::getStoreConfig('synerise_integration/productattr/attr');
         $keySend = array();
@@ -47,21 +70,10 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
-
-        if (method_exists($this->controller, $this->view)
-            && is_callable(array($this->controller, $this->view))) {
-
-        }
-
-        $result['image'] = $this->getImage($product);
+        $productMediaConfig = Mage::getModel('catalog/product_media_config');
+        $result['image'] = (string)$productMediaConfig->getMediaUrl($product->getSmallImage());
 
         return $result;
-    }
-
-
-    public function getImage(Mage_Catalog_Model_Product $product) {
-        $productMediaConfig = Mage::getModel('catalog/product_media_config');
-        return (string)$productMediaConfig->getMediaUrl($product->getSmallImage());
     }
 
 
@@ -72,7 +84,7 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
         $result['$offline'] = 0;
         $result['$totalAmount'] = $order->getGrandTotal();
         $result['$revenue'] = $order->getGrandTotal();
-        $result['discountAmount'] = $order->getDiscountAmount();
+        $result['$discountAmount'] = $order->getDiscountAmount();
         $result['$deliveryType'] = $order->getShippingDescription();
         $result['$paymentType'] = array(
             $order->getPayment()->getMethod() => $order->getGrandTotal()
@@ -86,7 +98,7 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
         $result['$currency'] = $order->getStoreCurrencyCode();
         $result['$storeName'] = $order->getStoreName();
         $result['$discountCode'] = $order->getCouponCode();
-        $result['$locationIdent'] = "1";
+        $result['$locationIdent'] = "261";
         $result['$location'] = 'e-sklep';
         $result['$city'] = 'e-sklep';
         $result['$region'] = 'INTERNET';
@@ -117,11 +129,20 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function convertCustomerByOrderToDataSend(Mage_Sales_Model_Order $order)
     {
+        $shippingAddress = $order->getShippingAddress();
+
+
         return  array(
             '$email' => $order->getCustomerEmail(),
             '$firstname' => $order->getCustomerFirstname(),
             '$lastname' => $order->getCustomerLastname(),
             '$storeId' => $order->getStoreId(),
+            '$company' => $shippingAddress->getCompany(),
+            '$adress' => $shippingAddress->getStreet1(),
+            '$city' => $shippingAddress->getCity(),
+            '$region' => $shippingAddress->getRegion(),
+            '$zipCode' => $shippingAddress->getPostcode(),
+            '$phone' => $shippingAddress->getTelephone(),
             '$createdInLanguage' => '',
             '$entityId' => $order->getCustomerId()
         );
