@@ -9,6 +9,10 @@ class Client extends ProducerAbstract
         $this->_customIdentify = $customIdentify;
     }
 
+    public function setUuid($uuid) {
+        $this->_uuid = $uuid;
+    }
+
     public function update($data = array()) {
         $this->setData($data);
     }

@@ -18,7 +18,8 @@ abstract class ProducerAbstract
      */
     private $_requestQueue = array();
 
-    
+    protected $_uuid;
+
     /**
      * Returns a singleton instance of Event
      * @return ProducerAbstract
@@ -62,12 +63,21 @@ abstract class ProducerAbstract
         if(!empty(Client::getInstance()->getCustomIdetify())){
         	$message['customIdentify'] =  Client::getInstance()->getCustomIdetify();
         }
-        $clientUUID = $this->getUuid();
-        if(!empty($clientUUID)) {
-            $message['uuid'] = $clientUUID;
+
+
+        if(!empty(Client::getInstance()->getUuid())){
+        	$message['uuid'] =  Client::getInstance()->getUuid();
+        }
+
+        if(!$message['uuid']) {
+            $clientUUID = $this->getUuid();
+            if(!empty($clientUUID)) {
+                $message['uuid'] = $clientUUID;
+            }
         }
 
         $message['ip'] = $this->getIp();
+        $message['ssuid'] = $this->getSsuid();
 
         $message['userAgent'] = $this->getUserAgent();
 
@@ -77,7 +87,7 @@ abstract class ProducerAbstract
         }
 
         if(isset($message['params']['time']) && $this->_is_timestamp($message['params']['time'])){
-//        	$message['time'] = date("Y-m-d\TH:i:sP",$message['params']['time']);
+            $message['time'] = $message['params']['time'] = $message['params']['time'] * 1000;
         } else if(isset($message['params']['time'])) {
             throw new SyneriseException('Parameter `time` have to be in timesamp format.');
         } else {
@@ -86,6 +96,7 @@ abstract class ProducerAbstract
 
         array_push($this->_requestQueue, $message);
     }
+
 
 
     /**
@@ -134,6 +145,7 @@ abstract class ProducerAbstract
      */
     private function getUuid()
     {
+
         $snrsP = isset($_COOKIE['_snrs_p'])?$_COOKIE['_snrs_p']:false;
         if ($snrsP) {
             $snrsP = explode('&', $snrsP);
@@ -146,6 +158,27 @@ abstract class ProducerAbstract
 
         return false;
     }
+
+    /**
+     * @return bool|string
+     */
+    private function getSsuid()
+    {
+
+        $snrsS = isset($_COOKIE['_snrs_sa'])?$_COOKIE['_snrs_sa']:false;
+        if ($snrsS) {
+            $snrsS = explode('&', $snrsS);
+            foreach ($snrsS as $snrs_part) {
+                if (strpos($snrs_part, 'ssuid:') !== false) {
+                    return str_replace('ssuid:', null, $snrs_part);
+                }
+            }
+        }
+
+        return false;
+    }
+
+
 
     private function _is_timestamp($timestamp) {
     	if(is_numeric($timestamp) 
