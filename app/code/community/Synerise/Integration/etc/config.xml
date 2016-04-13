@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Integration>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Synerise_Integration>
     </modules>
     <frontend>
@@ -203,4 +203,11 @@
             </modules>
         </translate>      
     </adminhtml>    
+    <default>
+        <synerise_integration>
+            <opengraph>
+                <enable>1</enable>
+            </opengraph>
+        </synerise_integration>
+    </default>       
 </config>

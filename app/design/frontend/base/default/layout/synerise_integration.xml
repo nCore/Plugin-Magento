@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <layout>
     <default>
-        <reference name="before_body_end">
+        <reference name="head">
+            <block type="core/template" name="synerise_open_graph" >
+                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og.phtml</template></action>
+            </block>
+        </reference>        
+        <reference name="before_body_end" >
             <block type="synerise_integration/tracking" template="synerise/footer/tracking.phtml" name="synerise_tracking" />
         </reference>
     </default>
