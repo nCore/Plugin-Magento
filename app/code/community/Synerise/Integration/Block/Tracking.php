@@ -8,6 +8,10 @@ class Synerise_Integration_Block_Tracking extends Mage_Core_Block_Template
     public function getCode() {
         return Mage::getStoreConfig('synerise_integration/tracking/code');
     }
+
+    public function getApiKey() {
+        return Mage::getStoreConfig('synerise_integration/api/key');
+    }
     
     public function enableTracking() {
         return (Mage::getStoreConfig('synerise_integration/tracking/enable') && $this->_validateCode());
