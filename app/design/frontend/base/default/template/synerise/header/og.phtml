@@ -3,8 +3,11 @@
 <?php $product = Mage::registry('current_product'); ?>
 	<meta property="og:title" content="<?php echo ($product->getName()); ?>" />
 	<meta property="og:type" content="product" />
-<?php foreach ($collection = $product->getMediaGalleryImages() as $_image): ?>
+<?php foreach ($product->getMediaGalleryImages() as $_image): ?>
         <meta property='og:image' content='<?php echo $_image->getUrl(); ?>'/>
+<?php endforeach;?>
+<?php foreach ($this->getCurrentProductCategories() as $_category): ?>
+        <meta property='og:category' content='<?php echo $_category->getName(); ?>'/>
 <?php endforeach;?>
 	<meta property="og:url" content="<?php echo $product->getProductUrl(); ?>" />
 <?php 
