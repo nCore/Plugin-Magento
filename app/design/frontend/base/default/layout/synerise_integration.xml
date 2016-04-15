@@ -2,7 +2,7 @@
 <layout>
     <default>
         <reference name="head">
-            <block type="core/template" name="synerise_open_graph" >
+            <block type="synerise_integration/opengraph" name="synerise_open_graph" >
                 <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og.phtml</template></action>
             </block>
         </reference>        
