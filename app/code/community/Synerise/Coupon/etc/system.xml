@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
     <tabs>
-        <synerise translate="label" module="synerise_coupon">
+        <synerise translate="label" module="synerise_integration">
             <label>Synerise</label>
             <sort_order>102</sort_order>
         </synerise>
@@ -10,7 +10,7 @@
         <synerise_coupon translate="label" module="synerise_coupon">
             <label>Coupon</label>
             <tab>synerise</tab>
-            <sort_order>200</sort_order>
+            <sort_order>300</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>0</show_in_website>
             <show_in_store>0</show_in_store>
