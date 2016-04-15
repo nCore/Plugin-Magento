@@ -9,7 +9,7 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
     public function _construct()
     {
         ini_set('max_execution_time', 0);
-        require_once(Mage::getBaseDir('lib').'/Ceneopl/simple_xml_extended.php');        
+        require_once(Mage::getBaseDir('lib').'/Synerise/simple_xml_extended.php');        
     }
     
     public function generateFeeds($storeId)
@@ -74,9 +74,11 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
                     }
                     $attrs = $o->addChild('attrs');
                     foreach ($product['group_attrs'] as $attr => $value) {
-                        $a = $attrs->addChild('a');
-                        $a->addAttribute('name', $attr);
-                        $a->addCData($value);
+                        if($value) {
+                            $a = $attrs->addChild('a');
+                            $a->addAttribute('name', $attr);
+                            $a->addCData($value);
+                        }
                     }
                 }
             }

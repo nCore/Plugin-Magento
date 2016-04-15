@@ -9,7 +9,7 @@ class Synerise_Export_ProductsController extends Mage_Core_Controller_Front_Acti
         $hash = $this->getRequest()->getParam('hash');
         if ($hash == $this->getConfig()->getHash()) {
             ini_set('max_execution_time', 0);
-            require_once(Mage::getBaseDir('lib').'/Ceneopl/simple_xml_extended.php');
+            require_once(Mage::getBaseDir('lib').'/Synerise/simple_xml_extended.php');
             $offers = Mage::getModel('synerise_export/product')->getOffers();
             $xml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><offers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1" />');
             foreach ($offers as $group_name => $products) {
