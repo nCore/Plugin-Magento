@@ -74,9 +74,11 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
                     }
                     $attrs = $o->addChild('attrs');
                     foreach ($product['group_attrs'] as $attr => $value) {
-                        $a = $attrs->addChild('a');
-                        $a->addAttribute('name', $attr);
-                        $a->addCData($value);
+                        if($value) {
+                            $a = $attrs->addChild('a');
+                            $a->addAttribute('name', $attr);
+                            $a->addCData($value);
+                        }
                     }
                 }
             }
