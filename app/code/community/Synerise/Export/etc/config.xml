@@ -2,29 +2,9 @@
 <config>
     <modules>
         <Synerise_Export>
-            <version>0.2.2</version>
+            <version>1.0.1</version>
         </Synerise_Export>
     </modules>
-    <frontend>
-        <routers>
-            <synerise_export>
-                <use>standard</use>
-                <args>
-                    <module>Synerise_Export</module>
-                    <frontName>synerise_export</frontName>
-                </args>
-            </synerise_export>
-        </routers>
-        <translate>
-            <modules>
-                <Synerise_Export>
-                    <files>
-                        <default>Synerise_Export.csv</default>
-                    </files>
-                </Synerise_Export>
-            </modules>
-        </translate>
-    </frontend>  
     <global>
         <blocks>
             <synerise_export>
@@ -36,18 +16,16 @@
                 <class>Synerise_Export_Model</class>
             </synerise_export>
         </models>
-<!--        <resources>
-            <synerise_export_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </synerise_export_write>
-            <synerise_export_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </synerise_export_read>
-        </resources>-->
+        <resources>
+            <synerise_export_setup>
+                <setup>
+                    <module>Synerise_Export</module>
+                </setup>
+            </synerise_export_setup>
+            <connection>
+                <use>default_setup</use>
+            </connection>
+        </resources>
         <helpers>
             <synerise_export>
                 <class>Synerise_Export_Helper</class>
@@ -59,8 +37,20 @@
             <attr_other>
                 <Producent>manufacturer</Producent>
             </attr_other>
+            <generate>
+                    <enabled>0</enabled>				
+                    <cron_schedule>0 0 * * *</cron_schedule>									
+            </generate>
         </synerise_export>
     </default>
+    <crontab>
+        <jobs>
+            <synerise_export_generate>
+                <schedule><config_path>synerise_export/generate/cron_schedule</config_path></schedule>
+                <run><model>synerise_export/observer::scheduledGenerateFeeds</model></run>
+            </synerise_export_generate>
+        </jobs>
+    </crontab>	    
     <adminhtml>
         <translate>
             <modules>
