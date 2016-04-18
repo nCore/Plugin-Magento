@@ -14,13 +14,13 @@ SYNERISE MAGENTO integration plugin version: 0.9.
 
       2.2.1 Modules
 
-         2.2.1.1. Synerise Integration - the main module is responsible for sending events from Magento to Synerise. After switching it on it needs to be configured. In the upper menu select "Synerise" --> "Integration". A new window will appear. There you can configure the basic integration module. Fill in the proper API key (which can be found in: Synerise Settings --> API). Next, set up the tracker by copying the tracking code, if you're interested in turning it on. There are two methods of copying a tracking code: copy it from Synerise Settings --> Tracking codes or get it through API.  Below the main section you can find a list of events to choose from that can be sent to Synerise, eg. transactions, shopping carts. We recommend turning all the events on. What’s more you can configure the product’s attributes and map them to a key that will be used in Synerise to identify the attribute. You can change the attributes name (key) anytime but beware, changing it if data is already collected will cause data inconsistency in Synerise.
+      2.2.1.1. Synerise Integration - the main module is responsible for sending events from Magento to Synerise. After switching it on it needs to be configured. In the upper menu select "Synerise" --> "Integration". A new window will appear. There you can configure the basic integration module. Fill in the proper API key (which can be found in: Synerise Settings --> API). Next, set up the tracker by copying the tracking code, if you're interested in turning it on. There are two methods of copying a tracking code: copy it from Synerise Settings --> Tracking codes or get it through API.  Below the main section you can find a list of events to choose from that can be sent to Synerise, eg. transactions, shopping carts. We recommend turning all the events on. What’s more you can configure the product’s attributes and map them to a key that will be used in Synerise to identify the attribute. You can change the attributes name (key) anytime but beware, changing it if data is already collected will cause data inconsistency in Synerise.
 
-         2.2.1.2. Synerise_Coupon - enables integration with coupons system.
+      2.2.1.2. Synerise_Coupon - enables integration with coupons system.
 
-         2.2.1.3. Synerise_Newsletter - enables integration with Synerise newsletter.
+      2.2.1.3. Synerise_Newsletter - enables integration with Synerise newsletter.
 
-         2.2.1.4. Synerise_Export - enables export products to XML file.
+      2.2.1.4. Synerise_Export - enables export products to XML file.
 
 3. Logs
 
