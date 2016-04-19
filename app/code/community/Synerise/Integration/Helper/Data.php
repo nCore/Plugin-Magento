@@ -13,9 +13,16 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $quote = $quote = Mage::getSingleton('checkout/cart')->getQuote();
         $result = array();
+
+        $categoryId = null;
+        $productCategoryIds = $product->getCategoryIds();
+        if(is_array($productCategoryIds) && !empty($productCategoryIds)) {
+            $categoryId = end($productCategoryIds);
+        }
+
         $result['$quoteUUID'] = $quote->getId();
         $result['$sku'] = $product->getSku();
-        $result['$category'] = $product->getCategoryId();
+        $result['$category'] = $categoryId;
         $result['$title'] = $product->getName();
         $result['$regularPrice'] = $product->getPrice();
         $result['$discountPrice'] = $product->getSpecialPrice();
