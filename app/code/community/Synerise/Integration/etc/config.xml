@@ -208,6 +208,10 @@
             <opengraph>
                 <enable>1</enable>
             </opengraph>
+            <allowForkTracking>
+                <enable>1</enable>
+            </allowForkTracking>
         </synerise_integration>
-    </default>       
+    </default>
+
 </config>
