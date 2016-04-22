@@ -19,9 +19,6 @@
     <script>
         function onSyneriseLoad() {
             SR.auth.apiKey('<?php echo $this->getApiKey(); ?>');
-            SR.init({
-                'notificationNewsletterHandlers': false
-            })
         }
         (function(s,y,n,e,r,i,se){s['SyneriseObjectNamespace']=r;s[r]=s[r]||[],s[r]._t=1*new Date(),
             s[r]._i=0,s[r]._l=i;var z=y.createElement(n),se=y.getElementsByTagName(n)[0];z.async=1;z.src=e;
