@@ -21,6 +21,8 @@ if(isset($description)):
 	<meta property="og:description" content="<?php echo strip_tags($description); ?>" />
 <?php endif; ?>
 	<meta property="og:site_name" content="<?php echo Mage::getStoreConfig('general/store_information/name'); ?>" />        
+        <meta property="product:original_price:amount" content="<?php echo $product->getPrice() ?>" />
+        <meta property="product:original_price:currency" content="<?php echo Mage::app()->getStore()->getCurrentCurrencyCode(); ?>" />
         <meta property="product:price:amount" content="<?php echo $product->getFinalPrice() ?>" />
         <meta property="product:price:currency" content="<?php echo Mage::app()->getStore()->getCurrentCurrencyCode(); ?>" />        
 	<meta property="product:retailer_part_no" content="<?php echo $product->getSku(); ?>" />        
