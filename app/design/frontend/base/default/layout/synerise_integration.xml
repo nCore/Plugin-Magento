@@ -2,12 +2,33 @@
 <layout>
     <default>
         <reference name="head">
-            <block type="synerise_integration/opengraph" name="synerise_open_graph" >
-                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og.phtml</template></action>
+            <block type="synerise_integration/opengraph_default" name="synerise_open_graph" parent="head" >
+                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og/default.phtml</template></action>
             </block>
         </reference>        
         <reference name="before_body_end" >
             <block type="synerise_integration/tracking" template="synerise/footer/tracking.phtml" name="synerise_tracking" />
         </reference>
     </default>
+    <catalog_product_view>
+        <reference name="head">
+            <block type="synerise_integration/opengraph_product" name="synerise_open_graph" >
+                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og/product.phtml</template></action>
+            </block>
+        </reference>                     
+    </catalog_product_view>
+    <catalog_category_view>
+        <reference name="head">
+            <block type="synerise_integration/opengraph_category" name="synerise_open_graph" >
+                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og/default.phtml</template></action>
+            </block>
+        </reference>                     
+    </catalog_category_view>
+    <cms_index_index>
+        <reference name="head">
+            <block type="synerise_integration/opengraph_index" name="synerise_open_graph" >
+                <action ifconfig="synerise_integration/opengraph/enable" method="setTemplate"><template>synerise/header/og/default.phtml</template></action>
+            </block>
+        </reference>                     
+    </cms_index_index>
 </layout>

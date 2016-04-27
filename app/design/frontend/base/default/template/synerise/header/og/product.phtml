@@ -1,0 +1,36 @@
+<?php if($this->getOgTitle()): ?>
+<meta property="og:title" content="<?php echo $this->getOgTitle(); ?>"/>
+<?php endif; ?>
+<?php if($this->getOgType()): ?>
+<meta property="og:type" content="<?php echo $this->getOgType(); ?>"/>
+<?php endif; ?>
+<?php if($this->getOgUrl()): ?>
+<meta property="og:url" content="<?php echo $this->getOgUrl(); ?>"/>
+<?php endif; ?>
+<?php if($this->getOgDescription()): ?>
+<meta property="og:description" content="<?php echo strip_tags($this->getOgDescription()); ?>"/>
+<?php endif; ?>
+<?php if($this->getOgSiteName()): ?>
+<meta property="og:site_name" content="<?php echo $this->getOgSiteName(); ?>"/>
+<?php endif; ?>
+<?php foreach ($this->getOgImages() as $_image): ?>
+<meta property="og:image" content="<?php echo $_image->getUrl(); ?>"/>
+<?php endforeach;?>
+<?php foreach ($this->getProductCategories() as $_category): ?>
+<meta property="product:category" content="<?php echo $_category->getName(); ?>"/>
+<?php endforeach;?>
+<?php if($this->getProductOriginalPrice()): ?>
+<meta property="product:original_price:amount" content="<?php echo $this->getProductOriginalPrice(); ?>"/>
+<?php endif; ?>
+<?php if($this->getProductCurrency()): ?>
+<meta property="product:original_price:currency" content="<?php echo $this->getProductCurrency(); ?>"/>
+<?php endif; ?>
+<?php if($this->getProductPrice()): ?>
+<meta property="product:price:amount" content="<?php echo $this->getProductPrice(); ?>"/>
+<?php endif; ?>
+<?php if($this->getProductCurrency()): ?>
+<meta property="product:price:currency" content="<?php echo $this->getProductCurrency(); ?>"/>
+<?php endif; ?>
+<?php if($this->getProductRetailerPartNo()): ?>
+<meta property="product:retailer_part_no" content="<?php echo $this->getProductRetailerPartNo(); ?>"/>
+<?php endif;
