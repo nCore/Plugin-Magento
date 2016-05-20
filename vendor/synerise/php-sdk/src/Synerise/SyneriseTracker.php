@@ -70,9 +70,8 @@ class SyneriseTracker extends SyneriseAbstractHttpClient
         if(count($data['json']) == 0) {
             return;
         }
-        $request = $this->createRequest('POST', SyneriseAbstractHttpClient::BASE_TCK_URL, $data, array('timeout' => 1));
+        $request = $this->createRequest('POST', SyneriseAbstractHttpClient::BASE_TCK_URL, $data);
         $request->setHeader('Content-Type','application/json');
-        $request->addHeader('Connection', 'Close');
 
         try {
             $this->_log($request, 'TRACKER');

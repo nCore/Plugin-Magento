@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Synerise\Producers;
 
 use Synerise\Producers\Client;
@@ -46,12 +46,12 @@ abstract class ProducerAbstract
      * @return array
      */
     public function getRequestQueue($key = '') {
-    	if($key != ''){
-    		$return[$key] = $this->_requestQueue;
-    	} else {
-    		$return = $this->_requestQueue;
+        if($key != ''){
+            $return[$key] = $this->_requestQueue;
+        } else {
+            $return = $this->_requestQueue;
 
-    	}
+        }
         return $return;
     }
 
@@ -61,12 +61,12 @@ abstract class ProducerAbstract
      */
     public function enqueue($message = array()) {
         if(!empty(Client::getInstance()->getCustomIdetify())){
-        	$message['customIdentify'] =  Client::getInstance()->getCustomIdetify();
+            $message['clientCustomId'] =  Client::getInstance()->getCustomIdetify();
         }
 
 
         if(!empty(Client::getInstance()->getUuid())){
-        	$message['uuid'] =  Client::getInstance()->getUuid();
+            $message['uuid'] =  Client::getInstance()->getUuid();
         }
 
         if(!$message['uuid']) {
@@ -91,7 +91,7 @@ abstract class ProducerAbstract
         } else if(isset($message['params']['time'])) {
             throw new SyneriseException('Parameter `time` have to be in timesamp format.');
         } else {
-        	$message['time'] = time() * 1000;
+            $message['time'] = time() * 1000;
         }
 
         array_push($this->_requestQueue, $message);
@@ -145,6 +145,9 @@ abstract class ProducerAbstract
      */
     private function getUuid()
     {
+        if($this->_uuid) {
+            return $this->_uuid;
+        }
 
         $snrsP = isset($_COOKIE['_snrs_p'])?$_COOKIE['_snrs_p']:false;
         if ($snrsP) {
@@ -164,6 +167,9 @@ abstract class ProducerAbstract
      */
     private function getSsuid()
     {
+        if($this->_uuid) {
+            return $this->_uuid;
+        }
 
         $snrsS = isset($_COOKIE['_snrs_sa'])?$_COOKIE['_snrs_sa']:false;
         if ($snrsS) {
@@ -181,10 +187,10 @@ abstract class ProducerAbstract
 
 
     private function _is_timestamp($timestamp) {
-    	if(is_numeric($timestamp) 
-    		&& strtotime(date('d-m-Y H:i:s',$timestamp)) === (int)$timestamp) {
-        	return $timestamp;
-    	}
-    	return false;
+        if(is_numeric($timestamp)
+            && strtotime(date('d-m-Y H:i:s',$timestamp)) === (int)$timestamp) {
+            return $timestamp;
+        }
+        return false;
     }
 }

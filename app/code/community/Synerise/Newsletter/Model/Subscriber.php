@@ -22,7 +22,7 @@ class Synerise_Newsletter_Model_Subscriber
 
         $this->snr = Synerise\SyneriseNewsletter::getInstance([ //@todo wynieść do helpera
             'apiKey' => $this->apiKey, //@todo zaciagać z panelu
-            'apiVersion' => '2.0.1', //@todo zaciagać z panelu? (czy po kluczu?)
+            'apiVersion' => '2.1.0', //@todo zaciagać z panelu? (czy po kluczu?)
             'allowFork' => false, //@todo tylko do debugowania? czy konfigurowalne z panelu?
         ]);
 

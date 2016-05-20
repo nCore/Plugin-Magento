@@ -3,7 +3,7 @@ require '../vendor/autoload.php';
 
 $snr = Synerise\SyneriseTracker::getInstance([
 	'apiKey'=>'b43c7c2c-ee52-4051-afa8-073e9c9c5f84',
-	'apiVersion'=>'2.0.1',
+	'apiVersion'=>'2.1.0',
 	'allowFork'=>true,
 	]);
 

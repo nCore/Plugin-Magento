@@ -19,13 +19,18 @@ class SyneriseNewsletter extends SyneriseAbstractHttpClient
 
     /**
      * @param $token
-     * @return Coupon
+     * @return Coupon2.1.0
      * @throws SyneriseException
      */
     public function subscribe($email, $additionalParams = array())
     {
 
         try {
+
+            if(!empty($this->getUuid())){
+                $additionalParams['uuid'] = $this->getUuid();
+            }
+
             /**
              * @var Response
              */

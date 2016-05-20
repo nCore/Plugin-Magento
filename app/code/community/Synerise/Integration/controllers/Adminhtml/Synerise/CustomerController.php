@@ -22,7 +22,7 @@ class Synerise_Integration_Adminhtml_Synerise_CustomerController extends Mage_Ad
         try {
             $this->snr = Synerise\SyneriseTracker::getInstance([ //@todo wynieść do helpera
                 'apiKey' => $this->apiKey,
-                'apiVersion' => '2.0.1',
+                'apiVersion' => '2.1.0',
                 'allowFork' => false
             ]);
 

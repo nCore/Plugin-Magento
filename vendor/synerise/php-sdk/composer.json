@@ -1,6 +1,6 @@
 {
     "name": "synerise/php-sdk",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "description": "Synerise SDK for PHP",
     "keywords": ["synerise", "sdk", "api"],
     "type": "library",
