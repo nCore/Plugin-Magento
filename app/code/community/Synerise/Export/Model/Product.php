@@ -221,7 +221,7 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
                                       
                     $price = $this->getFinalPriceIncludingTax($product);
                     $this->offers[$group][$product->getId()] = array(
-                        'id' => $product->getSku(),
+                        'id' => $product->getId(),
                         'url' => $product->getProductUrl(),
                         'price' => $price,
                         'name' => $product->getName(),

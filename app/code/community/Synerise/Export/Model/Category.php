@@ -28,10 +28,14 @@ class Synerise_Export_Model_Category extends Mage_Catalog_Model_Abstract {
     protected function _addProduct($product) {
         if(!isset($this->catalog['products'][$product->getId()])) {
             $this->catalog['products'][$product->getId()]['product'] = array(
-                'id' => $product->getId(),
-                'sku' => $product->getSku(),
-                'name' => $product->getName(),
-            );      
+                'id' => $product->getId()
+            ); 
+            foreach(array('sku', 'name') as $attribute) {
+                $this->catalog['products'][$product->getId()]['product']['attributes'][]['attribute'] = array(
+                    'name' => $attribute,
+                    $product->getData($attribute)
+                );
+            }
         }
     }
     

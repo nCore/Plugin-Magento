@@ -36,3 +36,6 @@
 "The mapping has been saved.","Mapowanie zostało zapisane."
 "This value is used for the feeds URLs generation","Ta wartość jest używana do tworzenia URL-i feedów"
 "Unique Hash","Unikalny hash"
+"Include all attributes visible on frontend","Dodaj wszystkie atrybuty widoczne w sklepie"
+"Disable to choose attributes directly","Wyłącz, aby ręcznie wybrać atrybuty"
+"Mapping of the additional attributes","Mapowanie dodatkowych atrybutów"
