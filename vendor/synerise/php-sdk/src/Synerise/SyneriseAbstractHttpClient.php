@@ -137,9 +137,6 @@ abstract class SyneriseAbstractHttpClient extends Client
      */
     protected function getUuid()
     {
-        if($this->_uuid) {
-            return $this->_uuid;
-        }
 
         $snrsP = isset($_COOKIE['_snrs_p'])?$_COOKIE['_snrs_p']:false;
         if ($snrsP) {
