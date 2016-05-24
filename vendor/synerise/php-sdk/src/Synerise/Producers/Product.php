@@ -6,13 +6,13 @@ class Product extends ProducerAbstract
 
     public function addProduct($params = array()) {
         $data['params'] = $params;
-        $data['type'] = 'product.add';
+        $data['object'] = 'product.add';
         $this->enqueue($data);
     }
 
     public function removeProduct($params = array()) {
         $data['params'] = $params;
-        $data['type'] = 'product.remove';
+        $data['object'] = 'product.remove';
         $this->enqueue($data);
     }
 

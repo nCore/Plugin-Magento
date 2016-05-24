@@ -207,7 +207,7 @@
     {
         "name": "synerise/php-sdk",
         "version": "2.1.0",
-        "version_normalized": "2.0.1.0",
+        "version_normalized": "2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Synerise/PHP-SDK.git",
