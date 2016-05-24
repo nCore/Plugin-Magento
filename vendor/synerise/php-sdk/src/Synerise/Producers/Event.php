@@ -7,7 +7,7 @@ class Event extends ProducerAbstract
     public function track($label, $params = []) {
         $data['label']= $label;
         $data['params']= $params; 
-        $data['object']= 'custom.event';
+        $data['type']= 'custom.event';
         $this->enqueue($data);
     }
 

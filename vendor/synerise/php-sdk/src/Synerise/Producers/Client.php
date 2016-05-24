@@ -31,17 +31,17 @@ class Client extends ProducerAbstract
 
     public function setData($params = array()) {
         $data['params'] = $params;
-        $data['object']= 'client.data';
+        $data['type']= 'client.data';
         $this->enqueue($data);
     }
 
     public function logIn() {
-        $data['object'] = 'client.logIn';
+        $data['type'] = 'client.logIn';
         $this->enqueue($data);
     }
 
     public function logOut() {
-        $data['object'] = 'client.logOut';
+        $data['type'] = 'client.logOut';
         $this->enqueue($data);
     }
 
