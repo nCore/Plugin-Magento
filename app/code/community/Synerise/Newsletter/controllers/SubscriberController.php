@@ -33,7 +33,12 @@ class Synerise_Newsletter_SubscriberController extends Mage_Newsletter_Subscribe
 
 
                 try{
-                    $api->subscribe($email, array('sex' => $sex));
+                    $additionalParams = array();
+                    if($sex) {
+                        $additionalParams['sex'] = $sex;
+                    }
+
+                    $api->subscribe($email, $additionalParams);
                     $this->getResponse()->setBody(json_encode(array('message' => 'newsletter_request_success', 'status' => 'ok')));
 
                 }catch (Synerise\Exception\SyneriseException $e) {
