@@ -16,6 +16,8 @@ class Synerise_Newsletter_SubscriberController extends Mage_Newsletter_Subscribe
             $email              = (string) $this->getRequest()->getPost('email');
             $sex              = (string) $this->getRequest()->getPost('sex');
 
+            $postData = $this->getRequest()->getPost();
+
             try {
                 if (!Zend_Validate::is($email, 'EmailAddress')) {
                     Mage::throwException($this->__('Please enter a valid email address.'));
@@ -37,6 +39,8 @@ class Synerise_Newsletter_SubscriberController extends Mage_Newsletter_Subscribe
                     if($sex) {
                         $additionalParams['sex'] = $sex;
                     }
+
+                    $additionalParams = array_merge($additionalParams, $postData);
 
                     $api->subscribe($email, $additionalParams);
                     $this->getResponse()->setBody(json_encode(array('message' => 'newsletter_request_success', 'status' => 'ok')));

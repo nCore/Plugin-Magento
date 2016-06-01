@@ -127,10 +127,7 @@ class Synerise_Integration_Helper_Data extends Mage_Core_Helper_Abstract
             '$createdInLanguage' => $customer->getCreatedIn(),
             '$entityId' => $customer->getId()
         );
-        $isSubscribed = $customer->getIsSubscribed();
-        if(is_bool($isSubscribed)) {
-            $result['$newsletterAgreement'] = $customer->getIsSubscribed()=== true ? "enabled" : "disabled";
-        }
+
         return $result;
     }
 
