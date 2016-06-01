@@ -35,7 +35,7 @@ class SyneriseNewsletter extends SyneriseAbstractHttpClient
              * @var Response
              */
             $request = $this->createRequest("PUT", SyneriseAbstractHttpClient::BASE_API_URL . "/client/subscribe",
-                array('body' => array_merge(array('email' => $email), array('params' => $additionalParams)))
+                array('body' => array_merge($baseParams, array('params' => $additionalParams)))
             );
 
             $this->_log($request, 'NEWSLETTER');
