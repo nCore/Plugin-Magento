@@ -16,11 +16,6 @@ class Client extends ProducerAbstract
         $this->_uuid = $uuid;
     }
 
-    public function getUuid($uuid) {
-        $this->_uuid = $uuid;
-    }
-
-
     public function update($data = array()) {
         $this->setData($data);
     }
