@@ -202,7 +202,18 @@
                 </synerise_integration>
             </modules>
         </translate>      
-    </adminhtml>    
+    </adminhtml>  
+    <frontend>
+        <routers>
+            <synerise_integration>
+                <use>standard</use>
+                <args>
+                    <module>Synerise_Integration</module>
+                    <frontName>synerise_integration</frontName>
+                </args>
+            </synerise_integration>
+        </routers>        
+    </frontend>  
     <default>
         <synerise_integration>
             <opengraph>

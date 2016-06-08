@@ -11,3 +11,7 @@
 "Tracking code was updated successfully", "Pomyślnie zaktualizowano kod śledzący"
 "Error: No API response", "Wystąpił Błąd. Nie otrzymano odpowiedzi API."
 "Open graph tags are mandatory. Disable only if you are using another implementation.","Tagi Open Graph są wymagane. Wyłacz tylko, jeśli korzystasz z innej implementacji."
+"Missing cart arguments.","Brakujące parametry."
+"Missing Api Key.","Brakujący klucz Api."
+"Invalid form key.","Brakujący klucz formularza."
+"All Items are already in cart.","Wszystkie przedmioty znajdują się już w koszyku."
