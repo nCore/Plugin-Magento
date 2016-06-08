@@ -32,7 +32,7 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
         }
         $skuArray = array_diff($skuArray, $currentItems);   
         
-        if(!empty($skuArray)) {
+        if(empty($skuArray)) {
             $this->_getSession()->addNotice($this->__('All Items are already in cart.'));
             $this->_redirect('checkout/cart');                
             return;
