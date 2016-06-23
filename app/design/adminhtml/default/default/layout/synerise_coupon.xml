@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_promo_quote_index>
+        <reference name="promo_quote">
+            <action method="addButton">
+                <id>add_synerise_rule</id>
+                <data>
+                    <label>Import Synerise Rules</label>
+                    <class>scalable add</class>
+                    <onclick>setLocation(add_synerise_rule_url)</onclick>
+                </data>
+            </action>                            
+        </reference>
+        <reference name="content">
+            <block type="adminhtml/template" name="add_synerise_rule_url" template="synerise/coupon/add_synerise_rule_url.phtml" />
+        </reference>        
+    </adminhtml_promo_quote_index>
+</layout>

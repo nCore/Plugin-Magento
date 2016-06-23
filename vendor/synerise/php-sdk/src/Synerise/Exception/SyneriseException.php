@@ -12,4 +12,5 @@ class SyneriseException extends \RuntimeException
 
     const UNKNOWN_ERROR = -1;
     const API_RESPONSE_ERROR = 500;
+    const API_RESPONSE_INVALID = 30000;
 }

@@ -5,6 +5,7 @@ use Synerise\Exception\SyneriseException;
 use Synerise\Producers\Client;
 use Synerise\Producers\Event;
 use GuzzleHttp\Pool;
+use GuzzleHttp\Collection;
 use GuzzleHttp\Ring\Client\MockHandler;
 use GuzzleHttp\Subscriber\History;
 use Synerise\Consumer\ForkCurlHandler;
@@ -36,7 +37,13 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
                 $this->_log($response, "Coupon");
                 $class = 'GuzzleHttp\\Message\\Response';
                 if ($response instanceof $class && $response->getStatusCode() == '200') {
-                    $this->_cache[$token] = new Response\Coupon($response->json());
+                    $json = $response->json();
+                    // $response['code'];
+                    if (isset($json['data']) && $json['data']['coupon']) {
+                        $coupon = new Response\Coupon($json['data']['coupon']);
+                        $coupon->setRedeemedAt($response['data']['redeemedAt']);
+                        $this->_cache[$token] = $coupon;
+                    }
                 } else {
                     throw new SyneriseException('API Synerise not responsed 200.', SyneriseException::API_RESPONSE_ERROR);
                 }
@@ -54,6 +61,46 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
 
     }
 
+    /**
+     * @return Coupons
+     * @throws SyneriseException
+     */
+    public function getCoupons()
+    {
+
+        try {
+            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/admin/coupons/');
+            $this->_log($request, "Coupons");
+            $response = $this->send($request);
+
+            $this->_log($response, "Coupons");
+            $class = 'GuzzleHttp\\Message\\Response';
+            if ($response instanceof $class && $response->getStatusCode() == '200') {
+                $collection = array();
+                $json = $response->json();
+                if(isset($json['data']) && isset($json['data']['coupons'])) {
+                    $collection = new \GuzzleHttp\Collection();
+                    foreach($json['data']['coupons'] as $key => $item) {
+                        $collection->add($key, new Response\Coupon($item));
+                    }
+                    return $collection;
+                } else {
+                    throw new SyneriseException('Missing "data" in API resonse.', SyneriseException::API_RESPONSE_INVALID);
+                }
+                die;
+                return new Response\Coupon($response->json());
+            } else {
+                throw new SyneriseException('API Synerise not responsed 200.', SyneriseException::API_RESPONSE_ERROR);
+            }
+
+            return false;
+
+        } catch (\Exception $e) {
+            $this->_log($e->getMessage(), "CouponERROR");
+            throw $e;
+        }
+
+    }
 
     /**
      * @param $token

@@ -70,28 +70,19 @@ class Coupon
      */
     private $_additionalDescription;
 
-    public function __construct($response)
+    public function __construct($coupon)
     {
-
-        $this->_status = $response['code'];
-
-        if (isset($response['data'])) {
-            $coupon = $response['data']['coupon'];
-            $this->_name = $coupon['name'];
-            $this->_uuid = $coupon['uuid'];
-            $this->_discount = $coupon['discount'];
-            $this->_type = $coupon['type'];
-            $this->_value = $coupon['value'];
-            $this->_start = $coupon['start'];
-            $this->_expiration = $coupon['expiration'];
-            $this->_description = $coupon['description'];
-            $this->_additionalDescription = $coupon['additionalDescription'];
-            $this->_redeemedAt = !empty($response['data']['redeemedAt']) && is_numeric($response['data']['redeemedAt']) ? true : false;
-        };
-
-
+        $this->_name = isset($coupon['name']) ? $coupon['name'] : null;
+        $this->_uuid = isset($coupon['uuid']) ? $coupon['uuid'] : null;
+        $this->_discount = isset($coupon['discount']) ? $coupon['discount'] : null;
+        $this->_type = isset($coupon['type']) ? $coupon['type'] : null;
+        $this->_value = isset($coupon['value']) ? $coupon['value'] : null;
+        $this->_start = isset($coupon['start']) ? $coupon['start'] : null;
+        $this->_expiration = isset($coupon['expiration']) ? $coupon['expiration'] : null;
+        $this->_description = isset($coupon['description']) ? $coupon['description'] : null;
+        $this->_additionalDescription = isset($coupon['additionalDescription']) ? $coupon['additionalDescription'] : null;
+        $this->_redeemedAt = null;
     }
-
 
     /**
      * Coupon can be used
@@ -168,5 +159,15 @@ class Coupon
     public function getExpiration()
     {
         return $this->_expiration;
+    }
+
+    public function getRedeemedAt()
+    {
+        return $this->_redeemedAt;
+    }
+
+    public function setRedeemedAt($redeemedAt)
+    {
+        $this->_redeemedAt = !empty($redeemedAt) && is_numeric($redeemedAt) ? true : false;
     }
 }

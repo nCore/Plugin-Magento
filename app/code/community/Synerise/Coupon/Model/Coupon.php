@@ -36,10 +36,11 @@ class Synerise_Coupon_Model_Coupon
      */
     public function fixCouponRuleRelation() 
     {
-        $this->_updatePromoRule();
-
+        $syneriseCoupon = $this->_getSyneriseCoupon(); 
         $mageCoupon = $this->_getMageCoupon();        
         $rule = $this->_getMageRule();
+        
+        $this->_updatePromoRule($rule,$syneriseCoupon);        
         
         // no changes
         if($mageCoupon->getRuleId() == $rule->getId() && $rule->getId() && !$rule->hasDataChanges()) {
@@ -158,15 +159,23 @@ class Synerise_Coupon_Model_Coupon
         return $this->_syneriseCoupon;
     }
     
+    /*
+     * get synerise coupon
+     * 
+     * @return \Synerise\Response\Coupon
+     */
+    protected function _getSyneriseCoupons()
+    {
+        $syneriseCouponInstance = $this->_getSyneriseCouponInstance();
+        return $syneriseCouponInstance->getCoupons();
+    }
+    
     protected function _getSyneriseCouponInstance() 
     {
         return $this->_syneriseCouponInstance;
     }
 
-    protected function _updatePromoRule() {
-        $syneriseCoupon = $this->_getSyneriseCoupon(); 
-        // load or create
-        $rule = $this->_getMageRule();
+    protected function _updatePromoRule($rule,$syneriseCoupon) {
 
         if(!isset($this->_allowedValues[$syneriseCoupon->getDiscount()])) {
             throw new Exception($syneriseCoupon->getName() . 'invalid rule action: ' . $syneriseCoupon->getDiscount());
@@ -276,6 +285,16 @@ class Synerise_Coupon_Model_Coupon
         }
         return false;
     }    
+    
+    public function importAllCoupons()
+    {
+        $coupons = $this->_getSyneriseCoupons();
+        foreach($coupons as $coupon) {
+            $rule = Mage::getModel('salesrule/rule')->load($coupon->getUuid(),'synerise_uuid');
+            $this->_updatePromoRule($rule,$coupon);
+        }
+        return count($coupons);
+    }
     
     /*
      * Check if coupon exists & is bound with synerise rule

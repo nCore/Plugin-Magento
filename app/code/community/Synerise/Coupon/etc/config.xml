@@ -61,6 +61,26 @@
             </connection>
         </resources>        
     </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <synerise_coupon>
+                    <file>synerise_coupon.xml</file>
+                </synerise_coupon>
+            </updates>
+        </layout>        
+    </adminhtml>
+    <admin>
+        <routers>
+            <synerise_coupon>
+                <use>admin</use>
+                <args>
+                    <module>Synerise_Coupon</module>
+                    <frontName>synerise_coupon</frontName>
+                </args>
+            </synerise_coupon>
+        </routers>
+    </admin>    
     <default>
         <synerise_coupon>
             <general>
