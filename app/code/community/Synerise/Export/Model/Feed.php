@@ -2,14 +2,16 @@
 class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract 
 {
     
-    protected function getConfig() {
-        return Mage::getModel('synerise_export/config');
-    }    
-    
-    public function _construct()
+    protected function _construct()
     {
+        $this->setVersion('2');
         ini_set('max_execution_time', 0);
         require_once(Mage::getBaseDir('lib').'/Synerise/simple_xml_extended.php');        
+    }
+    
+    protected function getConfig() 
+    {
+        return Mage::getModel('synerise_export/config');
     }
     
     public function generateFeeds($storeId)
@@ -23,7 +25,7 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
     {
             // catalog xml
             $catalog = Mage::getSingleton('synerise_export/category')->getCatalogData($storeId);
-            $catalogXml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1" />');
+            $catalogXml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="'.$this->getVersion().'" />');
             $this->getArray2Xml($catalog, $catalogXml);  
             
             $filename = $this->getConfig()->getCatalogFileName($storeId, true);
@@ -106,7 +108,11 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
                     $this->getArray2Xml($value, $xml_user_info);
                 }
             } else {  
-                $xml_user_info->addAttribute($key,$value);
+                if(!is_numeric($key)) {
+                    $xml_user_info->addAttribute($key,$value);
+                } else {
+                    $xml_user_info->addCData($value);
+                }
             }
         }
     }          

@@ -13,7 +13,7 @@ class Synerise_Export_Model_Adminhtml_System_Config_Backend_Export_Cron extends 
         $frequencyWeekly    = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
         $frequencyMonthly   = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY;        
         
-        $cronExprString = join(' ', $cronExprArray);
+        $cronExprString = '';
         if ($enabled) {
             $cronDayOfWeek = date('N');
             $cronExprArray = array(
@@ -24,10 +24,7 @@ class Synerise_Export_Model_Adminhtml_System_Config_Backend_Export_Cron extends 
                 ($frequncy == $frequencyWeekly) ? '1' : '*',        # Day of the Week
             );
             $cronExprString = join(' ', $cronExprArray);
-        }
-        else {
-            $cronExprString = '';
-        }        
+        }    
         
         try {
             Mage::getModel('core/config_data')->load(self::CRON_MODEL_PATH, 'path')->setValue($cronExprString)->setPath(self::CRON_MODEL_PATH)->save();
