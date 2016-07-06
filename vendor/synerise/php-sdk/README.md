@@ -11,7 +11,7 @@ You can get the library using Composer by including the following in your projec
 ```json
 {
     "require": {
-        "synerise/php-sdk": "2.0.1"
+        "synerise/php-sdk": "2.1.0"
     }
 }
 ```
@@ -26,7 +26,7 @@ require 'vendor/autoload.php';
 
 $snr = Synerise\SyneriseTracker::getInstance([
 	'apiKey'=>'b43c7c2c-ee52-4051-afa8-073e9c9c5f84',
-	'apiVersion'=>'2.0.1',
+	'apiVersion'=>'2.1.0',
 	'allowFork'=>true,
 	]);
 
@@ -44,9 +44,9 @@ $snr->transaction->addProduct(
 	'$sku'=>"ABCD44DFK-W21",
 	'$producer'=>"Mai Piu Senza",
 	'$name'=>"High heeled boots - nero",
-	'$regularPrice'=>129.99, 
+	'$regularPrice'=>129.99,
 	'$discountPrice'=>99.99, // If product has been sold in discount price
-	'$currency'=>"EUR", 
+	'$currency'=>"EUR",
 	'$quantity'=>1,
 	'$discountCode'=>"WL2016",
 	'$location'=>"eCommerce",
@@ -62,9 +62,9 @@ $snr->transaction->removeProduct(
 	'$sku'=>"ABCD44DFK-W21",
 	'$producer'=>"Mai Piu Senza",
 	'$name'=>"High heeled boots - nero",
-	'$regularPrice'=>129.99, 
+	'$regularPrice'=>129.99,
 	'$discountPrice'=>99.99, // If product has been sold in discount price
-	'$currency'=>"EUR", 
+	'$currency'=>"EUR",
 	'$quantity'=>1,
 	'$discountCode'=>"WL2016",
 	'$location'=>"eCommerce",
@@ -90,7 +90,7 @@ $snr->transaction->charge(array(
 			'$sku'=>"ABCD44DFK-W21",
 			'$producer'=>"Mai Piu Senza",
 			'$name'=>"High heeled boots - nero",
-			'$regularPrice'=>129.99, 
+			'$regularPrice'=>129.99,
 			'$discountPrice'=>99.99, // If product has been sold in discount price
 			'$currency'=>"EUR",
 			'$quantity'=>1,
@@ -103,7 +103,7 @@ $snr->transaction->charge(array(
 			'$sku'=>"ABCD44DFK-W21",
 			'$producer'=>"Mai Piu Senza",
 			'$name'=>"High heeled boots - nero",
-			'$regularPrice'=>129.99, 
+			'$regularPrice'=>129.99,
 			'$discountPrice'=>99.99, // If product has been sold in discount price
 			'$currency'=>"EUR",
 			'$quantity'=>1,

@@ -24,8 +24,8 @@ class Synerise_Integration_Model_Observer
 
             $this->snr = Synerise\SyneriseTracker::getInstance([ //@todo wynieść do helpera
                 'apiKey' => $this->apiKey,
-                'apiVersion' => '2.0.1',
-                'allowFork' => true
+                'apiVersion' => '2.1.0',
+                'allowFork' => (bool)Mage::getStoreConfig('synerise_integration/allowForkTracking/enable')
             ]);
 
             $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');

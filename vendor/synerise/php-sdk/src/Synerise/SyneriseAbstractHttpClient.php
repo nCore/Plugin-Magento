@@ -132,6 +132,25 @@ abstract class SyneriseAbstractHttpClient extends Client
         ];
     }
 
+    /**
+     * @return bool|string
+     */
+    protected function getUuid()
+    {
+
+        $snrsP = isset($_COOKIE['_snrs_p'])?$_COOKIE['_snrs_p']:false;
+        if ($snrsP) {
+            $snrsP = explode('&', $snrsP);
+            foreach ($snrsP as $snrs_part) {
+                if (strpos($snrs_part, 'uuid:') !== false) {
+                    return str_replace('uuid:', null, $snrs_part);
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function setPathLog($pathFile)
     {
         $this->_pathLog = $pathFile;

@@ -17,20 +17,25 @@ use Synerise\Response\Newsletter as SyneriseResponseNewsletter;
 class SyneriseNewsletter extends SyneriseAbstractHttpClient
 {
 
-    /**
-     * @param $token
-     * @return Coupon
-     * @throws SyneriseException
-     */
     public function subscribe($email, $additionalParams = array())
     {
 
         try {
+            $baseParams = array();
+            $baseParams['email'] = $email;
+            if(!empty($this->getUuid())){
+                $baseParams['uuid'] = $this->getUuid();
+            }
+
+            if(isset($additionalParams['sex'])) { //@todo
+                $baseParams['sex '] = $additionalParams['sex'];
+            }
+
             /**
              * @var Response
              */
             $request = $this->createRequest("PUT", SyneriseAbstractHttpClient::BASE_API_URL . "/client/subscribe",
-                array('body' => array_merge(array('email' => $email), $additionalParams))
+                array('body' => array_merge($baseParams, array('params' => $additionalParams)))
             );
 
             $this->_log($request, 'NEWSLETTER');
