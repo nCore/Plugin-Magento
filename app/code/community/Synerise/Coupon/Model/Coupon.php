@@ -10,14 +10,13 @@ class Synerise_Coupon_Model_Coupon
     );
     protected $_mageCoupon;
     protected $_mageRule;
+    protected $_syneriseActiveCoupon;
     protected $_syneriseCoupon;
     protected $_syneriseCouponInstance;
     protected $_ruleValidated;
 
     public function __construct()
     {
-
-
         $this->apiKey = Mage::getStoreConfig('synerise_integration/api/key');
         $this->_syneriseCouponInstance = Synerise\SyneriseCoupon::getInstance([
             'apiKey' => $this->apiKey,
@@ -34,16 +33,16 @@ class Synerise_Coupon_Model_Coupon
      * 
      * @return boolean false if no changes applied
      */
-    public function fixCouponRuleRelation() 
+    public function fixCouponRuleRelation()
     {
         $syneriseCoupon = $this->_getSyneriseCoupon(); 
         $mageCoupon = $this->_getMageCoupon();        
-        $rule = $this->_getMageRule();
-        
-        $this->_updatePromoRule($rule,$syneriseCoupon);        
+        $mageRule = $this->_getMageRule();
+
+        $this->_updatePromoRule($mageRule, $syneriseCoupon);        
         
         // no changes
-        if($mageCoupon->getRuleId() == $rule->getId() && $rule->getId() && !$rule->hasDataChanges()) {
+        if($mageCoupon->getRuleId() == $mageRule->getId() && $mageRule->getId() && !$mageRule->hasDataChanges()) {
             return false;
         }
         
@@ -64,27 +63,28 @@ class Synerise_Coupon_Model_Coupon
      */
     public function applyDiscount()
     {
-        $snrsCoupon = $this->_getSyneriseCoupon();
+        $activeCoupon = $this->_getSyneriseActiveCoupon();
 
         // coupon valid
-        if ($snrsCoupon->canUse()) {
-
-            // set discount amount
-            $discountAmount = $snrsCoupon->getValue();
-            $mageRule = $this->_getMageRule();
-            $mageRule->setDiscountAmount($discountAmount);           
-            return true;
-             
-        // coupon invalid (possibly redeemed)
-        } else {
-            //remove coupon code
-            $quote = Mage::getModel('checkout/cart')->getQuote();
-            if($quote->getId()) {
-                $quote
-                    ->setCouponCode('')              
-                    ->save(); 
+        if ($activeCoupon && $activeCoupon->canUse()) {
+            $coupon = $activeCoupon->getCoupon();
+            if($coupon && $coupon->getValue()) {
+                $mageRule = $this->_getMageRule();
+                if($mageRule) {
+                    // set discount amount
+                    $mageRule->setDiscountAmount($coupon->getValue());  
+                    $mageRule->setDiscountQty(null);  
+                    return true;
+                }
             }
-            return false;
+        }
+        
+        // coupon invalid (possibly redeemed), remove
+        $quote = Mage::getModel('checkout/cart')->getQuote();
+        if($quote->getId()) {
+            $quote
+                ->setCouponCode('')              
+                ->save(); 
         }
         return false;
     }
@@ -122,7 +122,7 @@ class Synerise_Coupon_Model_Coupon
     protected function _getMageCoupon($force = false)
     {
         if($force || !$this->_mageCoupon instanceof Mage_SalesRule_Model_Coupon) {
-            $this->_mageCoupon = Mage::getModel('salesrule/coupon')->load($this->_couponCode, 'code');          
+            $this->_mageCoupon = Mage::getModel('salesrule/coupon')->load($this->_couponCode, 'code');
         }
         return $this->_mageCoupon;
     }
@@ -135,8 +135,18 @@ class Synerise_Coupon_Model_Coupon
     protected function _getMageRule($force = false)
     {
         if($force || !$this->_mageRule instanceof Mage_SalesRule_Model_Rule) {
-            $syneriseCoupon = $this->_getSyneriseCoupon();
-            $this->_mageRule = Mage::getModel('salesrule/rule')->load($syneriseCoupon->getUuid(),'synerise_uuid');
+            
+            // get coupon if exists
+            $mageCoupon = $this->_getMageCoupon();
+            if($mageCoupon && $mageCoupon->getRuleId()) {
+                $this->_mageRule = Mage::getModel('salesrule/rule')->load($mageCoupon->getRuleId());
+            } else {
+                // load by coupon uuid
+                $syneriseCoupon = $this->_getSyneriseCoupon();
+                if($syneriseCoupon && $syneriseCoupon->getUuid()) {
+                    $this->_mageRule = Mage::getModel('salesrule/rule')->load($syneriseCoupon->getUuid(),'synerise_uuid');
+                }
+            }
         }
         return $this->_mageRule;
     }
@@ -144,16 +154,33 @@ class Synerise_Coupon_Model_Coupon
     /*
      * get synerise coupon
      * 
-     * @return \Synerise\Response\Coupon
+     * @return \Synerise\Response\ActiveCoupon
      */
     protected function _getSyneriseCoupon($force = false)
     {
-        $couponCode = $this->_couponCode;
-
         $class = "\\Synerise\\Response\\Coupon";
         if($force || !$this->_syneriseCoupon instanceof $class) {
-            $syneriseCouponInstance = $this->_getSyneriseCouponInstance();
-            $this->_syneriseCoupon = $syneriseCouponInstance->getCoupon($couponCode);
+            if($this->_couponCode) {
+                // get coupon data form activeCoupon
+                $activeCoupon = $this->_getSyneriseActiveCoupon();
+                $this->_syneriseCoupon = $activeCoupon ? $activeCoupon->getCoupon() : null;
+            }
+        }
+
+        return $this->_syneriseCoupon;
+    }
+    
+    /*
+     * get synerise Active coupon
+     * 
+     * @return \Synerise\Response\ActiveCoupon
+     */
+    protected function _getSyneriseActiveCoupon($force = false)
+    {
+        $class = "\\Synerise\\Response\\ActiveCoupon";
+        if($force || !$this->_syneriseCoupon instanceof $class) {
+            $this->_syneriseCoupon = $this->_getSyneriseCouponInstance()
+                    ->getActiveCoupon($this->_couponCode);
         }
 
         return $this->_syneriseCoupon;
@@ -179,7 +206,7 @@ class Synerise_Coupon_Model_Coupon
 
         if(!isset($this->_allowedValues[$syneriseCoupon->getDiscount()])) {
             throw new Exception($syneriseCoupon->getName() . 'invalid rule action: ' . $syneriseCoupon->getDiscount());
-        } 
+        }
         
         // prepare data
         $name = '[synerise] '.$syneriseCoupon->getName();
@@ -226,9 +253,7 @@ class Synerise_Coupon_Model_Coupon
 
         // update or create
         $rule->setName($name)
-            ->setDescription('This rule is used by Synerise Coupon module. Please edit responsibly.'
-                    .PHP_EOL. '--------------------------------------------------------------------'
-                    .PHP_EOL.$syneriseCoupon->getDescription())
+            ->setDescription($syneriseCoupon->getDescription())
             ->setSyneriseUuid($uuid)                
             ->setFromDate($fromDate)
             ->setToDate($toDate)
@@ -237,8 +262,8 @@ class Synerise_Coupon_Model_Coupon
             ->setCouponType(Mage_SalesRule_Model_Rule::COUPON_TYPE_SPECIFIC)
             ->setUseAutoGeneration(1)
             ->setUsesPerCustomer(0)
-            ->setDiscountAmount(0)
-            ->setDiscountStep(0);
+            ->setDiscountAmount(0);
+//            ->setDiscountStep(0);
 
         if($rule->hasDataChanges()) {
             $this->_rule = $rule;
@@ -311,9 +336,9 @@ class Synerise_Coupon_Model_Coupon
 
         // coupon exists
         $mageCoupon = $this->_getMageCoupon();
-        if($mageCoupon->getId()) {
+        if($mageCoupon && $mageCoupon->getId()) {
             $rule = $this->_getMageRule();
-
+            
             // non-synerise rule, continue
             if(!$this->isSyneriseRule($rule)) {
                 return false;
@@ -322,7 +347,7 @@ class Synerise_Coupon_Model_Coupon
         }
 
         // get synerise coupon
-        $syneriseCoupon = $this->_getSyneriseCoupon();
+        $syneriseCoupon = $this->_getSyneriseActiveCoupon();
 
         // coupon invalid, continue
         if (!$syneriseCoupon->canUse()) {
@@ -334,9 +359,14 @@ class Synerise_Coupon_Model_Coupon
     
     public function isSyneriseRule($rule) 
     {
+        if(!$rule || !$rule->getSyneriseUuid()) {
+            return false;
+        }
+        
         if(!preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i',$rule->getSyneriseUuid())) {
             return false;
         }
+        
         return true;
     }
     

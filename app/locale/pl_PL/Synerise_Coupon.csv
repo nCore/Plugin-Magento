@@ -1,0 +1,8 @@
+"Coupon","Kupon"
+"Price Rule created via Synerise Coupon module","Reguła cenowa dodana przez moduł Synerise"
+"<p>Some of the options are editable only via Synerise panel. Still, feel free to edit default <b>Websites</b> & <b>Customer Groups</b> settings.</p><p>Also, you can set additional <b>Conditions</b> & <b>Actions</b> to further define your Promo Rule.</p><p>Enjoy!</p>","<p>Edycja niektórych opcji możliwa jest wyłącznie w panelu Synerise. Zachęcamy natomiast do zarządzania ustawieniamia <b>Witryn</b> oraz <b>Grup użytkoników</b>.</p><p>Ponadto, możliwe jest dodatkowe określanie <b>Warunków</b> i <b>Operacji</b>.</p><p>Powodzenia!</p>"
+"Discount amount will be set dynamically based on Synerise Coupon settings.", "Wartość rabatu zostanie przypisana dynamicznie na podstawie ustawień kuponu w panelu Synerise."
+"Import Synerise Rules","Pobierz reguły Synerise"
+"Enable","Włącz"
+"Validate coupon code format", "Walidacja formatu kuponu"
+"Default coupon code format is 13 digits", "Domyślny format to 13 znaków"

@@ -7,7 +7,6 @@ class Synerise_Coupon_Model_Observer
      */
     public function controllerActionPredispatch()
     {
-
         if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
             return $this;
         }

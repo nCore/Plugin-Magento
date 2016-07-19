@@ -17,20 +17,21 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
     protected $_cache = array();
 
     /**
-     * @param $token
-     * @return Coupon
+     * Get activated coupon details
+     * 
+     * @param $code
+     * @return ActiveCoupon
      * @throws SyneriseException
      */
-    public function getCoupon($token)
+    public function getActiveCoupon($code)
     {
 
         try {
             /**
              * @var Response
              */
-            //$response = $this->get(SyneriseAbstractHttpClient::BASE_API_URL . '/coupons/active/' . $token);
-            if (!isset($this->_cache[$token])) {
-                $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/coupons/active/' . $token);
+            if (!isset($this->_cache[$code])) {
+                $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/coupons/active/' . $code);
                 $this->_log($request, "Coupon");
                 $response = $this->send($request);
 
@@ -38,20 +39,16 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
                 $class = 'GuzzleHttp\\Message\\Response';
                 if ($response instanceof $class && $response->getStatusCode() == '200') {
                     $json = $response->json();
-                    // $response['code'];
                     if (isset($json['data']) && $json['data']['coupon']) {
-                        $coupon = new Response\Coupon($json['data']['coupon']);
-                        $coupon->setRedeemedAt($response['data']['redeemedAt']);
-                        $this->_cache[$token] = $coupon;
+                        $activeCoupon = new Response\ActiveCoupon($json['data']);
+                        $this->_cache[$code] = $activeCoupon;
                     }
                 } else {
                     throw new SyneriseException('API Synerise not responsed 200.', SyneriseException::API_RESPONSE_ERROR);
                 }
-
-
             }
 
-            return $this->_cache[$token];
+            return isset($this->_cache[$code]) ? $this->_cache[$code] : new Response\ActiveCoupon();
 
 
         } catch (\Exception $e) {
@@ -103,22 +100,22 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
     }
 
     /**
-     * @param $token
+     * @param $code
      * @return void
      * @throws SyneriseException
      *         code: 20105 - Coupon.Use.AlreadyUsed
      *         code: -1 - Coupon.UnknownError
      *         code: 500 - HTTP error
      */
-    public function useCoupon($token)
+    public function useActiveCoupon($code)
     {
         try {
-            if (isset($this->_cache[$token])) {
-                unset($this->_cache[$token]);
+            if (isset($this->_cache[$code])) {
+                unset($this->_cache[$code]);
             }
 
-            $this->_log('USE '.$token, "Coupon");
-            $response = $this->post(SyneriseAbstractHttpClient::BASE_API_URL . "/coupons/active/$token/use");
+            $this->_log('USE '.$code, "Coupon");
+            $response = $this->post(SyneriseAbstractHttpClient::BASE_API_URL . "/coupons/active/$code/use");
             $this->_log($response, "Coupon");
             if ($response->getStatusCode() == '200') {
                 $responseArray = $response->json();

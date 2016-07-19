@@ -4,23 +4,12 @@ namespace Synerise\Response;
 class Coupon
 {
 
-    /**Ważność kuponu
-     * @var int
-     */
-    private $_status = false;
-
     /**
      *  Typ zniżki
      * @var string "percent", "cost"
      */
     private $_discount = null;
-
-    /**
-     *
-     * @var string
-     */
-    private $_redeemedAt = null;
-
+    
     /**
      * Wartość zniżki
      *
@@ -81,39 +70,6 @@ class Coupon
         $this->_expiration = isset($coupon['expiration']) ? $coupon['expiration'] : null;
         $this->_description = isset($coupon['description']) ? $coupon['description'] : null;
         $this->_additionalDescription = isset($coupon['additionalDescription']) ? $coupon['additionalDescription'] : null;
-        $this->_redeemedAt = null;
-    }
-
-    /**
-     * Coupon can be used
-     * @return bool
-     */
-    public function canUse()
-    {
-        return $this->_status == 1 && $this->_redeemedAt === false;
-    }
-
-    /**
-     * Coupon is active
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->_status == 1111; //@todo docelowo kupon jest aktywny ale nie spełnia warunków koszyka
-    }
-
-
-    public function getMessage()
-    { //@todo jeśli kupon jest aktwyny ale brakuje innych warunków aby go wykorzystać (pamiętać o różnych warunkach i o wersjach językowych, walutach).
-        if ($this->isActive()) {
-            return array(
-                'code' => 881,
-                'message' => '20',
-                'description' => 'Kup coś za 20zł aby móc użyć kuponu'
-            );
-        }
-
-        return;
     }
 
     public function getUuid()
@@ -159,15 +115,5 @@ class Coupon
     public function getExpiration()
     {
         return $this->_expiration;
-    }
-
-    public function getRedeemedAt()
-    {
-        return $this->_redeemedAt;
-    }
-
-    public function setRedeemedAt($redeemedAt)
-    {
-        $this->_redeemedAt = !empty($redeemedAt) && is_numeric($redeemedAt) ? true : false;
     }
 }

@@ -15,4 +15,9 @@
             <block type="adminhtml/template" name="add_synerise_rule_url" template="synerise/coupon/add_synerise_rule_url.phtml" />
         </reference>        
     </adminhtml_promo_quote_index>
+    <adminhtml_promo_quote_edit>
+        <reference name="left">
+            <block type="adminhtml/template" name="synerise_coupon_salesrulejs" template="synerise/coupon/salesrulejs.phtml" after="promo_quote_edit_jsinit"/>
+        </reference>    
+    </adminhtml_promo_quote_edit>
 </layout>

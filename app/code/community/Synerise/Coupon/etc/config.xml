@@ -68,7 +68,16 @@
                     <file>synerise_coupon.xml</file>
                 </synerise_coupon>
             </updates>
-        </layout>        
+        </layout>  
+        <translate>
+            <modules>
+                <Synerise_Coupon>
+                    <files>
+                        <default>Synerise_Coupon.csv</default>
+                    </files>
+                </Synerise_Coupon>
+            </modules>
+        </translate>              
     </adminhtml>
     <admin>
         <routers>

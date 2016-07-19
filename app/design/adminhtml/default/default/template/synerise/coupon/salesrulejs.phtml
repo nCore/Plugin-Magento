@@ -1,0 +1,48 @@
+<?php 
+$id = Mage::app()->getRequest()->getParam('id');
+$rule = Mage::getModel('salesrule/rule')->load($id);
+if($rule->getSyneriseUuid()):
+
+    $headMsg = 'Price Rule created via Synerise Coupon module'; 
+    $headStyle = "font-size:1.3em; margin:0.25em 0"; 
+    $infoMsg = '<p>Some of the options are editable only via Synerise panel. Still, feel free to edit default <b>Websites</b> & <b>Customer Groups</b> settings.</p>'
+        .'<p>Also, you can set additional <b>Conditions</b> & <b>Actions</b> to further define your Promo Rule.</p><p>Enjoy!</p>'; 
+    $logoUrl = Mage::getBaseUrl('media') . 'synerise/logo.jpg';
+    $infoStyle = "background: url('$logoUrl') no-repeat scroll -90px; "
+        . "border: 1px solid #CCCCCC; "
+        . "margin-bottom: 10px; "
+        . "padding: 10px 10px 10px 250px; "
+        . "min-height: 75px; "
+        . "color: #6f8992; ";
+    
+    $html = '<div style=\"'.$infoStyle.'\">'
+        . '<h2 style=\"'.$headStyle.'\">'.$this->__($headMsg).'</h2>'
+        . $this->__($infoMsg)
+        . '</div>';
+    
+    $valueMsg = 'Discount amount will be set dynamically based on Synerise Coupon settings.';
+?>
+<script type="text/javascript">
+//<![CDATA[
+function disableSyneriseValues() {
+    $$(".content-header").first().insert({ after: "<?php echo $html; ?>" });
+    $('promo_catalog_edit_tabs_coupons_section_content').select('.entry-edit').first().remove();
+    $("rule_discount_amount").insert({ after: "<p class=\"note\" id=\"note_uses_per_customer\"><span><?php echo $this->__($valueMsg); ?></span></p>" });
+    $('rule_name').disable();
+    $('rule_description').disable();
+    $('rule_is_active').disable();
+    $('rule_uses_per_coupon').disable();
+    $('rule_uses_per_customer').disable();
+    $('rule_from_date').disable();
+    $('rule_to_date').disable();
+    $('rule_coupon_type').disable();
+    $('rule_coupon_code').disable();
+    $('rule_use_auto_generation').disable();
+    $('rule_simple_action').disable();
+    $('rule_discount_amount').disable();
+//    $('rule_discount_amount').disable();
+}
+document.observe("dom:loaded", disableSyneriseValues);
+//]]>
+</script>
+<?php endif;

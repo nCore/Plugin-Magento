@@ -33,7 +33,7 @@
                         </enable>
                         <validate_format translate="label,comment">
                             <label>Validate coupon code format</label>
-                            <comment>Default coupon code format is 10 digits</comment>
+                            <comment>Default coupon code format is 13 digits</comment>
                             <frontend_type>select</frontend_type>                        
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
