@@ -12,23 +12,32 @@ class Synerise_Coupon_Model_Observer
         }
         
         $couponCode = $this->_getRequest()->getParam('coupon_code');
-        if($this->_getRequest()->getActionName() == 'couponPost' && $couponCode) {
+        if($this->_getRequest()->getActionName() != 'couponPost' || !$couponCode) {
+            return $this;
+        }
             
-            $coupon = Mage::getModel('synerise_coupon/coupon');            
+        $coupon = Mage::getModel('synerise_coupon/coupon');                            
+
+        try {            
+
             $coupon->setCouponCode($couponCode);
-            
+
             // if coupon defined in synerise, try to bind it with rule
             if($coupon->isSyneriseCoupon()) {
                 $coupon->fixCouponRuleRelation(); 
             } // else proceed as magento regular coupon         
+
+        } catch (Exception $e) {
+            $coupon->log($couponCode.' '.$e->getMessage());
         }
+        
         return $this;
     }
     
     /*
      * Set discount amount
      */
-    public function salesruleRuleLoadAfter($event) 
+    public function salesruleRuleLoadAfter($event)
     {
         if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
             return $this;
@@ -48,26 +57,35 @@ class Synerise_Coupon_Model_Observer
         $rule = $event->getData('rule');
         
         $coupon = Mage::getModel('synerise_coupon/coupon');            
-        $coupon->setCouponCode($couponCode);        
-        $coupon->setRule($rule);        
-
-        // non-synerise rule, continue
-        if(!$coupon->isSyneriseRule($rule)) {
-            return $this;
-        }
-
-        if($this->_getRequest()->getActionName() != 'couponPost' && $couponCode) {
-            // fix rule binding if necessary
-            $updated = $coupon->fixCouponRuleRelation();
-            if($updated) {
-                // redirect back to cart (totals need to be recalculated)
-                $this->_goBack();            
-            }
-        }
         
-        if(!$coupon->applyDiscount()) {
-            $this->_getSession()->addError(Mage::helper('synerise_coupon')->__('Cannot apply the coupon code.'));
-            // redirect back to cart (totals need to be recalculated)
+        try {           
+            $coupon->setCouponCode($couponCode);        
+            $coupon->setRule($rule);        
+
+            // non-synerise rule, continue
+            if(!$coupon->isSyneriseRule($rule)) {
+                return $this;
+            }
+
+            if($this->_getRequest()->getActionName() != 'couponPost' && $couponCode) {
+                // fix rule binding if necessary
+                $updated = $coupon->fixCouponRuleRelation();
+                if($updated) {
+                    // redirect back to cart (totals need to be recalculated)
+                    $this->_goBack();            
+                }
+            }
+        
+            if(!$coupon->applyDiscount()) {
+                $this->_getSession()->addError(Mage::helper('synerise_coupon')->__('Cannot apply the coupon code.'));
+                // redirect back to cart (totals need to be recalculated)
+                $this->_goBack();
+            }
+     
+        } catch (Exception $e) {
+            $coupon->log($couponCode.' '.$e->getMessage());   
+            $coupon->removeQuoteCouponCode();
+            $this->_getSession()->addError(Mage::helper('synerise_coupon')->__('There was an error applying your coupon code. Please try again in a little while.'));
             $this->_goBack();
         }
         
@@ -95,20 +113,23 @@ class Synerise_Coupon_Model_Observer
         if(!$couponCode) {
             return $this;
         }
-
-        $coupon = Mage::getModel('synerise_coupon/coupon');            
-        $coupon->setCouponCode($couponCode);   
         
-        // non-synerise coupon, continue        
-        if(!$coupon->isSyneriseCoupon()) {
-            return $this;
-        }
+        $coupon = Mage::getModel('synerise_coupon/coupon');
         
         try {
+            
+            $coupon->setCouponCode($couponCode);   
+
+            // non-synerise coupon, continue        
+            if(!$coupon->isSyneriseCoupon()) {
+                return $this;
+            }
+
             $coupon->useCoupon();
+            
         } catch (Exception $e) {
             $coupon->log($order->getIncrementId().' '.$couponCode.' '.$e->getMessage());            
-        }        
+        }
         
         return $this;
     }        

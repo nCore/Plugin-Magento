@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Coupon>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Synerise_Coupon>
     </modules> 
     <global>
@@ -90,6 +90,17 @@
             </synerise_coupon>
         </routers>
     </admin>    
+    <frontend>
+        <translate>
+            <modules>
+                <Synerise_Coupon>
+                    <files>
+                        <default>Synerise_Coupon.csv</default>
+                    </files>
+                </Synerise_Coupon>
+            </modules>
+        </translate>           
+    </frontend>
     <default>
         <synerise_coupon>
             <general>

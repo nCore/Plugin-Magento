@@ -79,6 +79,13 @@ class Synerise_Coupon_Model_Coupon
             }
         }
         
+        $this->removeQuoteCouponCode();
+
+        return false;
+    }
+    
+    public function removeQuoteCouponCode()
+    {
         // coupon invalid (possibly redeemed), remove
         $quote = Mage::getModel('checkout/cart')->getQuote();
         if($quote->getId()) {
@@ -86,7 +93,6 @@ class Synerise_Coupon_Model_Coupon
                 ->setCouponCode('')              
                 ->save(); 
         }
-        return false;
     }
     
     /*
@@ -230,20 +236,21 @@ class Synerise_Coupon_Model_Coupon
                 ->setActionsSerialized('');
         }
         
+        $usesPerCoupon = 0;
         // "one_time", "multiple_time", "unlimited_use"
-        switch($syneriseCoupon->getType()):
-            case 'unlimited_use':
-                $usesPerCoupon = 0;
-                break;
-            case 'multiple_time':
-                $usesPerCoupon = 0;
-                break;    
-            case 'one_time':
-                $usesPerCoupon = 1;
-                break;
-            default:
-                $usesPerCoupon = 1;
-        endswitch;
+//        switch($syneriseCoupon->getType()):
+//            case 'unlimited_use':
+//                $usesPerCoupon = 0;
+//                break;
+//            case 'multiple_time':
+//                $usesPerCoupon = 0;
+//                break;    
+//            case 'one_time':
+//                $usesPerCoupon = 1;
+//                break;
+//            default:
+//                $usesPerCoupon = 1;
+//        endswitch;
         
         $dateTimestamp = Mage::getModel('core/date')->timestamp(strtotime($syneriseCoupon->getStart()));
         $fromDate = date('Y-m-d', $dateTimestamp);        
@@ -262,15 +269,17 @@ class Synerise_Coupon_Model_Coupon
             ->setCouponType(Mage_SalesRule_Model_Rule::COUPON_TYPE_SPECIFIC)
             ->setUseAutoGeneration(1)
             ->setUsesPerCustomer(0)
-            ->setDiscountAmount(0);
+            ->setDiscountAmount($syneriseCoupon->getValue())
+            ->setDiscountQty(null);          
 //            ->setDiscountStep(0);
 
+        // @todo save only on change
         if($rule->hasDataChanges()) {
             $this->_rule = $rule;
             $rule->save();
             return true;
         }
-            
+        
         return false;
     }
 
