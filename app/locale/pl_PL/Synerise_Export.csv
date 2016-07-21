@@ -39,3 +39,6 @@
 "Include all attributes visible on frontend","Dodaj wszystkie atrybuty widoczne w sklepie"
 "Disable to choose attributes directly","Wyłącz, aby ręcznie wybrać atrybuty"
 "Mapping of the additional attributes","Mapowanie dodatkowych atrybutów"
+"Product sort direction","Sortowanie produktów"
+"ascending","rosnąco"
+"descending","malejąco"
