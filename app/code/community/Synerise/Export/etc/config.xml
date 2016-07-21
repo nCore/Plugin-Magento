@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Export>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Synerise_Export>
     </modules>
     <global>
@@ -36,6 +36,7 @@
         <synerise_export>
             <attr_other>
                 <Producent>manufacturer</Producent>
+                <order_direction>asc</order_direction>
             </attr_other>
             <generate>
                     <enabled>0</enabled>				

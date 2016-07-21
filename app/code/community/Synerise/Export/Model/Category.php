@@ -48,12 +48,11 @@ class Synerise_Export_Model_Category extends Mage_Catalog_Model_Abstract {
     
     public function getDefaultSortDir(){
         if(!$this->defaultSortDir) {
-            // get product_list layout blocks
-            $layout = Mage::getSingleton('core/layout');
-            $layout->getUpdate()->load('catalog_category_layered');
-            $layout->generateXml()->generateBlocks();
-            $toolbarBlock = $layout->getBlock('product_list_toolbar');
-            $this->defaultSortDir = $toolbarBlock->getCurrentDirection();            
+            $dir = Mage::getStoreConfig('synerise_export/attr_other/order_direction');
+            if(!in_array($dir, array('asc','desc'))) {
+                $dir = 'asc';
+            }
+            $this->defaultSortDir = $dir;            
         }
         return $this->defaultSortDir;
     }
