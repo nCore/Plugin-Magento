@@ -134,6 +134,33 @@ class Synerise_Coupon_Model_Observer
         return $this;
     }        
     
+    /*
+     * exclude synerise from promo rules
+     */
+    public function coreCollectionAbstractLoadBefore($obsrerver) 
+    {
+        if(Mage::app()->getRequest()->getControllerName() == 'promo_quote') {
+            $collection = $obsrerver->getData('collection');
+            if(is_a($collection, 'Mage_SalesRule_Model_Resource_Rule_Collection')) {
+                $collection->addFieldToFilter('synerise_uuid', array('eq' => '' ));
+            }
+        }
+        return $this;
+    }
+
+    // change save action
+    public function coreBlockAbstractToHtmlBefore($obsrerver) 
+    {
+        $block = $obsrerver->getData('block');
+        if($block->getId() == 'promo_quote_form') {
+            $rule = Mage::registry('current_promo_quote_rule');
+            if($rule && $rule->getSyneriseUuid()) {
+                $block->setAction(Mage::helper('adminhtml')->getUrl('adminhtml/synerise_promo_quote/save'));                
+            }
+        }
+        return $this;
+    }
+    
     /**
      * Set back redirect url to response
      *

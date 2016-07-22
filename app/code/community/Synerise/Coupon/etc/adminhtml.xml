@@ -7,10 +7,21 @@
             <action>adminhtml/mgt</action>
             <children>
                 <synerise_coupon translate="title" module="synerise_coupon">
-                    <title>Coupon</title>
-                    <action>adminhtml/system_config/edit/section/synerise_coupon</action>                    
+                    <title>Coupon</title>                 
                     <sort_order>3000</sort_order>
-                </synerise_coupon>
+                    <children>
+                        <config translate="title" module="synerise_coupon">
+                            <title>Configuration</title>
+                            <action>adminhtml/system_config/edit/section/synerise_coupon/</action>
+                            <depends><module>Mage_Sales</module></depends>
+                        </config>
+                        <promo_quote translate="title" module="synerise_coupon">
+                            <title>Shopping Cart Price Rules</title>
+                            <action>adminhtml/synerise_promo_quote/index</action>
+                            <depends><module>Mage_Sales</module></depends>
+                        </promo_quote>
+                    </children>                    
+                </synerise_coupon>            
             </children>
         </synerise>
     </menu>    

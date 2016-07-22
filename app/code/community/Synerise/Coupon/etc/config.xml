@@ -48,7 +48,23 @@
                         <method>salesruleRuleLoadAfter</method>
                     </synerise_coupon>
                 </observers>
-            </salesrule_rule_load_after>            
+            </salesrule_rule_load_after>  
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <synerise_coupon>
+                        <class>synerise_coupon/observer</class>
+                        <method>coreBlockAbstractToHtmlBefore</method>
+                    </synerise_coupon>
+                </observers>
+            </core_block_abstract_to_html_before>
+            <core_collection_abstract_load_before>
+                <observers>
+                    <synerise_coupon>
+                        <class>synerise_coupon/observer</class>
+                        <method>coreCollectionAbstractLoadBefore</method>
+                    </synerise_coupon>
+                </observers>
+            </core_collection_abstract_load_before>
         </events>
         <resources>
             <synerise_coupon_setup>
@@ -81,13 +97,13 @@
     </adminhtml>
     <admin>
         <routers>
-            <synerise_coupon>
-                <use>admin</use>
-                <args>
-                    <module>Synerise_Coupon</module>
-                    <frontName>synerise_coupon</frontName>
+        <adminhtml>
+            <args>
+                <modules>
+                    <synerise_coupon after="Mage_Adminhtml">Synerise_Coupon</synerise_coupon>
+                </modules>
                 </args>
-            </synerise_coupon>
+         </adminhtml>
         </routers>
     </admin>    
     <frontend>

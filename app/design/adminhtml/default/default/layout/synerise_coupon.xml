@@ -1,23 +1,38 @@
 <?xml version="1.0"?>
 <layout>
-    <adminhtml_promo_quote_index>
-        <reference name="promo_quote">
-            <action method="addButton">
-                <id>add_synerise_rule</id>
-                <data>
-                    <label>Import Synerise Rules</label>
-                    <class>scalable add</class>
-                    <onclick>setLocation(add_synerise_rule_url)</onclick>
-                </data>
-            </action>                            
+    <!-- promo rules grid -->
+    <adminhtml_synerise_promo_quote_index>
+        <reference name="content">
+            <block type="synerise_coupon/promo_quote" name="promo_quote"></block>
+        </reference>
+    </adminhtml_synerise_promo_quote_index>    
+    <adminhtml_synerise_promo_quote_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+        </reference>
+        <reference name="left">
+            <block type="adminhtml/promo_quote_edit_tabs" name="promo_quote_edit_tabs">
+                <block type="adminhtml/promo_quote_edit_tab_main" name="promo_quote_edit_tab_main" />
+                <block type="adminhtml/promo_quote_edit_tab_conditions" name="promo_quote_edit_tab_conditions"/>
+                <block type="adminhtml/promo_quote_edit_tab_actions" name="promo_quote_edit_tab_actions"/>
+                <block type="adminhtml/promo_quote_edit_tab_labels" name="promo_quote_edit_tab_labels"/>
+                <block type="adminhtml/promo_quote_edit_tab_coupons" name="promo_quote_edit_tab_coupons">
+                    <block type="adminhtml/promo_quote_edit_tab_coupons_form" name="promo_quote_edit_tab_coupons_form"/>
+                    <block type="adminhtml/promo_quote_edit_tab_coupons_grid" name="promo_quote_edit_tab_coupons_grid"/>
+                </block>
+                <action method="addTab"><name>main_section</name><block>promo_quote_edit_tab_main</block></action>
+                <action method="addTab"><name>conditions_section</name><block>promo_quote_edit_tab_conditions</block></action>
+                <action method="addTab"><name>actions_section</name><block>promo_quote_edit_tab_actions</block></action>
+                <action method="addTab"><name>labels_section</name><block>promo_quote_edit_tab_labels</block></action>
+                <action method="addTab"><name>coupons_section</name><block>promo_quote_edit_tab_coupons</block></action>
+            </block>
+            <block type="adminhtml/template" template="promo/salesrulejs.phtml" name="promo_quote_edit_jsinit"/>
+            <!--disable inactive fields-->
+            <block type="adminhtml/template" name="synerise_coupon_salesrulejs" template="synerise/coupon/salesrulejs.phtml" after="promo_quote_edit_jsinit"/>            
         </reference>
         <reference name="content">
-            <block type="adminhtml/template" name="add_synerise_rule_url" template="synerise/coupon/add_synerise_rule_url.phtml" />
-        </reference>        
-    </adminhtml_promo_quote_index>
-    <adminhtml_promo_quote_edit>
-        <reference name="left">
-            <block type="adminhtml/template" name="synerise_coupon_salesrulejs" template="synerise/coupon/salesrulejs.phtml" after="promo_quote_edit_jsinit"/>
-        </reference>    
-    </adminhtml_promo_quote_edit>
+            <block type="synerise_coupon/promo_quote_edit" name="promo_quote_edit"></block>
+        </reference>
+    </adminhtml_synerise_promo_quote_edit>    
 </layout>
