@@ -215,7 +215,7 @@ class Synerise_Coupon_Model_Coupon
         }
         
         // prepare data
-        $name = '[synerise] '.$syneriseCoupon->getName();
+        $name = $syneriseCoupon->getName();
         $uuid = $syneriseCoupon->getUuid();
         $action = $this->_allowedValues[$syneriseCoupon->getDiscount()];        
         $customerGroupIds = Mage::getModel('customer/group')->getCollection()->getAllIds();
