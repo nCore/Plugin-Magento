@@ -95,6 +95,15 @@ class Synerise_Coupon_Model_Coupon
         }
     }
     
+    public function activateCoupon($couponUuid,$clientUuid)
+    {
+        /**
+         * @var $snrs Synerise\SyneriseCoupon
+         */
+        $snrs = $this->_getSyneriseCouponInstance();
+        $snrs->activateCoupon($couponUuid,$clientUuid);
+    }    
+    
     /*
      * mark coupon as used
      */
@@ -104,7 +113,7 @@ class Synerise_Coupon_Model_Coupon
          * @var $snrs Synerise\SyneriseCoupon
          */
         $snrs = $this->_getSyneriseCouponInstance();
-        $snrs->useCoupon($this->_couponCode);
+        $snrs->useActiveCoupon($this->_couponCode);
     }
     
     public function setCouponCode($couponCode)

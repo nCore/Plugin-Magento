@@ -138,4 +138,20 @@ class SyneriseCoupon extends SyneriseAbstractHttpClient
         }
     }
 
+    public function activateCoupon($couponUuid,$clientUuid)
+    {
+        try {
+
+            $response = $this->post(SyneriseAbstractHttpClient::BASE_API_URL . "/coupons/$couponUuid/activate?clientUuid=$clientUuid");
+            $this->_log($response, "Coupon");
+            if ($response->getStatusCode() != '200') {
+                throw new Exception\SyneriseException('API Synerise not responsed 200.', 500);
+            }
+
+        } catch (\Exception $e) {
+            $this->_log($e->getMessage(), "CouponERROR");
+            throw $e;
+        }
+    }
+
 }

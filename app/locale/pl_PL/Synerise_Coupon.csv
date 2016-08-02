@@ -8,6 +8,6 @@
 "Default coupon code format is 13 digits", "Domyślny format to 13 znaków"
 "<p>Basic options are editable only via <a href=\'https://app.synerise.com/coupons\' target=\'_blank\'>Synerise panel</a>.</p>","<p>Eycja podstawowych opcji możliwa jest wyłącznie przez <a href=\'https://app.synerise.com/coupons\' target=\'_blank\'>panel Synerise</a>.</p>"
 "<p>Feel free to further define your rule, by managing <b>Websites</b> & <b>Customer Groups</b>, as well as setting some custom <b>Conditions</b> & <b>Actions</b>.</p>","Tutaj możesz określić <b>Witryny</b> i <b>Grupy klientów</b>, a także dowolne <b>Warunki</b> i <b>Operacje</b>, aby doprecyzować zasady reguły.</p>"
-"<p><u>Note</u>: You can disable this rule locally by changing its status. Mind that deleting, won\'t stop it from being processed.</p><p>Enjoy!</p>","<p><u>Uwaga</u>: Usunięta reguła zostanie ponownie dodana, jeśli wciąż istnieje w Synerise. Możesz deaktywować ją lokalnie, zmieniając status na nieaktywny.</p>"
+"<p><u>Note</u>: You can disable this rule locally by changing its status. Mind that deleting, won\'t stop it from being processed.</p><p>Enjoy!</p>","<p><u>Uwaga</u>: Usunięta reguła zostanie ponownie dodana, jeśli wciąż istnieje w Synerise. Możesz deaktywować ją lokalnie zmieniając jej status.</p>"
 "There was an error applying your coupon code. Please try again in a little while.","Wystąpił problem podczas stosowania kuponu. Prosimy, spróbuj ponownie za chwilę."
 "Cannot apply the coupon code.","Nie można zastosować kodu z kuponu."

@@ -22,4 +22,9 @@ class Synerise_Coupon_Synerise_Promo_QuoteController extends Mage_Adminhtml_Prom
         ;
         return $this;
     }
+    
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin/synerise/synerise_coupon');
+    }
 }
