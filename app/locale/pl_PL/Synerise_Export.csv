@@ -1,3 +1,4 @@
+"Export","Eksport"
 "Add Mapping","Dodaj mapowanie"
 "An error occurred while deleting this mapping.","Wystąpił błąd podczas usuwania tego mapowania."
 "An error occurred while running this mapping.",'Wystąpił błąd w trakcie tego mapowania."
@@ -45,3 +46,4 @@
 "Manufacturer","Producent"
 "Manufacturer's code","Kod producenta"
 "Unique product identifier set by manufacturer","Unikalny kod produktu określony przez producenta"
+"Generated Feeds","Wygenerowane feedy"

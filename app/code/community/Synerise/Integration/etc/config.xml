@@ -13,15 +13,6 @@
                 </synerise_integration>
             </updates>
         </layout>
-        <translate>
-            <modules>
-                <synerise_integration>
-                    <files>
-                        <default>synerise_integration.csv</default>
-                    </files>
-                </synerise_integration>
-            </modules>
-        </translate>
     </frontend>  
     <global>
         <blocks>
@@ -195,13 +186,13 @@
     <adminhtml>          
         <translate>
             <modules>
-                <synerise_integration>
+                <Synerise_Integration>
                     <files>
-                        <default>synerise_integration.csv</default>
+                        <default>Synerise_Integration.csv</default>
                     </files>
-                </synerise_integration>
+                </Synerise_Integration>
             </modules>
-        </translate>      
+        </translate>  
     </adminhtml>  
     <frontend>
         <routers>

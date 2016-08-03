@@ -15,3 +15,7 @@
 "Missing Api Key.","Brakujący klucz Api."
 "Invalid form key.","Brakujący klucz formularza."
 "All Items are already in cart.","Wszystkie przedmioty znajdują się już w koszyku."
+"Tracking codes config","Konfiguracja trackingu"
+"Allow fork tracking","Zezwól na forkowanie"
+"Tracking events","Tracking zdarzeń"
+"Config product attr","Mapowanie atrybutów"
