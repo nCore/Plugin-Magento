@@ -62,42 +62,16 @@
                 </Synerise_Export>
             </modules>
         </translate>
-        <acl>
-            <resources>
-                <admin>
-                    <children>
-                        <system>
-                            <children>
-                                <config>
-                                    <children>
-                                        <synerise_export>
-                                            <title>Export Synerise</title>
-                                        </synerise_export>
-                                    </children>
-                                </config>
-                            </children>
-                        </system>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
-        <layout>
-            <updates>
-                <synerise_export>
-                    <file>synerise_export.xml</file>
-                </synerise_export>
-            </updates>
-        </layout>
     </adminhtml>
     <admin>
         <routers>
-            <synerise_export>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Synerise_Export</module>
-                    <frontName>synerise_export</frontName>
+                    <modules>
+                        <synerise_export after="Mage_Adminhtml">Synerise_Export_Adminhtml</synerise_export>
+                    </modules>
                 </args>
-            </synerise_export>
+             </adminhtml>
         </routers>
-    </admin>
+    </admin> 
 </config>

@@ -1,5 +1,6 @@
 <?php
-class Synerise_Export_Model_Adminhtml_System_Config_Backend_Export_Cron extends Mage_Core_Model_Config_Data {
+class Synerise_Export_Model_Adminhtml_System_Config_Backend_Export_Cron extends Mage_Core_Model_Config_Data 
+{
 
     const CRON_MODEL_PATH = 'synerise_export/generate/cron_schedule';
 

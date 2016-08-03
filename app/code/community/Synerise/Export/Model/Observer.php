@@ -6,6 +6,9 @@ class Synerise_Export_Model_Observer
         return Mage::getModel('synerise_export/config');
     }        
     
+    /*
+     * Executed by cron
+     */
     public function scheduledGenerateFeeds()
     {
         $storeIds = $this->getConfig()->getEnabledStoreIds(); 

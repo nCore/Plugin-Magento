@@ -18,20 +18,28 @@
         <resources>
             <admin>
                 <children>
-                    <catalog>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <synerise_export>
+                                        <title>Synerise Export</title>
+                                    </synerise_export>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <synerise translate="title" module="synerise_export">
+                        <title>Synerise</title>
+                        <sort_order>75</sort_order>
                         <children>
                             <synerise_export translate="title" module="synerise_export">
-                                <title>Export Synerise</title>
+                                <title>Export</title>
+                                <action>adminhtml/system_config/edit/section/synerise_export</action>
                                 <sort_order>280</sort_order>
-                                <children>
-                                    <feed_url translate="title" module="synerise_export">
-                                        <title>Feed URLs</title>
-                                        <sort_order>30</sort_order>
-                                    </feed_url>
-                                </children>
                             </synerise_export>
                         </children>
-                    </catalog>
+                    </synerise>                    
                 </children>
             </admin>
         </resources>

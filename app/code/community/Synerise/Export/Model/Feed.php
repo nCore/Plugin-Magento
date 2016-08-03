@@ -24,7 +24,7 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
     public function generateCatalogFeed($storeId)
     {
             // catalog xml
-            $catalog = Mage::getSingleton('synerise_export/category')->getCatalogData($storeId);
+            $catalog = Mage::getSingleton('synerise_export/feed_category')->getCatalogData($storeId);
             $catalogXml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="'.$this->getVersion().'" />');
             $this->getArray2Xml($catalog, $catalogXml);  
             
@@ -41,7 +41,7 @@ class Synerise_Export_Model_Feed extends Mage_Core_Model_Abstract
     public function generateOffersFeed($storeId) 
     {
             // offers xml
-            $offers = Mage::getSingleton('synerise_export/product')->getOffers($storeId);
+            $offers = Mage::getSingleton('synerise_export/feed_product')->getOffers($storeId);
             $xml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><offers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1" />');
             $count = 0;
             foreach ($offers as $group_name => $products) {

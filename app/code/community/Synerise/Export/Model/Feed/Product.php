@@ -1,6 +1,5 @@
 <?php
-
-class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
+class Synerise_Export_Model_Feed_Product extends Mage_Catalog_Model_Product {
 
     protected $_categoryPath;
     public $rootCategoryId;
@@ -16,11 +15,11 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
     }
     
     public function getStoreCategories() {
-        return Mage::getSingleton('synerise_export/category')->getStoreCategories();
+        return $this->getConfig()->getStoreCategories();
     }
     
     public function loadCategory($categoryId) {
-        $categories = $this->getStoreCategories();        
+        $categories = $this->getStoreCategories();
         if(!$categories || !$category = $categories->getItemById($categoryId)) {
             $category = Mage::getModel('catalog/category')->load($categoryId);
         }
@@ -43,22 +42,21 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
         return array_reverse($path);
     }
     
-    public function getOffers($storeId) {  
+    public function getOffers($storeId) {
         
         $store = $this->getConfig()->getStore();
         $conditions = $this->getConfig()->getCoreAttributesConditions();
         $mappings = $this->getConfig()->getAttributesMappings();
         $additional_attributes = array();
-        $_attribute = Mage::getModel('synerise_export/attribute');
         foreach ($mappings as $group) {
             foreach ($group as $mapping) {
                 if (!empty($mapping)) {
                     if (!in_array($mapping, $additional_attributes)) {
-                        $additional_attributes[$mapping] = $_attribute->getOptionsByCode($mapping);
+                        $additional_attributes[$mapping] = $this->getOptionsByCode($mapping);
                     }
                 }
             }
-        }        
+        }
         
         $product_collection = $this->getNonFlatProductCollection();
 
@@ -355,5 +353,16 @@ class Synerise_Export_Model_Product extends Mage_Catalog_Model_Product {
         }
         return $attributes;
     }
+    
+    public function getOptionsByCode($code) {
+        $attr = Mage::getModel('eav/config')->getAttribute('catalog_product', $code);
+        $options = $attr->getSource()->getAllOptions();
+        $res = array();
+        foreach ($options as $option) {
+            $res[$option['value']] = $option['label'];
+        }
+        unset($res['']);
+        return $res;
+    }    
 
 }

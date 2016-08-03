@@ -1,9 +1,9 @@
 <?php
-class Synerise_Export_Adminhtml_FeedController extends Mage_Adminhtml_Controller_Action 
+class Synerise_Export_Adminhtml_Synerise_Export_FeedController extends Mage_Adminhtml_Controller_Action 
 {
     protected function _getConfig() {
         return Mage::getModel('synerise_export/config');
-    }        
+    }
     
     public function generateAction()
     {
@@ -29,5 +29,10 @@ class Synerise_Export_Adminhtml_FeedController extends Mage_Adminhtml_Controller
         $this->_redirect('adminhtml/system_config/edit/section/synerise_export');        
         
     }
+    
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin/synerise/synerise_export');
+    }    
     
 }

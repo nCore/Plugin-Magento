@@ -1,15 +1,14 @@
 <?php
-class Synerise_Export_Model_Attribute extends Mage_Core_Model_Abstract {
+class Synerise_Export_Model_Adminhtml_System_Config_Source_Attribute 
+{
     
-    protected function _construct() {
-        $this->_init('synerise_export/attribute');
-    } 
-    
-    protected function getConfig() {
+    protected function getConfig() 
+    {
         return Mage::getModel('synerise_export/config');
     }
     
-    public function toOptionArray() {
+    public function toOptionArray() 
+    {
         $entity_type_id = $this->getEntityTypeId();
         if ($entity_type_id) {
             $attributes_collection = Mage::getModel('catalog/entity_attribute')->getCollection()
@@ -26,22 +25,12 @@ class Synerise_Export_Model_Attribute extends Mage_Core_Model_Abstract {
         return $res;
     }
     
-    protected function getEntityTypeId() {
+    protected function getEntityTypeId() 
+    {
         $collection = Mage::getModel('eav/entity_type')->getCollection()
                 ->addFieldToFilter('entity_type_code', 'catalog_product');
         $item = $collection->getFirstItem();
         return $item->getId();
-    }
-    
-    public function getOptionsByCode($code) {
-        $attr = Mage::getModel('eav/config')->getAttribute('catalog_product', $code);
-        $options = $attr->getSource()->getAllOptions();
-        $res = array();
-        foreach ($options as $option) {
-            $res[$option['value']] = $option['label'];
-        }
-        unset($res['']);
-        return $res;
     }
     
 }

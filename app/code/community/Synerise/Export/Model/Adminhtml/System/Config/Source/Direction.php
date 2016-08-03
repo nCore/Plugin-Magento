@@ -1,5 +1,5 @@
 <?php
-class Synerise_Export_Model_System_Config_Source_Order_Direction
+class Synerise_Export_Model_Adminhtml_System_Config_Source_Direction
 {
 	public function toOptionArray()
 	{

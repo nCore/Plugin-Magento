@@ -1,5 +1,8 @@
 <?php
-class Synerise_Export_Block_Adminhtml_System_Config_Form_Field_Feeds  extends Mage_Adminhtml_Block_Abstract implements Varien_Data_Form_Element_Renderer_Interface {
+class Synerise_Export_Block_Adminhtml_System_Config_Form_Field_Feeds
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface 
+{
 
     protected function getConfig() {
         return Mage::getModel('synerise_export/config');
@@ -7,11 +10,10 @@ class Synerise_Export_Block_Adminhtml_System_Config_Form_Field_Feeds  extends Ma
     
     public function render(Varien_Data_Form_Element_Abstract $element) 
     {   
-        
         $store_ids = $this->getConfig()->getEnabledStoreIds(); 		
         $html_feedlinks = '';
         foreach($store_ids as $storeId) {
-                $generate_url = $this->getUrl('synerise_export/adminhtml_feed/generate/' , array('store_id' => $storeId));
+                $generate_url = $this->getUrl('adminhtml/synerise_export_feed/generate/' , array('store_id' => $storeId));
                 $feed_text = Mage::getStoreConfig('synerise_export/generate/feed_result', $storeId);
                 if(empty($feed_text)) {
                         $feed_text = Mage::helper('synerise_export')->__('No active feed found');	
@@ -28,5 +30,5 @@ class Synerise_Export_Block_Adminhtml_System_Config_Form_Field_Feeds  extends Ma
         }
         return sprintf('<tr id="row_%s"><td colspan="6" class="label" style="margin-bottom: 10px;">%s</td></tr>', $element->getHtmlId(), $html_feedlinks);
     }
-    
+
 }

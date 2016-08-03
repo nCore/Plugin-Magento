@@ -4,6 +4,7 @@ class Synerise_Export_Model_Config extends Mage_Core_Model_Abstract {
     public $offersFileName = 'ceneo.xml';
     public $catalogFileName = 'catalog.xml';
     public $feedPath;
+    protected $_categories;
     
     public static $groups = array(
         'core' => array('avail', 'set', 'basket'),
@@ -11,15 +12,22 @@ class Synerise_Export_Model_Config extends Mage_Core_Model_Abstract {
     );
     
     const AVAIL_DEFAULT_VALUE = 99;
-
-    public function _construct() {
-        $this->_init('synerise_export/config');
-    }
     
     public function getEnabledStoreIds()
     {
         return explode(',',Mage::getStoreConfig('synerise_export/config/enabled_stores'));
-    }    
+    }
+    
+    public function getStoreCategories() {
+        if(empty($this->_categories)) {
+            $this->_categories = Mage::helper('catalog/category')->getStoreCategories(false,true,false);
+            $this->_categories
+                ->addAttributeToSelect('default_sort_by')                    
+                ->addAttributeToSelect('is_anchor')
+                ->setOrder('level');
+        }
+        return $this->_categories;
+    }
     
     public function isEnabled($storeId)
     {
@@ -46,7 +54,7 @@ class Synerise_Export_Model_Config extends Mage_Core_Model_Abstract {
     }
 
     public function getCatalogUrl($storeId = null) {
-        return Mage::getBaseUrl('media') . 'synerise/' . '/' . $this->getHash() . '/' . $storeId . '/' . $this->getCatalogFileName($storeId);
+        return Mage::getBaseUrl('media') . 'synerise/' . $this->getHash() . '/' . $storeId . '/' . $this->getCatalogFileName($storeId);
     }
     
     public function getOffersFileName($storeId = null, $getFullPath = false) {
@@ -58,7 +66,7 @@ class Synerise_Export_Model_Config extends Mage_Core_Model_Abstract {
     }
     
     public function getOffersUrl($storeId = null) {
-        return Mage::getBaseUrl('media') . 'synerise' . '/' . $this->getHash() . '/' . $storeId . '/' . $this->getOffersFileName($storeId);
+        return Mage::getBaseUrl('media') . 'synerise/' . $this->getHash() . '/' . $storeId . '/' . $this->getOffersFileName($storeId);
     }
     
     public function getGroups() {

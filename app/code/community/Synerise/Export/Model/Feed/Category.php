@@ -1,8 +1,7 @@
 <?php
 
-class Synerise_Export_Model_Category extends Mage_Catalog_Model_Abstract {
+class Synerise_Export_Model_Feed_Category extends Mage_Catalog_Model_Abstract {
 
-    protected $_categories;
     public $rootCategoryId;
     public $defaultSortDir;
     public $catalog = array();
@@ -11,9 +10,13 @@ class Synerise_Export_Model_Category extends Mage_Catalog_Model_Abstract {
         $this->rootCategoryId = Mage::app()->getStore()->getRootCategoryId();
     }
     
-    protected function _getConfig() {
+    protected function getConfig() {
         return Mage::getModel('synerise_export/config');
     }
+    
+    public function getStoreCategories() {
+        return $this->getConfig()->getStoreCategories();
+    }    
     
     protected function _addCategory($category)
     {
@@ -56,21 +59,9 @@ class Synerise_Export_Model_Category extends Mage_Catalog_Model_Abstract {
         }
         return $this->defaultSortDir;
     }
-    
-    public function getStoreCategories() {
-        if(empty($this->_categories)) {
-            $this->_categories = Mage::helper('catalog/category')->getStoreCategories(false,true,false);
-            $this->_categories
-                ->addAttributeToSelect('default_sort_by')                    
-                ->addAttributeToSelect('is_anchor')
-                ->setOrder('level');
-        }
-        return $this->_categories;
-    }
-    
 
     public function getCatalogData($storeId) {
-        $this->catalog['products']['xmlUrl'] = $this->_getConfig()->getOffersUrl($storeId);  
+        $this->catalog['products']['xmlUrl'] = $this->getConfig()->getOffersUrl($storeId);  
         foreach($this->getStoreCategories() as $category) {
             $this->getCatalogDataByCategory($category);
         }
