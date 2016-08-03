@@ -4,22 +4,36 @@ class Synerise_Coupon_Model_Observer
     
     /*
      * Bind valid coupon code with promo rule
-     */
-    public function controllerActionPredispatch()
+     */    
+    public function salesQuoteCollectTotalsBefore($event) 
     {
         if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
             return $this;
-        }
-        
-        $couponCode = $this->_getRequest()->getParam('coupon_code');
-        if($this->_getRequest()->getActionName() != 'couponPost' || !$couponCode) {
+        }        
+
+        if(!Mage::app()->getRequest()->getParam('coupon_code')) {
             return $this;
         }
+        
+        $quote = $event->getData('quote');
+        
+        if(!$quote || $quote->getCouponCode() != Mage::app()->getRequest()->getParam('coupon_code')) {
+            return $this;
+        }
+        
+        $couponCode = $quote->getCouponCode();
+
+        $coupon = Mage::getSingleton('synerise_coupon/coupon');  
+        
+        try {
             
-        $coupon = Mage::getModel('synerise_coupon/coupon');                            
+            Mage::log(Varien_Debug::backtrace(true, true),null,'synerise_coupon.log');
 
-        try {            
-
+            if($coupon->getCouponCode() == $couponCode) {
+                // coupon already checked, skip
+                return $this;
+            }
+            
             $coupon->setCouponCode($couponCode);
 
             // if coupon defined in synerise, try to bind it with rule
@@ -31,9 +45,9 @@ class Synerise_Coupon_Model_Observer
             $coupon->log($couponCode.' '.$e->getMessage());
         }
         
-        return $this;
+        return $this;        
     }
-    
+        
     /*
      * Set discount amount
      */
