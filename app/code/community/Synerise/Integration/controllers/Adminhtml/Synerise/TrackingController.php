@@ -29,4 +29,9 @@ class Synerise_Integration_Adminhtml_Synerise_TrackingController extends Mage_Ad
         $this->_redirect('*/system_config/edit', array('section'=>'synerise_integration'));
         return false;
     }
+    
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin/synerise/synerise_integration');
+    }
 }

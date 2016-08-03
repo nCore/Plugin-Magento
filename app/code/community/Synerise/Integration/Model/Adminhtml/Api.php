@@ -7,7 +7,7 @@ Class Synerise_Integration_Model_Adminhtml_Api extends Mage_Core_Model_Abstract 
 
      public function getTrackinCodeUrl()
     {
-        return Mage::helper('adminhtml')->getUrl('adminhtml/synerise_order/sendHistory');
+        return Mage::helper('adminhtml')->getUrl('adminhtml/synerise_tracking/get');
     }       
     
     public function getCommentText(){

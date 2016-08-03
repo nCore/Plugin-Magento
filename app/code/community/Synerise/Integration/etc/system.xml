@@ -25,8 +25,7 @@
                         <key translate="label,comment">
                             <label>API key</label>
                            <!-- <frontend_type>password</frontend_type>-->
-                            <comment>
-                                <![CDATA[You'll find your API key in <a href='https://app.synerise.com/setting/api' target='_blank'>profile settings</a> under API section.]]></comment>
+                            <comment><![CDATA[You'll find your API key in <a href='https://app.synerise.com/setting/api' target='_blank'>profile settings</a> under API section.]]></comment>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>

@@ -113,4 +113,9 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
         return false;
         
     }
+    
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin/synerise/synerise_integration');
+    }    
 }
