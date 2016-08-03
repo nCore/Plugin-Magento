@@ -51,8 +51,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <Producent translate="label,comment">
-                            <label>Producent</label>
-                            <comment>Producent danego produktu</comment>
+                            <label>Manufacturer</label>
                             <frontend_type>select</frontend_type>
                             <source_model>synerise_export/adminhtml_system_config_source_attribute</source_model>
                             <sort_order>1</sort_order>
@@ -61,8 +60,8 @@
                             <show_in_store>1</show_in_store>
                         </Producent>
                         <Kod_producenta translate="label,comment">
-                            <label>Kod_producenta</label>
-                            <comment>Kod nadawany przez producenta</comment>
+                            <label>Manufacturer's code</label>
+                            <comment>Unique product identifier set by manufacturer</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>synerise_export/adminhtml_system_config_source_attribute</source_model>
                             <sort_order>2</sort_order>
@@ -72,7 +71,6 @@
                         </Kod_producenta>
                         <EAN translate="label,comment">
                             <label>EAN</label>
-                            <comment>Kod paskowy występujący na produktach, opakowaniach</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>synerise_export/adminhtml_system_config_source_attribute</source_model>
                             <sort_order>3</sort_order>

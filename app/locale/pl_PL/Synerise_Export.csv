@@ -42,3 +42,6 @@
 "Product sort direction","Sortowanie produktów"
 "ascending","rosnąco"
 "descending","malejąco"
+"Manufacturer","Producent"
+"Manufacturer's code","Kod producenta"
+"Unique product identifier set by manufacturer","Unikalny kod produktu określony przez producenta"
