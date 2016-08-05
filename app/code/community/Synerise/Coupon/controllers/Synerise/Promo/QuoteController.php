@@ -5,8 +5,7 @@ class Synerise_Coupon_Synerise_Promo_QuoteController extends Mage_Adminhtml_Prom
 {
     public function addAction()
     {
-        $coupon = Mage::getModel('synerise_coupon/coupon');  
-        $updated = $coupon->importAllCoupons();
+        $updated = Mage::getModel('synerise_coupon/couponManager')->updateAllRules();
         
         Mage::getSingleton('adminhtml/session')->addSuccess(
             Mage::helper('synerise_coupon')->__('Total of %d record(s) were updated', $updated)                

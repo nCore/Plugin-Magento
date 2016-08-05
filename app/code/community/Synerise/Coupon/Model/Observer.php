@@ -3,123 +3,83 @@ class Synerise_Coupon_Model_Observer
 {
     
     /*
-     * Bind valid coupon code with promo rule
-     */    
-    public function salesQuoteCollectTotalsBefore($event) 
+     * Validate & apply synerise coupon
+     * Create/Update rule & bind coupon if coupon_code submited
+     */
+    public function salesQuoteCollectTotalsBefore($event)
     {
-        if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
-            return $this;
-        }        
-
-        if(!Mage::app()->getRequest()->getParam('coupon_code')) {
+        
+        /*
+         * Extension disabled
+         */
+        if(!Mage::getModel('synerise_coupon/couponManager')->isEnabled()) {
             return $this;
         }
-        
+
         $quote = $event->getData('quote');
         
-        if(!$quote || $quote->getCouponCode() != Mage::app()->getRequest()->getParam('coupon_code')) {
+        /*
+         * No quote, or no coupon code
+         */
+        if(!$quote || !$quote->getCouponCode()) {
             return $this;
         }
         
         $couponCode = $quote->getCouponCode();
 
-        $coupon = Mage::getSingleton('synerise_coupon/coupon');  
-        
+        $couponManager = Mage::getSingleton('synerise_coupon/couponManager');  
+
         try {
             
-            Mage::log(Varien_Debug::backtrace(true, true),null,'synerise_coupon.log');
-
-            if($coupon->getCouponCode() == $couponCode) {
-                // coupon already checked, skip
+            /*
+             * Coupon code already processed
+             */            
+            if($couponManager->getCouponCode() == $couponCode) {
                 return $this;
             }
             
-            $coupon->setCouponCode($couponCode);
-
-            // if coupon defined in synerise, try to bind it with rule
-            if($coupon->isSyneriseCoupon()) {
-                $coupon->fixCouponRuleRelation(); 
-            } // else proceed as magento regular coupon         
-
-        } catch (Exception $e) {
-            $coupon->log($couponCode.' '.$e->getMessage());
-        }
-        
-        return $this;        
-    }
-        
-    /*
-     * Set discount amount
-     */
-    public function salesruleRuleLoadAfter($event)
-    {
-        if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
-            return $this;
-        }
-
-        // skip in admin area
-        if (Mage::app()->getStore()->isAdmin()) {
-            return $this;
-        }
-
-        $couponCode = Mage::getModel('checkout/cart')->getQuote()->getCouponCode();
-        // skip if no code applied yet
-        if($couponCode == null) {
-            return $this;
-        }
-        
-        $rule = $event->getData('rule');
-        
-        $coupon = Mage::getModel('synerise_coupon/coupon');            
-        
-        try {           
-            $coupon->setCouponCode($couponCode);        
-            $coupon->setRule($rule);        
-
-            // non-synerise rule, continue
-            if(!$coupon->isSyneriseRule($rule)) {
+            $couponManager->setCouponCode($couponCode);
+            
+            if(!$couponManager->isSyneriseCoupon()) {
                 return $this;
             }
-
-            if($this->_getRequest()->getActionName() != 'couponPost' && $couponCode) {
-                // fix rule binding if necessary
-                $updated = $coupon->fixCouponRuleRelation();
-                if($updated) {
-                    // redirect back to cart (totals need to be recalculated)
-                    $this->_goBack();            
-                }
+            
+            /*
+             * Manage coupon & rule
+             */
+            if($this->_getRequest()->getParam('coupon_code')) {
+                $couponManager->updateCouponRuleRelation();
             }
-        
-            if(!$coupon->applyDiscount()) {
+            
+            /*
+             * Apply discount or remove code
+             */
+            if(!$couponManager->applyCoupon()) {
                 $this->_getSession()->addError(Mage::helper('synerise_coupon')->__('Cannot apply the coupon code.'));
                 // redirect back to cart (totals need to be recalculated)
                 $this->_goBack();
             }
-     
+            
         } catch (Exception $e) {
-            $coupon->log($couponCode.' '.$e->getMessage());   
-            $coupon->removeQuoteCouponCode();
-            $this->_getSession()->addError(Mage::helper('synerise_coupon')->__('There was an error applying your coupon code. Please try again in a little while.'));
-            $this->_goBack();
+            $couponManager->log($couponCode.' '.$e->getMessage());
         }
         
-        return $this;
+        return $this;        
     }
     
     /*
-     * Mark as used
+     * Use coupon
      */
     public function checkoutSubmitAllAfter($event) 
     {
-
-        if(!Mage::getModel('synerise_coupon/coupon')->isEnabled()) {
+        if(!Mage::getModel('synerise_coupon/couponManager')->isEnabled()) {
             return $this;
-        }        
+        }
         
         $order = $event->getData('order');
         if(!$order->getId()) {
             throw new Exception('No order');
-        }        
+        }
 
         $couponCode = $order->getCouponCode();
         
@@ -128,28 +88,28 @@ class Synerise_Coupon_Model_Observer
             return $this;
         }
         
-        $coupon = Mage::getModel('synerise_coupon/coupon');
+        $couponManager = Mage::getSingleton('synerise_coupon/couponManager');
         
         try {
             
-            $coupon->setCouponCode($couponCode);   
+            $couponManager->setCouponCode($couponCode);   
 
             // non-synerise coupon, continue        
-            if(!$coupon->isSyneriseCoupon()) {
+            if(!$couponManager->isSyneriseCoupon() || !$couponManager->canUseSyneriseCoupon()) {
                 return $this;
             }
 
-            $coupon->useCoupon();
+            $couponManager->useCoupon();
             
         } catch (Exception $e) {
-            $coupon->log($order->getIncrementId().' '.$couponCode.' '.$e->getMessage());            
+            $couponManager->log($order->getIncrementId().' '.$couponCode.' '.$e->getMessage());            
         }
         
         return $this;
     }        
     
     /*
-     * exclude synerise from promo rules
+     * Exclude synerise rules from deafult collection
      */
     public function coreCollectionAbstractLoadBefore($obsrerver) 
     {
@@ -162,7 +122,9 @@ class Synerise_Coupon_Model_Observer
         return $this;
     }
 
-    // change save action
+    /*
+     * Set Synerise promo_quote_form save action
+     */
     public function coreBlockAbstractToHtmlBefore($obsrerver) 
     {
         $block = $obsrerver->getData('block');
@@ -195,11 +157,6 @@ class Synerise_Coupon_Model_Observer
             exit;
         }
         return $this;
-    }
-	
-    protected function _getCart() 
-    {
-         return Mage::getModel('checkout/cart');
     }
 
     protected function _getRequest()

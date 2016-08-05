@@ -3,7 +3,7 @@
 "API key", "Klucz API"
 "Endpoint URL", "Adres API"
 "Tracking codes", "Kody śledzące"
-"You'll find your API key in <a href='https://app.synerise.com/setting/api' target='_blank'>profile settings</a> under API section.", "Klucz API znajdziesz w <a href='https://app.synerise.com/setting/api' target='_blank'>panelu Synerise</a> w ustawieniach profilu w sekcji API."
+"You'll find your API key in <a href='https://app.synerise.com/api' target='_blank'>profile settings</a> under API section.", "Klucz API znajdziesz w <a href='https://app.synerise.com/api' target='_blank'>panelu Synerise</a> w ustawieniach profilu w sekcji API."
 "Use default setting.", "Pozostaw wartość domyślną."
 "Get your tracking code automatically through API", "Pobierz kod automatycznie poprzez API"
 "Invalid endpoint url", "Nieprawidłowy adres API."

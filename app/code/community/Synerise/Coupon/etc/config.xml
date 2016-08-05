@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Coupon>
-            <version>1.0.3</version>
+            <version>1.1.0</version>
         </Synerise_Coupon>
     </modules> 
     <global>
@@ -22,6 +22,7 @@
             </synerise_coupon>
         </helpers>
         <events>
+            <!-- Validate & apply synerise coupon -->
             <sales_quote_collect_totals_before>
                 <observers>
                     <synerise_coupon>
@@ -31,6 +32,7 @@
                     </synerise_coupon>
                 </observers>
             </sales_quote_collect_totals_before>
+            <!-- Use coupon -->
             <sales_order_place_after>
                 <observers>
                     <synerise_coupon>
@@ -40,15 +42,7 @@
                     </synerise_coupon>
                 </observers>
             </sales_order_place_after>
-            <salesrule_rule_load_after>
-                <observers>
-                    <synerise_coupon>
-                        <type>singleton</type>
-                        <class>synerise_coupon/observer</class>
-                        <method>salesruleRuleLoadAfter</method>
-                    </synerise_coupon>
-                </observers>
-            </salesrule_rule_load_after>
+            <!-- Set Synerise promo_quote_form save action -->
             <core_block_abstract_to_html_before>
                 <observers>
                     <synerise_coupon>
@@ -57,6 +51,7 @@
                     </synerise_coupon>
                 </observers>
             </core_block_abstract_to_html_before>
+            <!-- Exclude synerise rules from deafult collection -->
             <core_collection_abstract_load_before>
                 <observers>
                     <synerise_coupon>
