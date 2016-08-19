@@ -18,6 +18,6 @@ class Synerise_Integration_Block_Tracking extends Mage_Core_Block_Template
     }
     
     public function getHost() {
-        return Mage::getStoreConfig('synerise_integration/api/sandbox') ? 'tc.stage.synerise.com' : 'tc.synerise.com';
+        return 'tc.synerise.com';
     }
 }

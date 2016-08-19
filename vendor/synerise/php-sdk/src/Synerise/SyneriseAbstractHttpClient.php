@@ -38,7 +38,7 @@ abstract class SyneriseAbstractHttpClient extends Client
 
     private static $_instances = array();
 
-    protected $_pathLog = '/var/log/synerise.log';
+    protected $_pathLog = './var/log/synerise.log';
 
     protected $_log = true;
 

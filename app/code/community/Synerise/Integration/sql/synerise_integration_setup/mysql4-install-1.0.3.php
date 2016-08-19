@@ -27,4 +27,4 @@ $setup->addAttribute('customer', 'synerise_send_at', array(
     'user_defined'   => 0,
 ));
     
-$installer->endSetup(); 
+$installer->endSetup();

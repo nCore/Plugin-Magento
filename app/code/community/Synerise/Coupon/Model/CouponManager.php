@@ -14,8 +14,7 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
     {
         $syneriseCouponInstance = Synerise\SyneriseCoupon::getInstance([
             'apiKey' => Mage::getStoreConfig('synerise_integration/api/key'),
-            'apiVersion' => '2.0',
-            'allowFork' => (bool) Mage::getStoreConfig('synerise_integration/allowForkTracking/enable')
+            'apiVersion' => '2.0'
         ]);
         $syneriseCouponInstance->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise_coupon.log');
         $syneriseCouponInstance->setDefaultOption('verify', false);

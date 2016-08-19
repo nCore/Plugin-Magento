@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Integration>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Synerise_Integration>
     </modules>
     <frontend>
@@ -210,9 +210,9 @@
             <opengraph>
                 <enable>1</enable>
             </opengraph>
-            <allowForkTracking>
-                <enable>1</enable>
-            </allowForkTracking>
+            <tracking>
+                <fork>1</fork>
+            </tracking>
         </synerise_integration>
     </default>
 

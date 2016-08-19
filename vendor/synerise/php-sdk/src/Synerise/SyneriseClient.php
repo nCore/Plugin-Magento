@@ -7,7 +7,6 @@ use Synerise\Producers\Event;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Ring\Client\MockHandler;
 use GuzzleHttp\Subscriber\History;
-use Synerise\Consumer\ForkCurlHandler;
 use GuzzleHttp\Message;
 
 class SyneriseClient extends SyneriseAbstractHttpClient
@@ -20,7 +19,7 @@ class SyneriseClient extends SyneriseAbstractHttpClient
         return $this->getClientByParameter(array('customIdentify' => $numberCard));
     }
 
-    public function getClientByParameter(array $filds)
+    public function getClientByParameter(array $fields)
     {
 
         try {
@@ -29,7 +28,7 @@ class SyneriseClient extends SyneriseAbstractHttpClient
              */
             //$response = $this->get(SyneriseAbstractHttpClient::BASE_API_URL . '/coupons/active/' . $token);
 
-            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/client/?' . http_build_query($filds));
+            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/client/?' . http_build_query($fields));
             $response = $this->send($request);
 
             return $response;

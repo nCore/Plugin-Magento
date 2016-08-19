@@ -8,7 +8,6 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Collection;
 use GuzzleHttp\Ring\Client\MockHandler;
 use GuzzleHttp\Subscriber\History;
-use Synerise\Consumer\ForkCurlHandler;
 use GuzzleHttp\Message;
 
 class SyneriseCoupon extends SyneriseAbstractHttpClient

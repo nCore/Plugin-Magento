@@ -8,7 +8,6 @@ use Synerise\Producers\Event;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Ring\Client\MockHandler;
 use GuzzleHttp\Subscriber\History;
-use Synerise\Consumer\ForkCurlHandler;
 use GuzzleHttp\Message;
 use GuzzleHttp\Message\Response;
 use Synerise\Response\Newsletter as SyneriseResponseNewsletter;
