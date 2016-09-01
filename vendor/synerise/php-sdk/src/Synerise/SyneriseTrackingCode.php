@@ -13,7 +13,7 @@ class SyneriseTrackingCode extends SyneriseAbstractHttpClient
     public function trackingcode($domain) 
     {
         try {
-            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . "/trackingcode/.$domain");
+            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . "/trackingcode/$domain");
             $this->_log($request, "TrackingCode");
             
             $response = $this->send($request);
