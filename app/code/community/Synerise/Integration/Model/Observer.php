@@ -7,27 +7,17 @@ class Synerise_Integration_Model_Observer
 
     private $snr = null;
 
-    private $apiKey = null;
-
     /**
-     * @var Synerise_Integration_Helper_Data
+     * @var Synerise_Integration_Helper_Tracker
      */
     private $helper = null;
 
     public function __construct()
     {
         try {
-            $this->tracker = Mage::getStoreConfig('synerise_integration/tracking/code');
-            $this->apiKey = Mage::getStoreConfig('synerise_integration/api/key');
+            $this->helper = Mage::helper('synerise_integration/tracker');
 
-            $this->helper = $helper = Mage::helper('synerise_integration/data');
-
-            $this->snr = Synerise\SyneriseTracker::getInstance([ //@todo wynieść do helpera
-                'apiKey' => $this->apiKey,
-                'apiVersion' => '2.1.0',
-                'allowFork' => (bool)Mage::getStoreConfig('synerise_integration/tracking/fork')
-            ]);
-
+            $this->snr = $this->helper->getInstance();
             $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
 //            if (Mage::getSingleton('customer/session')->isLoggedIn()) {

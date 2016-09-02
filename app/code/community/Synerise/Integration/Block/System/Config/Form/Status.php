@@ -15,7 +15,7 @@ class Synerise_Integration_Block_System_Config_Form_Status extends Synerise_Inte
                 return $this->__('Missing Api Key.');
             }
             
-            $instance = $this->_getHelper()->getInstance('Default', '1.0');
+            $instance = $this->_getHelper()->getInstance('Default');
             $data = $instance->test();
             
             $html = '';

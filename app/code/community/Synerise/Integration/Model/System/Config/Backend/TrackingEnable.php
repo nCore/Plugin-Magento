@@ -8,14 +8,14 @@ class Synerise_Integration_Model_System_Config_Backend_TrackingEnable extends Ma
      */
     public function save()
     {
-        if(!$this->isValueChanged() || $this->getValue() != 1) {
+        if(!empty(Mage::getStoreConfig('synerise_integration/tracking/code')) && (!$this->isValueChanged() || $this->getValue() != 1)) {
             return parent::save();
-        }   
+        }
 
         $domain = parse_url(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),PHP_URL_HOST);
-
+        
         // obtain tracking code
-        $instance = $this->_getHelper()->getInstance('TrackingCode', '1.0');
+        $instance = $this->_getHelper()->getInstance('TrackingCode');
         $data = $instance->trackingcode($domain);
         if($data && isset($data) && isset($data['code'])) {
             if($data['code'] != Mage::getStoreConfig('synerise_integration/tracking/code')) {

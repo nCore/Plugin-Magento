@@ -21,7 +21,7 @@ class Synerise_Integration_Model_System_Config_Backend_ApiKey extends Mage_Core_
         } elseif($helper->validateApiKey($apiKey)) {
 
             // test connection
-            $instance = $this->_getHelper()->getInstance('Default', '1.0', $apiKey);
+            $instance = $this->_getHelper()->getInstance('Default', array('apiKey' => $apiKey));
             $data = $instance->test();
 
             // success response
@@ -66,7 +66,7 @@ class Synerise_Integration_Model_System_Config_Backend_ApiKey extends Mage_Core_
             $domain = parse_url(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),PHP_URL_HOST);
 
             // obtain tracking code
-            $instance = $this->_getHelper()->getInstance('TrackingCode', '1.0');
+            $instance = $this->_getHelper()->getInstance('TrackingCode', array('apiKey' => $apiKey));
             $data = $instance->trackingcode($domain);
             if($data && isset($data) && isset($data['code'])) {
                  Mage::getConfig()->saveConfig('synerise_integration/tracking/code', $data['code']);

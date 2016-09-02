@@ -50,7 +50,6 @@
                 <class>Synerise_Integration_Helper</class>
             </synerise_integration>
         </helpers>
-
         <events>
             <customer_login>
                 <observers>
@@ -61,21 +60,6 @@
                     </synerise_integration>
                 </observers>
             </customer_login>
-
-
-
-
-            <!--<newsletter_subscriber_save_commit_after>
-                <observers>
-                    <synerise_integration>
-                        <class>synerise_integration/observer</class>
-                        <method>customerSubscriberSaveAfter</method>
-                        <type>singleton</type>
-                    </synerise_integration>
-                </observers>
-            </newsletter_subscriber_save_commit_after>-->
-
-
             <customer_logout>
                 <observers>
                     <synerise_integration>
@@ -85,18 +69,6 @@
                     </synerise_integration>
                 </observers>
             </customer_logout>
-
-            <wishlist_product_add_after>
-                <observers>
-                    <synerise_integration>
-                        <class>synerise_integration/observer</class>
-                        <method>wishlistProductAddAfter</method>
-                        <type>singleton</type>
-                    </synerise_integration>
-                </observers>
-            </wishlist_product_add_after>
-
-
             <customer_register_success>
                 <observers>
                     <synerise_integration>
@@ -106,8 +78,6 @@
                     </synerise_integration>
                 </observers>
             </customer_register_success>
-
-
             <customer_save_before>
                 <observers>
                     <synerise_integration>
@@ -117,7 +87,6 @@
                     </synerise_integration>
                 </observers>
             </customer_save_before>
-
             <customer_save_after>
                 <observers>
                     <synerise_integration>
@@ -127,7 +96,24 @@
                     </synerise_integration>
                 </observers>
             </customer_save_after>
-
+            <!--<newsletter_subscriber_save_commit_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerSubscriberSaveAfter</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </newsletter_subscriber_save_commit_after>-->
+            <wishlist_product_add_after>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>wishlistProductAddAfter</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </wishlist_product_add_after>
             <checkout_cart_add_product_complete>
                 <observers>
                     <synerise_integration>
@@ -137,18 +123,6 @@
                     </synerise_integration>
                 </observers>
             </checkout_cart_add_product_complete>
-
-            <sales_quote_remove_item>
-                <observers>
-                    <synerise_integration>
-                        <class>synerise_integration/observer</class>
-                        <method>customerRemoveFromCart</method>
-                        <type>singleton</type>
-                    </synerise_integration>
-                </observers>
-            </sales_quote_remove_item>
-
-
             <sales_order_place_after>
                 <observers>
                     <synerise_integration>
@@ -158,7 +132,6 @@
                     </synerise_integration>
                 </observers>
             </sales_order_place_after>
-
             <sales_order_save_after>
                 <observers>
                     <synerise_integration>
@@ -168,9 +141,16 @@
                     </synerise_integration>
                 </observers>
             </sales_order_save_after>
-
+            <sales_quote_remove_item>
+                <observers>
+                    <synerise_integration>
+                        <class>synerise_integration/observer</class>
+                        <method>customerRemoveFromCart</method>
+                        <type>singleton</type>
+                    </synerise_integration>
+                </observers>
+            </sales_quote_remove_item>            
         </events>
-
     </global>
     <admin>
       <routers>
