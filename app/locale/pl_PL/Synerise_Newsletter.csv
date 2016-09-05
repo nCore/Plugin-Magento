@@ -1,0 +1,7 @@
+"The address already exists in the database.","Podany adres już istnieje w bazie."
+"Newsletter Agreements","Newsletter"
+"<u>Notice</u>: Newsletter module extends Mage_Newsletter_Model_Subscriber model.","<u>Uwaga</u>: Moduł Newsletter rozszerza model Mage_Newsletter_Model_Subscriber."
+"All emails, including confirmation are handled externally via Synerise.","Wysyłka maili, łącznie z potwierdzeniem zapisu, obsługiwana jest przez system Synerise."
+"Optionally, you can save newsletter agreement info locally.","Opcjonalnie, informacja o zgodzie użytkownika może być zapisywana również w magento."
+"Store subscribiton info locally","Zapisuj informacje o zgodach użytkowników w magento."
+"Optional. All work is done via Synerise.","Opcjonalne. Obsługa po stronie Synerise."

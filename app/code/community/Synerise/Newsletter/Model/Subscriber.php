@@ -1,38 +1,72 @@
 <?php
-
-require_once Mage::getBaseDir().'/vendor/autoload.php';
-
-class Synerise_Newsletter_Model_Subscriber
+class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscriber
 {
 
-    private $tracker;
-
-    private $debug = false;
-
-    private $snr = null;
-
-    private $apiKey = null;
-
-    public function __construct()
+    /**
+     * Subscribes by email
+     *
+     * @param string $email
+     * @throws Exception
+     * @return int
+     */
+    public function subscribe($email)
     {
+        try{
+            $postData = Mage::app()->getRequest()->getPost();
 
-        $this->tracker = Mage::getStoreConfig('synerise_integration/tracking/code');
-        $this->apiKey = Mage::getStoreConfig('synerise_integration/api/key');
+            $snr = Mage::helper('synerise_integration/api')->getInstance('Newsletter');
+            $snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
+            $snr->subscribe($email, $postData);
 
-        $this->snr = Synerise\SyneriseNewsletter::getInstance([ //@todo wynieść do helpera
-            'apiKey' => $this->apiKey, //@todo zaciagać z panelu
-            'apiVersion' => '2.1.0', //@todo zaciagać z panelu? (czy po kluczu?)
-            'allowFork' => false, //@todo tylko do debugowania? czy konfigurowalne z panelu?
-        ]);
+            // skip further processing
+            if(!Mage::getStoreConfig('synerise_newsletter/settings/persist_locally')) {
+               return self::STATUS_SUBSCRIBED;
+            }
+             
+        } catch (Synerise\Exception\SyneriseException $e) {
+            switch ($e->getCode()) {
+                case Synerise\Exception\SyneriseException::NEWLETTER_ALREADY_SUBSCRIBED:
+                    Mage::throwException(Mage::helper('synerise_integration')->__('The address already exists in the database.'));
+                    break;
+                default:
+                    throw new Exception($e->getMessage());
+            }
+        }        
+        
+        $this->loadByEmail($email);
+        $customerSession = Mage::getSingleton('customer/session');
 
-        $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
-    }
+        $ownerId = Mage::getModel('customer/customer')
+            ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
+            ->loadByEmail($email)
+            ->getId();
+        $isSubscribeOwnEmail = $customerSession->isLoggedIn() && $ownerId == $customerSession->getId();
 
+//        if (!$this->getId() || $this->getStatus() == self::STATUS_UNSUBSCRIBED
+//            || $this->getStatus() == self::STATUS_NOT_ACTIVE
+//        ) {
+            $this->setStatus(self::STATUS_SUBSCRIBED);
+            $this->setSubscriberEmail($email);
+//        }
 
-    public function subscribe($email, $additionalParams = array()) {
+        if ($isSubscribeOwnEmail) {
+            $this->setStoreId($customerSession->getCustomer()->getStoreId());
+            $this->setCustomerId($customerSession->getCustomerId());
+        } else {
+            $this->setStoreId(Mage::app()->getStore()->getId());
+            $this->setCustomerId(0);
+        }
 
-        $this->snr->subscribe($email, $additionalParams);
+        $this->setIsStatusChanged(true);
+
+        try {
+            $this->save();
+            
+            return $this->getStatus();
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
 
     }
 

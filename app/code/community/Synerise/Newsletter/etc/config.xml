@@ -2,32 +2,48 @@
 <config>
     <modules>
         <Synerise_Newsletter>
-            <version>1.0</version>
+            <version>1.0.2</version>
         </Synerise_Newsletter>
     </modules>
-
-    <frontend>
-        <routers>
-            <newsletter>
-                <args>
-                    <modules>
-                        <Synerise_Newsletter before="Mage_Newsletter">Synerise_Newsletter</Synerise_Newsletter>
-                    </modules>
-                </args>
-            </newsletter>
-        </routers>
-    </frontend>
-
     <global>
-        <models>
-            <synerise_newsletter>
-                <class>Synerise_Newsletter_Model</class>
-            </synerise_newsletter>
-        </models>
         <blocks>
-            <synerise>
+            <synerise_newsletter>
                 <class>Synerise_Newsletter_Block</class>
-            </synerise>
-        </blocks>
+            </synerise_newsletter>
+        </blocks>         
+        <helpers>
+            <synerise_newsletter>
+                <class>Synerise_Newsletter_Helper</class>
+            </synerise_newsletter>
+        </helpers>        
+        <models>
+           <newsletter>
+                <rewrite>
+                    <subscriber>Synerise_Newsletter_Model_Subscriber</subscriber>
+                </rewrite>    
+           </newsletter>
+        </models>
     </global>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Synerise_Newsletter>
+                    <files>
+                        <default>Synerise_Newsletter.csv</default>
+                    </files>
+                </Synerise_Newsletter>
+            </modules>
+        </translate>
+    </adminhtml>      
+    <frontend>
+        <translate>
+            <modules>
+                <Synerise_Newsletter>
+                    <files>
+                        <default>Synerise_Newsletter.csv</default>
+                    </files>
+                </Synerise_Newsletter>
+            </modules>
+        </translate>
+    </frontend>      
 </config>

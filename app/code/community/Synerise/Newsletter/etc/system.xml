@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <synerise translate="label" module="synerise_integration">
+            <label>Synerise</label>
+            <sort_order>102</sort_order>
+        </synerise>
+    </tabs>
+    <sections>
+        <synerise_newsletter translate="label" module="synerise_newsletter">
+            <label>Newsletter</label>
+            <tab>synerise</tab>
+            <sort_order>400</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>synerise_newsletter/system_config_form_status</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                   
+                </general>
+                <settings translate="label">
+                    <label>Settings</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <persist_locally translate="label,comment">
+                            <label>Store subscribiton info locally</label>
+                            <comment><![CDATA[Optional. All work is done via Synerise.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </persist_locally>
+                    </fields>
+                </settings>
+            </groups>
+        </synerise_newsletter>
+    </sections>
+</config>

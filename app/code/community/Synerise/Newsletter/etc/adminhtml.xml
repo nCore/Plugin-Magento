@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <synerise translate="title" module="synerise_integration">
+            <title>Synerise</title>
+            <sort_order>80</sort_order>
+            <action>adminhtml/mgt</action>
+            <children>
+                <synerise_newsletter translate="title" module="synerise_newsletter">
+                    <title>Newsletter</title>
+                    <action>adminhtml/system_config/edit/section/synerise_newsletter</action>                    
+                    <sort_order>280</sort_order>
+                </synerise_newsletter>
+            </children>
+        </synerise>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <synerise_newsletter>
+                                        <title>Synerise Newsletter</title>
+                                    </synerise_newsletter>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <synerise>
+                        <title>Synerise</title>
+                        <sort_order>75</sort_order>
+                        <action>adminhtml/mgt</action>
+                        <children>
+                            <synerise_newsletter translate="title" module="synerise_newsletter">
+                                <title>Newsletter</title>
+                                <action>adminhtml/system_config/edit/section/synerise_newsletter</action>                    
+                                <sort_order>280</sort_order>
+                            </synerise_newsletter>
+                        </children>
+                    </synerise>                    
+                </children>
+            </admin>
+        </resources>
+    </acl>    
+</config>

@@ -4,6 +4,9 @@
         <Synerise_Newsletter>
             <active>true</active>
             <codePool>community</codePool>
+            <depends>
+                <Synerise_Integration />
+            </depends>            
         </Synerise_Newsletter>
     </modules>
 </config>
