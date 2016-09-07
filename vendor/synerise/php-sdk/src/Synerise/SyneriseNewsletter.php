@@ -2,6 +2,7 @@
 namespace Synerise;
 
 use GuzzleHttp\Collection;
+use GuzzleHttp\Exception\RequestException;
 use Synerise\Exception\SyneriseException;
 use Synerise\Producers\Client;
 use Synerise\Producers\Event;
@@ -15,7 +16,7 @@ use Synerise\Response\Newsletter as SyneriseResponseNewsletter;
 
 class SyneriseNewsletter extends SyneriseAbstractHttpClient
 {
-
+    
     public function subscribe($email, $additionalParams = array())
     {
 
@@ -39,18 +40,34 @@ class SyneriseNewsletter extends SyneriseAbstractHttpClient
 
             $this->_log($request, 'NEWSLETTER');
 
-            $response = $this->send($request);
+            $responseClass = 'GuzzleHttp\\Message\\Response';            
+            
+            try {
+                
+                $response = $this->send($request);
+                $this->_log($response, 'NEWSLETTER');
 
-            $this->_log($response, 'NEWSLETTER');
+                if ($response instanceof $responseClass) {
+                    $responseNewsletter = new SyneriseResponseNewsletter($response->json());
+                    return $responseNewsletter->success();
+                }
+                
+            } catch (RequestException $e) {
+                
+                $response = $e->getResponse();
+                $this->_log($response, 'NEWSLETTER');
+                
+                if ($e->getResponse() instanceof $responseClass) {
+                    $responseNewsletter = new SyneriseResponseNewsletter($e->getResponse()->json());
+                    return $responseNewsletter->fail();
+                }
 
-            $class = 'GuzzleHttp\\Message\\Response';
-
-            if ($response instanceof $class && $response->getStatusCode() == '200') {
-                $responseNewsletter = new SyneriseResponseNewsletter($response->json());
-                return $responseNewsletter->success();
             }
-            throw new SyneriseException('API Synerise not responsed 200.', SyneriseException::API_RESPONSE_ERROR);
-        }catch (\Exception $e) {
+            
+            throw new SyneriseException('Unknown error', SyneriseException::UNKNOWN_ERROR);
+
+        } catch (\Exception $e) {
+            
             $this->_log($e->getMessage(), 'NEWSLETTER');
             throw $e;
         }

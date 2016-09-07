@@ -25,9 +25,9 @@ class Newsletter
     public function __construct($response)
     {
 
-        $this->_status = $response['status'];
-        $this->_message = $response['message'];
-        $this->_description = $response['description'];
+        $this->_status = isset($response['status']) ? $response['status'] : false;
+        $this->_message = isset($response['message']) ? $response['message'] : null;
+        $this->_description = isset($response['description']) ? $response['description'] : null;
 
     }
 
@@ -44,9 +44,21 @@ class Newsletter
                 break;
             default:
                 throw new Exception\SyneriseException('Newsletter.UnknownError', Exception\SyneriseException::UNKNOWN_ERROR);
-
         }
 
     }
 
+    public function fail()
+    {
+        
+        switch ($this->_status) {
+            case 'empty_newsletter_settings':
+                throw new Exception\SyneriseException('Newsletter.NotConfigured', Exception\SyneriseException::EMPTY_NEWSLETTER_SETTINGS);
+                break;                
+            default:
+                throw new SyneriseException('API Synerise not responsed 200.', SyneriseException::API_RESPONSE_ERROR);
+        }   
+        
+    }
+    
 }
