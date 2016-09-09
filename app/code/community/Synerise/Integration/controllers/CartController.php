@@ -6,14 +6,14 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
         $skuArray = Mage::app()->getRequest()->getParam('sku');
         $hash = Mage::app()->getRequest()->getParam('hash');
         if(!$skuArray || !$hash) {
-            $this->_redirect('checkout/cart');
+            $this->_redirect('checkout/cart',array('_query' => $this->_getQuery()));
             $this->_getSession()->addNotice($this->__('Missing cart arguments.'));
             return;
         }
 
         $apiKey = $this->_getApiKey();
         if(!$apiKey) {
-            $this->_redirect('checkout/cart');
+            $this->_redirect('checkout/cart',array('_query' => $this->_getQuery()));
             $this->_getSession()->addNotice($this->__('Missing Api Key.'));
             return;
         }
@@ -34,7 +34,7 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
         
         if(empty($skuArray)) {
             $this->_getSession()->addNotice($this->__('All Items are already in cart.'));
-            $this->_redirect('checkout/cart');                
+            $this->_redirect('checkout/cart',array('_query' => $this->_getQuery()));
             return;
         }        
         
@@ -45,7 +45,7 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
 
         if(!$_productCollection->getSize()) {
             $this->_getSession()->addNotice($this->__('Cannot add the item to shopping cart.'));
-            $this->_redirect('checkout/cart');                
+            $this->_redirect('checkout/cart',array('_query' => $this->_getQuery()));
             return;
         }
 
@@ -122,7 +122,7 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
             $message = $this->__('%s was added to your shopping cart.', Mage::helper('core')->escapeHtml(implode(', ',$productsAdded)));
             $this->_getSession()->addSuccess($message);
         }
-        $this->_redirect('checkout/cart');        
+        $this->_redirect('checkout/cart', array('_query' => $this->_getQuery()));
     }
 
     /**
@@ -145,8 +145,16 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
         return Mage::getSingleton('checkout/cart');
     }
     
-    protected function _getApiKey() {
+    protected function _getApiKey() 
+    {
         return Mage::getStoreConfig('synerise_integration/api/key');
     }    
     
+    protected function _getQuery() 
+    {
+        $params = $_GET;
+        unset($params['sku']);
+        unset($params['hash']);
+        return $params;
+    }
 }
