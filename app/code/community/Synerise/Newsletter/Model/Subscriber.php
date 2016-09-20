@@ -11,10 +11,15 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
      */
     public function subscribe($email)
     {
+        if(! Mage::helper('synerise_newsletter')->isEnabled()) {
+            return parent::subscribe($email);
+        }
+        
         try{
             $postData = Mage::app()->getRequest()->getPost();
-
-            $snr = Mage::helper('synerise_integration/api')->getInstance('Newsletter');
+            unset($postData['email']);
+            
+            $snr = Mage::helper('synerise_integration/api')->getInstance('Newsletter', array('apiVersion' => '1.0' ));
             $snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
             $snr->subscribe($email, $postData);
@@ -26,13 +31,16 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
              
         } catch (Synerise\Exception\SyneriseException $e) {
             switch ($e->getCode()) {
+                case Synerise\Exception\SyneriseException::EMPTY_NEWSLETTER_SETTINGS:
+                    Mage::throwException(Mage::helper('synerise_integration')->__('Sorry, the newsletter has not yet been configured. Please try again later.'));
+                    break;                
                 case Synerise\Exception\SyneriseException::NEWLETTER_ALREADY_SUBSCRIBED:
                     Mage::throwException(Mage::helper('synerise_integration')->__('The address already exists in the database.'));
                     break;
                 default:
                     throw new Exception($e->getMessage());
             }
-        }        
+        }
         
         $this->loadByEmail($email);
         $customerSession = Mage::getSingleton('customer/session');

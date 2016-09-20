@@ -1,5 +1,7 @@
 "The address already exists in the database.","Podany adres już istnieje w bazie."
+"Sorry, the newsletter has not yet been configured. Please try again later.","Niestety newsletter nie został jeszcze skonfigurowany. Prosimy spróbować później."
 "Newsletter Agreements","Newsletter"
+"Please make sure to configure your <a href='https://app.synerise.com/setting/newsletter' target='_blank'>newsletter settings</a>.","Pamiętaj o uzupełnieniu <a href='https://app.synerise.com/setting/newsletter' target='_blank'>konfiguracji newslettera</a>."
 "<u>Notice</u>: Newsletter module extends Mage_Newsletter_Model_Subscriber model.","<u>Uwaga</u>: Moduł Newsletter rozszerza model Mage_Newsletter_Model_Subscriber."
 "All emails, including confirmation are handled externally via Synerise.","Wysyłka maili, łącznie z potwierdzeniem zapisu, obsługiwana jest przez system Synerise."
 "Optionally, you can save newsletter agreement info locally.","Opcjonalnie, informacja o zgodzie użytkownika może być zapisywana również w magento."
