@@ -11,36 +11,14 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
      */
     public function subscribe($email)
     {
-        if(! Mage::helper('synerise_newsletter')->isEnabled()) {
+        $newsletterHelper = Mage::helper('synerise_newsletter');
+        
+        if(!$newsletterHelper->isEnabled()) {
             return parent::subscribe($email);
         }
-        
-        try{
-            $postData = Mage::app()->getRequest()->getPost();
-            unset($postData['email']);
-            
-            $snr = Mage::helper('synerise_integration/api')->getInstance('Newsletter', array('apiVersion' => '1.0' ));
-            $snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
-            $snr->subscribe($email, $postData);
-
-            // skip further processing
-            if(!Mage::getStoreConfig('synerise_newsletter/settings/persist_locally')) {
-               return self::STATUS_SUBSCRIBED;
-            }
-             
-        } catch (Synerise\Exception\SyneriseException $e) {
-            switch ($e->getCode()) {
-                case Synerise\Exception\SyneriseException::EMPTY_NEWSLETTER_SETTINGS:
-                    Mage::throwException(Mage::helper('synerise_integration')->__('Sorry, the newsletter has not yet been configured. Please try again later.'));
-                    break;                
-                case Synerise\Exception\SyneriseException::NEWLETTER_ALREADY_SUBSCRIBED:
-                    Mage::throwException(Mage::helper('synerise_integration')->__('The address already exists in the database.'));
-                    break;
-                default:
-                    throw new Exception($e->getMessage());
-            }
-        }
+        $postData = Mage::app()->getRequest()->getPost();
+        unset($postData['email']);
         
         $this->loadByEmail($email);
         $customerSession = Mage::getSingleton('customer/session');
@@ -51,21 +29,33 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
             ->getId();
         $isSubscribeOwnEmail = $customerSession->isLoggedIn() && $ownerId == $customerSession->getId();
 
-//        if (!$this->getId() || $this->getStatus() == self::STATUS_UNSUBSCRIBED
-//            || $this->getStatus() == self::STATUS_NOT_ACTIVE
-//        ) {
-            $this->setStatus(self::STATUS_SUBSCRIBED);
-            $this->setSubscriberEmail($email);
-//        }
+        $this->setSubscriberEmail($email);
 
         if ($isSubscribeOwnEmail) {
             $this->setStoreId($customerSession->getCustomer()->getStoreId());
-            $this->setCustomerId($customerSession->getCustomerId());
+            $this->setCustomerId($customerSession->getCustomerId());           
         } else {
             $this->setStoreId(Mage::app()->getStore()->getId());
             $this->setCustomerId(0);
         }
 
+        if($this->getStatus() == self::STATUS_SUBSCRIBED || ($isSubscribeOwnEmail && !$newsletterHelper->confirmRegisteredFlag())) {
+            
+            // mark as subscribed, skip confirm email                                
+            $response = $newsletterHelper->updateNewsletterAgreement($email, 'enabled');
+            
+        } else {
+            
+            // subscribe & send confirm email                
+            $response = $newsletterHelper->subscribe($email, $postData);
+            
+        }
+        
+        if(!$response) {
+            throw new Exception('Empty response');            
+        }
+        
+        $this->setStatus($newsletterHelper->convertSyneriseStatus($response->getNewsletterAgreement()));
         $this->setIsStatusChanged(true);
 
         try {

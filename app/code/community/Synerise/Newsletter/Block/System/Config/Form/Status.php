@@ -8,7 +8,6 @@ class Synerise_Newsletter_Block_System_Config_Form_Status extends Synerise_Integ
         
         $html = '<p>';
         $html .= $this->__('All emails, including confirmation are handled externally via Synerise.').'<br/>';
-        $html .= $this->__('Optionally, you can save newsletter agreement info locally.').'<br/>';
         $html .= $this->__('<u>Notice</u>: Newsletter module extends Mage_Newsletter_Model_Subscriber model.');
         $html .= '</p>';        
 

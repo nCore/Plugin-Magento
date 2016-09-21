@@ -75,12 +75,22 @@ abstract class ProducerAbstract
                 $message['uuid'] = $clientUUID;
             }
         }
-
-        $message['ip'] = $this->getIp();
-        $message['ssuid'] = $this->getSsuid();
-
-        $message['userAgent'] = $this->getUserAgent();
-
+        
+        $ip = $this->getIp();
+        if($ip) {
+            $message['ip'] = $ip;    
+        }
+        
+        $ssuid = $this->getSsuid();
+        if($ssuid) {
+            $message['ssuid'] = $ssuid;
+        }
+        
+        $userAgent = $this->getUserAgent();
+        if($userAgent) {
+            $message['userAgent'] = $userAgent;
+        }
+        
         $snrsParams = $this->getSnrsParams();
         if($snrsParams) {
             $message['snr_params'] = $snrsParams;
@@ -88,6 +98,7 @@ abstract class ProducerAbstract
 
         if(isset($message['params']['time']) && $this->_is_timestamp($message['params']['time'])){
             $message['time'] = $message['params']['time'] = $message['params']['time'] * 1000;
+            unset($message['params']['time']);
         } else if(isset($message['params']['time'])) {
             throw new SyneriseException('Parameter `time` have to be in timesamp format.');
         } else {
@@ -145,6 +156,10 @@ abstract class ProducerAbstract
      */
     protected function getUuid()
     {
+        if($this->_uuid) {
+            return $this->_uuid;
+        }
+
         $snrsP = isset($_COOKIE['_snrs_p'])?$_COOKIE['_snrs_p']:false;
         if ($snrsP) {
             $snrsP = explode('&', $snrsP);
@@ -163,10 +178,6 @@ abstract class ProducerAbstract
      */
     private function getSsuid()
     {
-        if($this->_uuid) {
-            return $this->_uuid;
-        }
-
         $snrsS = isset($_COOKIE['_snrs_sa'])?$_COOKIE['_snrs_sa']:false;
         if ($snrsS) {
             $snrsS = explode('&', $snrsS);

@@ -41,9 +41,9 @@
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </enable>                        
-                        <persist_locally translate="label,comment">
-                            <label>Store subscribiton info locally</label>
-                            <comment><![CDATA[Optional. All work is done via Synerise.]]></comment>
+                        <confirm_registered translate="label,comment">
+                            <label>Require confirmation from registered users</label>
+                            <comment><![CDATA[Confirmation email will be sent.]]></comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
@@ -51,7 +51,7 @@
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <depends><enable>1</enable></depends>
-                        </persist_locally>
+                        </confirm_registered>
                     </fields>
                 </settings>
             </groups>

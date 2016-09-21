@@ -21,27 +21,53 @@ class SyneriseClient extends SyneriseAbstractHttpClient
 
     public function getClientByParameter(array $fields)
     {
-
         try {
-            /**
-             * @var Response
-             */
-            //$response = $this->get(SyneriseAbstractHttpClient::BASE_API_URL . '/coupons/active/' . $token);
-
-            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/client/?' . http_build_query($fields));
+            $request = $this->createRequest("GET", SyneriseAbstractHttpClient::BASE_API_URL . '/client/?' . http_build_query($fields), array(
+                'headers' => array ('content-type' => 'application/json')
+            ));
+            
+            $this->_log($request, 'CLIENT');
             $response = $this->send($request);
+            $this->_log($response, 'CLIENT');
 
             return $response;
 
-
-
         } catch (\Exception $e) {
-            $this->_log($e->getMessage(), "CouponERROR");
+            $this->_log($e->getMessage(), "ClientERROR");
             throw $e;
         }
-
     }
 
+    public function batchAddOrUpdateClients(array $items)
+    {
+        $data = array();
+        foreach($items as $item) {
+            if(isset($item['email']) && isset($item['data'])) {
+                $data[$item['email']] = $item['data'];
+            }
+        }
+        
+        if(!empty($data)) {
 
+            try {
+                $request = $this->createRequest("POST", SyneriseAbstractHttpClient::BASE_API_URL . '/client/batch', array(
+                    'headers' => array ('content-type' => 'application/json'),
+                    'json' => array('items' => $data)
+                ));    
+                
+                $this->_log($request, 'CLIENT');
+                $response = $this->send($request);
+                $this->_log($response, 'CLIENT');
+
+                return $response->json();
+                
+            } catch (\Exception $e) {
+                $this->_log($e->getMessage(), "ClientsERROR");
+                throw $e;
+            }
+        }
+        
+        return false;
+    }
 
 }
