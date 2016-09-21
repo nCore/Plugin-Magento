@@ -4,10 +4,10 @@ class Synerise_Integration_Block_System_Config_Form_Fieldset extends Mage_Adminh
     protected function _construct()
     {
         $logoUrl = Mage::getBaseUrl('media') . 'synerise/logo.jpg';        
-        $this->setInfoStyle("background: url('$logoUrl') no-repeat scroll -90px; "
+        $this->setInfoStyle("background: url('$logoUrl') no-repeat scroll left center; "
             . "border: 1px solid #CCCCCC; "
             . "margin-bottom: 10px; "
-            . "padding: 10px 10px 10px 250px; "
+            . "padding: 10px 10px 10px 225px; "
             . "min-height: 75px; "
             . "color: #6f8992; ");
         
@@ -18,7 +18,7 @@ class Synerise_Integration_Block_System_Config_Form_Fieldset extends Mage_Adminh
     {
         $html = '<div style="'.$this->getInfoStyle().'">'
                 . ($this->getHeadMsg() ? '<h2 style="'.$this->getHeadStyle().'">'.$this->getHeadMsg().'</h2>' : '')
-                . $this->getInfoMsg() 
+                . $this->getInfoMsg()
                 . '</div>';        
         
         return $html;
