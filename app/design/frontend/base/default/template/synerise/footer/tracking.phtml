@@ -18,7 +18,7 @@
     <!-- SDK -->
     <script>
         function onSyneriseLoad() {
-            SR.auth.apiKey('<?php echo $this->getApiKey(); ?>');
+            SR.auth.trackerKey('<?php echo $this->getCode(); ?>');
             SR.init();
         }
         (function(s,y,n,e,r,i,se){s['SyneriseObjectNamespace']=r;s[r]=s[r]||[],s[r]._t=1*new Date(),
