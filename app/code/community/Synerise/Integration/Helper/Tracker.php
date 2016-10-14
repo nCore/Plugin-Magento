@@ -97,6 +97,7 @@ class Synerise_Integration_Helper_Tracker extends Mage_Core_Helper_Abstract
         }
         $productMediaConfig = Mage::getModel('catalog/product_media_config');
         $result['image'] = (string)$productMediaConfig->getMediaUrl($product->getSmallImage());
+        $result['url'] = $product->getProductUrl();
 
         return $result;
     }
