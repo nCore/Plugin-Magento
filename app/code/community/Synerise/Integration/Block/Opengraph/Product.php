@@ -28,10 +28,7 @@ class Synerise_Integration_Block_Opengraph_Product extends Synerise_Integration_
     public function getOgImages()
     {
         $product = $this->getProduct();
-        if($product) {
-            return $product->getMediaGalleryImages();
-        }
-        return array();
+        return ($product && $product->getMediaGalleryImages()) ? $product->getMediaGalleryImages() : array();
     }
     
     public function getProductCategories() 
