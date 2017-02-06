@@ -243,6 +243,15 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment>Open graph tags are mandatory. Disable only if you are using another implementation.</comment>
                         </enable>  
+                        <image translate="label,comment">
+                            <label>Image to be displayed</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>synerise_integration/system_config_source_image</source_model>
+                        </image>                         
                     </fields>
                 </opengraph>                
             </groups>
