@@ -3,7 +3,7 @@ class Synerise_Integration_CartController extends Mage_Core_Controller_Front_Act
     
     public function addAction() 
     {
-        $skuArray = Mage::app()->getRequest()->getParam('sku');
+        $skuArray = array_unique(Mage::app()->getRequest()->getParam('sku'));
         $hash = Mage::app()->getRequest()->getParam('hash');
         if(!$skuArray || !$hash) {
             $this->_redirect('checkout/cart',array('_query' => $this->_getQuery()));
