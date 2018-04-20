@@ -6,3 +6,4 @@
 "All emails, including confirmation are handled externally via Synerise.","Wysyłka maili, łącznie z potwierdzeniem zapisu, obsługiwana jest przez system Synerise."
 "Require confirmation from registered users","Wymagaj potwierdzenia od zarejestrowanych użytkowników"
 "Confirmation email will be sent.","Klient otrzyma mail z prośbą o potwierdzenie subskrypcji."
+"Use Ajax to submit newslleter subscriptions. <br><u>Notice</u>: Requires jQuery.","Ajaxowa wysyłka formularza zapisu do newslettera. <br><u>Uwaga</u>: wymaga jQuery."

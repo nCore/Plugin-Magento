@@ -1,12 +1,8 @@
 <?php
-require_once Mage::getBaseDir() . '/vendor/autoload.php';
-
 class Synerise_Integration_Adminhtml_Synerise_CustomerController extends Mage_Adminhtml_Controller_Action {
 
 
     private $snr = null;
-
-    private $apiKey = null;
 
     /**
      * @var Synerise_Integration_Helper_Data
@@ -15,18 +11,12 @@ class Synerise_Integration_Adminhtml_Synerise_CustomerController extends Mage_Ad
 
     public function _construct()
     {
-        $this->tracker = Mage::getStoreConfig('synerise_integration/tracking/code');
-        $this->apiKey = Mage::getStoreConfig('synerise_integration/api/key');
-        $this->helper = $helper = Mage::helper('synerise_integration/data');                
+        $this->helper = Mage::helper('synerise_integration/tracker');
         
         try {
-            $this->snr = Synerise\SyneriseTracker::getInstance([ //@todo wynieść do helpera
-                'apiKey' => $this->apiKey,
-                'apiVersion' => '2.1.0',
-                'allowFork' => false
-            ]);
 
-            $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
+            $this->snr = $this->helper->getInstance();
+
         } catch (Exception $e) {
             Mage::logException($e);
         }        
@@ -48,9 +38,9 @@ class Synerise_Integration_Adminhtml_Synerise_CustomerController extends Mage_Ad
         $pages = $customerCollection->getLastPageNumber();
         $currentPage = 1;
         $sent = 0;
-        
+
         if(!$customerCollection->getSize()) {
-            $this->_getSession()->addSuccess($this->_getHelper()->__('Orders already sent.'));
+            $this->_getSession()->addSuccess($this->_getHelper()->__('Customers already sent.'));
         } else {
 
             do {

@@ -3,13 +3,13 @@
     <menu>
         <synerise translate="title" module="synerise_integration">
             <title>Synerise</title>
-            <sort_order>75</sort_order>
+            <sort_order>80</sort_order>
             <action>adminhtml/mgt</action>
             <children>
                 <synerise_integration translate="title" module="synerise_integration">
                     <title>Integration</title>
                     <action>adminhtml/system_config/edit/section/synerise_integration</action>                    
-                    <sort_order>280</sort_order>
+                    <sort_order>10</sort_order>
                 </synerise_integration>
             </children>
         </synerise>

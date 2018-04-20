@@ -9,7 +9,7 @@
                 <synerise_newsletter translate="title" module="synerise_newsletter">
                     <title>Newsletter</title>
                     <action>adminhtml/system_config/edit/section/synerise_newsletter</action>                    
-                    <sort_order>280</sort_order>
+                    <sort_order>40</sort_order>
                 </synerise_newsletter>
             </children>
         </synerise>

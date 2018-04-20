@@ -39,17 +39,16 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
             $this->setCustomerId(0);
         }
 
-        if($this->getStatus() == self::STATUS_SUBSCRIBED || ($isSubscribeOwnEmail && !$newsletterHelper->confirmRegisteredFlag())) {
-            
-            // mark as subscribed, skip confirm email                                
-            $response = $newsletterHelper->updateNewsletterAgreement($email, 'enabled');
-            
-        } else {
-            
-            // subscribe & send confirm email                
-            $response = $newsletterHelper->subscribe($email, $postData);
-            
-        }
+//        if($this->getStatus() == self::STATUS_SUBSCRIBED || ($isSubscribeOwnEmail && !$newsletterHelper->confirmRegisteredFlag())) {
+//
+//            // mark as subscribed, skip confirm email
+//            $response = $newsletterHelper->updateNewsletterAgreement($email, 'enabled');
+//
+//        } else {
+
+        // subscribe & send confirm email                
+        $response = $newsletterHelper->subscribe($email, $postData);
+//        }
         
         if(!$response) {
             throw new Exception('Empty response');            

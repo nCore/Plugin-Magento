@@ -16,6 +16,15 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
+                <status translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>synerise_export/system_config_form_status</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                   
+                </status>                 
                 <config translate="label">
                     <label>Configuration</label>
                     <sort_order>1</sort_order>

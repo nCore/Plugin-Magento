@@ -52,6 +52,16 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <depends><enable>1</enable></depends>
                         </confirm_registered>
+                        <ajax>
+                            <label>Ajax</label>
+                            <comment><![CDATA[Use Ajax to submit newslleter subscriptions. <br><u>Notice</u>: Requires jQuery.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </ajax>
                     </fields>
                 </settings>
             </groups>

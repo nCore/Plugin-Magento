@@ -8,7 +8,7 @@ class Synerise_Coupon_Model_Observer
      */
     public function salesQuoteCollectTotalsBefore($event)
     {
-        
+
         /*
          * Extension disabled
          */
@@ -62,6 +62,10 @@ class Synerise_Coupon_Model_Observer
             
         } catch (Exception $e) {
             $couponManager->log($couponCode.' '.$e->getMessage());
+            $rule = $couponManager->getRule();
+            if($couponManager->isSyneriseRule($rule)) {
+                $couponManager->removeQuoteCouponCode();
+            }
         }
         
         return $this;        

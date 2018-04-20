@@ -36,7 +36,23 @@
         </translate>
     </adminhtml>      
     <frontend>
-        <translate>
+        <layout>
+            <updates>
+                <synerise_newsletter>
+                    <file>synerise_newsletter.xml</file>
+                </synerise_newsletter>
+            </updates>
+        </layout>        
+        <routers>
+            <newsletter>
+                <args>
+                    <modules>
+                        <Synerise_Newsletter before="Mage_Newsletter">Synerise_Newsletter</Synerise_Newsletter>
+                    </modules>
+                </args>
+            </newsletter>
+        </routers>          
+        <translate>          
             <modules>
                 <Synerise_Newsletter>
                     <files>

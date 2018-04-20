@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Integration>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </Synerise_Integration>
     </modules>
     <frontend>
@@ -193,6 +193,10 @@
             <tracking>
                 <fork>1</fork>
             </tracking>
+            <dev>
+                <register_autoloader>1</register_autoloader>
+                <autoloader_basepath>lib</autoloader_basepath>
+            </dev>
         </synerise_integration>
     </default>
 

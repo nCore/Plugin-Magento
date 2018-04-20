@@ -1,12 +1,8 @@
 <?php
-require_once Mage::getBaseDir() . '/vendor/autoload.php';
-
 class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Adminhtml_Controller_Action {
 
 
     private $snr = null;
-
-    private $apiKey = null;
 
     /**
      * @var Synerise_Integration_Helper_Data
@@ -15,18 +11,12 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
 
     public function _construct()
     {
-        $this->tracker = Mage::getStoreConfig('synerise_integration/tracking/code');
-        $this->apiKey = Mage::getStoreConfig('synerise_integration/api/key');
-        $this->helper = $helper = Mage::helper('synerise_integration/data');                
-        
-        try {
-            $this->snr = Synerise\SyneriseTracker::getInstance([ //@todo wynieść do helpera
-                'apiKey' => $this->apiKey,
-                'apiVersion' => '2.1.0',
-                'allowFork' => false
-            ]);
+        $this->helper = Mage::helper('synerise_integration/tracker');
 
-            $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
+        try {
+
+            $this->snr = $this->helper->getInstance();
+
         } catch (Exception $e) {
             Mage::logException($e);
         }        
@@ -47,7 +37,7 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
         $sent = 0;
         
         if(!$orderCollection->getSize()) {
-            $this->_getSession()->addSuccess($this->_getHelper()->__('Orders already sent.'));
+            $this->_getSession()->addSuccess($this->helper->__('Orders already sent.'));
         } else {
 
             do {
@@ -57,11 +47,7 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
                 foreach($orderCollection as $order) {
 
                     // dodaj kienta
-                    $customerData = array(
-                        '$email'    => $order->getCustomerEmail(),
-                        'time'      => strtotime($order->getCreatedAt()),
-                    );
-
+                    $customerData = $this->helper->convertCustomerByOrderToDataSend($order);
 
                     $uuid = md5($order->getCustomerEmail());
                     $this->snr->client->setUuid($uuid);
@@ -93,6 +79,10 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
                     if($response == true) {
                         $sent++;
                         $order->setData('synerise_send_at',date('Y-m-d H:i:s'))->save();
+                        if ($order->getCustomerId()) {
+                            $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+                            $customer->setData('synerise_send_at',date('Y-m-d H:i:s'))->save();
+                        }
                     }
 
                 }
@@ -103,9 +93,9 @@ class Synerise_Integration_Adminhtml_Synerise_OrderController extends Mage_Admin
             } while ($currentPage <= $pages);        
 
             if($sent) {             
-                 $this->_getSession()->addSuccess($this->_getHelper()->__('%s orders sent.', $sent));
+                 $this->_getSession()->addSuccess($this->helper->__('%s orders sent.', $sent));
             } else {
-                $this->_getSession()->addError($this->_getHelper()->__('No orders sent.'));
+                $this->_getSession()->addError($this->helper->__('No orders sent.'));
             }
             
         }

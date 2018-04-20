@@ -1,67 +1,125 @@
-SYNERISE MAGENTO integration plugin version: 0.9.
+Synerise Magento integration
+=====================
+This plugin covers basic integration with Synersie system, including tracking and coupon implementation, as well as export of products, customers and orders.
 
-1. Vendor - can be added in two ways:
+Requirements
+------------
+- PHP >= 5.4
+- [Synerise SDK for PHP](https://github.com/Synerise/PHP-SDK)
+- [Guzzle, PHP HTTP client 5](https://github.com/guzzle/guzzle)
 
-   1.1. If composer is installed, open the https://github.com/Synerise/PHP-SDK and follow the instructions.
+All libraries are already provided and autoloaded from lib directory.
 
-   1.2. If you haven’t installed composer, use “vendor” directory added to the Magento plugin. Place it in the Magento root directory.
+Installation
+------------
+Simply extract repository contents into Magento root directory.
 
-2. Installing Magento Plugin
+Modules
+------------
 
-   2.1. Extract app directory into Magento root directory.
+The plugin consists of four separate modules. You can disable unused ones, but mind they're all dependent on Synerise_Integration, which is responsible for basic communication with Synerise API.
 
-   2.2. The plugin has four modules, which can be found in \app\etc\modules. All modules need Synerise_Integration.xml to be active even when you use only one of them.
+## Synerise Integration
 
-      2.2.1 Modules
+Main module provides basic helpers for API and Tracker use.
 
-      2.2.1.1. Synerise Integration - the main module is responsible for sending events from Magento to Synerise. After switching it on it needs to be configured. In the upper menu select "Synerise" --> "Integration". A new window will appear. There you can configure the basic integration module. Fill in the proper API key (which can be found in: Synerise Settings --> API). Next, set up the tracker by copying the tracking code, if you're interested in turning it on. There are two methods of copying a tracking code: copy it from Synerise Settings --> Tracking codes or get it through API.  Below the main section you can find a list of events to choose from that can be sent to Synerise, eg. transactions, shopping carts. We recommend turning all the events on. What’s more you can configure the product’s attributes and map them to a key that will be used in Synerise to identify the attribute. You can change the attributes name (key) anytime but beware, changing it if data is already collected will cause data inconsistency in Synerise.
+#### Basic configuration
+1. Go to  *Synerise* --> *Integration*.
+2. Fill in your API key and *save config*.
 
-      2.2.1.2. Synerise_Coupon - enables integration with coupons system.
+> You can manage your API keys in Synerise [business profile settings](https://app.synerise.com/api) under API section.  
+> Crate new api key, and remember to set its scope afterwards - check all options.  
+> Finally hit *show key* and copy the key string into magento panel.  
 
-      2.2.1.3. Synerise_Newsletter - enables integration with Synerise newsletter.
+Given that the provided key is valid, and it's scope is properly set, the module will obtain the tracking code automatically. Basic profile information should also be visible above the configuration tabs.
 
-      2.2.1.4. Synerise_Export - enables export products to XML file.
+#### Additional configuration options
 
-3. Logs
+* **Open Graph**  
+Open Graph tags are used by tracker to obtain additional information about pages visited by user and to properly track your products. If your site is already provided with OG tags, you can disable them here. In that case, please make sure your tags include: 
 
-You can set your own log path using: $snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log'); but by default it’s the same as the main catalogue’s
+> * **og:title**
+> * **og:type**
+> * **og:image**
+> * **og:url**
+> * **product:retailer_part_no** – product specific code used in your store
 
- '/var/log/synerise.log' directory.
+* **Tracking**  
+Here you can enable/disable tracking globally.  
+Enabling this option, embeds js code ona all pages. This code is responsible for basic tracking of clients behavior on your website.
 
-4. Module: Newsletter
+* **Tracking events**  
+Apart from browser side tracking. Magento plugin also uses magento events system to track additional data sever side.  
+This tab provides a list of all eligible events. You can choose which one to send. We highly recommend tracking them all though. 
 
-Signing up for newsletters: $api = Mage::getModel("synerise_newsletter/subscriber"); $api->subscribe($email, array('sex' => $sex));
+> You can configure events in the *\app\code\community\Synerise\Integration\etc\config.xml* file. If your purchase path is far from standard, and contains other than regular Magento events, you need to add them there.
 
-5. Module: Coupons
+* **Config product attr**  
+This tab provides a list of product attributes. You can choose which one to send and also map them to keys that will be used in Synerise to identify these attributes. 
 
-$coupon = Mage::getModel('synerise_coupon/coupon');
+> You can change attributes name (key) at anytime but beware, changing it if data is already collected will cause data inconsistency in Synerise.
 
-$coupon->setCouponCode($couponCode);
+## Synerise Coupon 
 
-$coupon->isSyneriseCoupon(); // validates coupon’s code and chcecks whether the code can be used or not;
+Module allows the use of Synserise coupons in your store.  
+Coupons are managed through Synerise Panel in [campaigns](https://app.synerise.com/coupons) under Coupons section.
 
-$coupon->useCoupon();
+#### Configuration
 
-6. Module: Integration
+Go to *Synerise* --> *Coupon* --> *Configuration*.
 
-This module, apart from setting up API and Tracking code keys, is used to collect data. This is done in two ways:
+* **Enable** - allows you to disable the use of synersie coupons.  
+* **Validate coupon format** - Optional validation of coupon code format, to be considered as synerise coupon. Defautl format is [EAN-13](https://en.wikipedia.org/wiki/EAN-13)
 
-   6.1. tracking codes - after switching on tracking codes in the panel, a js file will be added to the website. It will send information about clients behavior on the site;
+#### Price rules
 
-   6.2. events - the difference between a tracking code and an event is that the first one is working on the web browser side, and the events are sent from the server. In Magento panel it is possible to enable or disable every event. You can configurate events in the  \app\code \community\Synerise\Integration\etc\config.xml file. If your purchase path is far from standard, and contains other than standard Magento events, you need to add them in that file.
+Module uses the default magento price rules system to handle Synerise coupons.  
+You can find the list off all your coupons under *Synerise* --> *Coupon* --> *Shopping Cart Price Rules*.  
+Use the *Import Synerise Rules* button to fetch your rules form Synerise system.  
 
-To track products correctly the web site needs to use Open Graph tags. If you don’t use OG tags you can enable them using Synerise’s plugin. In other case make sure that og tags code contains:
+Whereas the basic options are editable only via Synerise panel, you can still edit default **Websites** & **Customer Groups** settings. Also, you can set additional **Conditions** & **Actions** to further define your Promo Rule for magento.
 
-* og:title,
+## Synerise Newsletter 
 
-* og:type,
+Enables integration with Synerise newsletter.  
 
-* og:image,
+> *Notice*: Newsletter module extends Mage_Newsletter_Model_Subscriber model
+> The reason behind this approach is to prevent magento from handling emails and confirmation.
 
-* og:url,
+All emails, including confirmation are handled externally via Synerise.  
+Magento will still store the newsletter agreement information as usual.
 
-* product:retailer_part_no – product’s code used in the shop.
+#### Configuration
 
-7. Module: Export
+> Please make sure to configure your [newsletter settings](https://app.synerise.com/setting/newsletter) before enabling this module.
 
-Use it to genereta product’s catalogue. The generated XML file will be located in the media directory. What’s important to keep the XML file up to date you should set the crone’s frequency (which is responsible for generating XML file). By default, cron starts every day 1 o’clock am.
+Go to *Synerise* --> *Newsletter*.
+
+* **Enable** - allows you to disable the module
+* **Require confirmation from registered users** - by default magento treats logged in users as already confirmed. You can alter this behavior by changing this setting. Registered users will receive confirmation email like other users.
+
+#### Additional data
+
+By modifying the newsletter submit form, you can send additional data to Synerise.
+
+> You can add a *sex* field. Allowed values are: *1* for man & *2* for woman.
+
+
+## Synerise Export 
+
+Module allows you to generate XML feeds containing active products and categories.
+
+#### Configuration
+
+Go to *Synerise* --> *Export*.
+
+* **Config**
+	* **Select store** - select the stores to generate feeds.
+	* **Unique hash** - random string, used for feed path.
+* **Mapping of the attributes** - select the appropriate attributes to be mapped
+* **Generation settings** - set cron job to generate feeds. You can also generate them manually.
+
+Logs
+------------
+
+By default all api calls are logged to */var/log/synerise.log'*.

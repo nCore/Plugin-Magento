@@ -3,12 +3,12 @@
     <menu>
         <synerise translate="title" module="synerise_coupon">
             <title>Synerise</title>
-            <sort_order>75</sort_order>
+            <sort_order>80</sort_order>
             <action>adminhtml/mgt</action>
             <children>
                 <synerise_coupon translate="title" module="synerise_coupon">
                     <title>Coupon</title>                 
-                    <sort_order>3000</sort_order>
+                    <sort_order>30</sort_order>
                     <children>
                         <config translate="title" module="synerise_coupon">
                             <title>Configuration</title>

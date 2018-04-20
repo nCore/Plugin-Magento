@@ -16,14 +16,18 @@ class Synerise_Integration_Block_System_Config_Form_Fieldset extends Mage_Adminh
     
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
+        return $this->toHtml();
+    }
+
+    protected function _toHtml() {
         $html = '<div style="'.$this->getInfoStyle().'">'
                 . ($this->getHeadMsg() ? '<h2 style="'.$this->getHeadStyle().'">'.$this->getHeadMsg().'</h2>' : '')
                 . $this->getInfoMsg()
-                . '</div>';        
-        
+                . '</div>';
+
         return $html;
     }
-    
+
     protected function _getHelper()
     {
         return Mage::helper('synerise_integration/api');

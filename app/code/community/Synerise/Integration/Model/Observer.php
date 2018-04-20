@@ -1,7 +1,4 @@
 <?php
-
-require_once Mage::getBaseDir() . '/vendor/autoload.php';
-
 class Synerise_Integration_Model_Observer
 {
 
@@ -11,6 +8,7 @@ class Synerise_Integration_Model_Observer
      * @var Synerise_Integration_Helper_Tracker
      */
     private $helper = null;
+    private $shutdown = false;
 
     public function __construct()
     {
@@ -18,7 +16,6 @@ class Synerise_Integration_Model_Observer
             $this->helper = Mage::helper('synerise_integration/tracker');
 
             $this->snr = $this->helper->getInstance();
-            $this->snr->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise.log');
 
 //            if (Mage::getSingleton('customer/session')->isLoggedIn()) {
 //                $this->snr->client->customIdentify(
@@ -29,6 +26,62 @@ class Synerise_Integration_Model_Observer
             Mage::logException($e);
         }
 
+        register_shutdown_function(array($this, 'destruct'));
+    }
+
+    public function destruct()
+    {
+        $this->shutdown = true;
+
+        if(empty($this->snr) && empty($this->snr->client)) {
+            return $this;
+        }
+
+        try {
+
+            $queue = $this->snr->client->getRequestQueue();
+            foreach($queue as $item) {
+                if(!empty($item['params']) && !empty($item['params']['$entityId'])) {
+                    $attributeModel = Mage::getSingleton( 'eav/config' )
+                        ->getAttribute( 'customer', 'synerise_send_at' );
+                    $tableData = array(
+                        'entity_type_id' => $attributeModel->getEntityTypeId(),
+                        'attribute_id' => $attributeModel->getAttributeId(),
+                        'entity_id' => $item['params']['$entityId'],
+                        'value' => date('Y-m-d H:i:s')
+                    );
+                    $adapter = $attributeModel->getEntity()->getWriteConnection();
+                    $tableName = $attributeModel->getBackendTable();
+                    $adapter->insertOnDuplicate($tableName, $tableData, array('value'));
+                }
+            }
+
+            if(empty($this->snr->transaction)) {
+                return $this;
+            }
+
+            $queue = $this->snr->transaction->getRequestQueue();
+
+            if(empty($queue)) {
+                return $this;
+            }
+
+            $resource = Mage::getSingleton('core/resource');
+            $writeConnection = $resource->getConnection('core_write');
+            $table = $resource->getTableName('sales/order');
+
+            foreach($queue as $item) {
+                if(!empty($item['params']) && !empty($item['params']['$orderId'])) {
+                    $incrementId = $item['params']['$orderId'];
+                    $query = "UPDATE {$table} SET `synerise_send_at` = '".date('Y-m-d H:i:s')."' WHERE increment_id = '{$incrementId}'";
+                    $writeConnection->query($query);
+                }
+
+            }
+
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
     }
 
     /**
@@ -219,6 +272,7 @@ class Synerise_Integration_Model_Observer
 
         } catch (Exception $e) {
             Mage::logException($e);
+            die('stoop');
         }
     }
 
@@ -278,11 +332,7 @@ class Synerise_Integration_Model_Observer
      */
     public function customerSaveBefore(Varien_Event_Observer $observer)
     {
-        try {
-            $observer->getEvent()->getCustomer()->setData('synerise_send_at',date('Y-m-d H:i:s'));
-        } catch (Exception $e) {
-            Mage::logException($e);
-        }
+        return $this;
     }
 
     /**
@@ -291,6 +341,10 @@ class Synerise_Integration_Model_Observer
      */
     public function customerSaveAfter(Varien_Event_Observer $observer)
     {
+        if($this->shutdown) {
+            return $this;
+        }
+
         try {
 
             if(!$this->checkEventIsEnabled($observer)) {

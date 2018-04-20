@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout>
+    <default>     
+        <reference name="before_body_end" >
+            <block type="core/template" name="synerise_newsletter_js">
+                <action method="setTemplate" ifconfig="synerise_newsletter/settings/ajax">
+                    <template>synerise/newsletter/subscribe_js.phtml</template>
+                </action> 
+            </block>
+        </reference>
+    </default>
+</layout>

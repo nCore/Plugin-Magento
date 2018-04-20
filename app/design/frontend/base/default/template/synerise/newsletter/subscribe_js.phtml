@@ -1,0 +1,25 @@
+    <script type="text/javascript">
+    //<![CDATA[
+        jQuery(document).ready(function($) {
+            $('.block-subscribe').append('<div id="subscribemessage"></div>');
+            $('.block-subscribe form').on('submit',function(e){
+                var html = '<span class="error"><?php echo $this->__('There was a problem with the subscription.'); ?></span>';
+                var form = $(this).serialize();
+                $.post($(this).attr('action'), form, function(response) {
+                    if(typeof response === 'object') {
+                        if(response.status === 'ok') {
+                            html = '<span class="success">'+ response.message +'</span>';
+                        } else {
+                            html = '<span class="error">'+ response.message +'</span>';
+                        }
+                    }
+                }, "json")
+                .always(function() {
+                    $("#subscribemessage").html(html).show().delay(5000).slideUp("slow");
+                });
+
+                return false;
+            });
+        });
+    //]]>
+    </script>

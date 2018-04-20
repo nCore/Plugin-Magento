@@ -1,6 +1,4 @@
 <?php
-require_once Mage::getBaseDir().'/vendor/autoload.php';
-
 class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
 {
     protected $_allowedValues = array(
@@ -12,14 +10,12 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
 
     protected function _construct()
     {
-        $syneriseCouponInstance = Synerise\SyneriseCoupon::getInstance([
-            'apiKey' => Mage::getStoreConfig('synerise_integration/api/key'),
-            'apiVersion' => '2.0'
-        ]);
-        $syneriseCouponInstance->setPathLog(Mage::getBaseDir('var') . DS . 'log' . DS . 'synerise_coupon.log');
-        $syneriseCouponInstance->setDefaultOption('verify', false);
-        
-        $this->setSyneriseCouponInstance($syneriseCouponInstance);
+        try {
+            $couponInstance = Mage::helper('synerise_integration/api')->getInstance('Coupon', array('apiVersion' => '3.0'));
+            $this->setSyneriseCouponInstance($couponInstance);
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
     }
     
     /*
@@ -102,15 +98,15 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
         if(!$syneriseRule instanceof $this->_syneriseRuleClass) {
             throw new Exception('Synerise rule invalid');
         }
-        
-        if(!isset($this->_allowedValues[$syneriseRule->getDiscount()])) {
-            throw new Exception($syneriseRule->getName() . 'invalid rule action: ' . $syneriseRule->getDiscount());
+
+        if(!isset($this->_allowedValues[$syneriseRule->getDiscountType()])) {
+            throw new Exception($syneriseRule->getName() . 'invalid rule action: ' . $syneriseRule->getDiscountType());
         }
         
         // prepare data
         $name = $syneriseRule->getName();
         $uuid = $syneriseRule->getUuid();
-        $action = $this->_allowedValues[$syneriseRule->getDiscount()];        
+        $action = $this->_allowedValues[$syneriseRule->getDiscountType()];
         $customerGroupIds = Mage::getModel('customer/group')->getCollection()->getAllIds();
         $websiteIds = Mage::getModel('core/website')->getCollection()
                 ->addFieldToFilter('website_id', array('neq' => 0))->getAllIds();        
@@ -130,25 +126,11 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
         }
         
         $usesPerCoupon = 0;
-        // "one_time", "multiple_time", "unlimited_use"
-//        switch($syneriseRule->getType()):
-//            case 'unlimited_use':
-//                $usesPerCoupon = 0;
-//                break;
-//            case 'multiple_time':
-//                $usesPerCoupon = 0;
-//                break;    
-//            case 'one_time':
-//                $usesPerCoupon = 1;
-//                break;
-//            default:
-//                $usesPerCoupon = 1;
-//        endswitch;
         
-        $dateTimestamp = Mage::getModel('core/date')->timestamp(strtotime($syneriseRule->getStart()));
+        $dateTimestamp = Mage::getModel('core/date')->timestamp(strtotime($syneriseRule->getStartAt()));
         $fromDate = date('Y-m-d', $dateTimestamp);        
         
-        $dateTimestamp = Mage::getModel('core/date')->timestamp(strtotime($syneriseRule->getExpiration()));
+        $dateTimestamp = Mage::getModel('core/date')->timestamp(strtotime($syneriseRule->getEndAt()));
         $toDate = date('Y-m-d', $dateTimestamp);        
 
         // update or create
@@ -162,7 +144,7 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
             ->setCouponType(Mage_SalesRule_Model_Rule::COUPON_TYPE_SPECIFIC)
             ->setUseAutoGeneration(1)
             ->setUsesPerCustomer(0)
-            ->setDiscountAmount($syneriseRule->getValue())
+            ->setDiscountAmount($syneriseRule->getDiscountValue())
             ->setDiscountQty(null);          
 //            ->setDiscountStep(0);
         
@@ -356,7 +338,7 @@ class Synerise_Coupon_Model_CouponManager extends Mage_Core_Model_Abstract
     {
         if(!$this->getData('synerise_coupon') instanceof $this->_syneriseCouponClass) {
             $syneriseCoupon = $this->getSyneriseCouponInstance()
-                    ->getActiveCoupon($this->getCouponCode());
+                    ->getActiveCoupon($this->getCouponCode(), array('includeCoupon' => true));
             $this->setSyneriseCoupon($syneriseCoupon);
         }
 

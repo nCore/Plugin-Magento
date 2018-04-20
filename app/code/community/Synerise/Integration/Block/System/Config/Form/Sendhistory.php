@@ -29,14 +29,14 @@ class Synerise_Integration_Block_System_Config_Form_Sendhistory extends Mage_Adm
         
         $customerCollection = Mage::getModel('customer/customer')
                 ->getCollection()
-                ->addAttributeToFilter('synerise_send_at', array('null' => true), 'left');   
+                ->addAttributeToFilter('synerise_send_at', array(array('eq' => '0000-00-00 00:00:00'),array('null' => true)), 'left');
         $customerQueueCount = $customerCollection->getSize();
 
         $customerCollection2 = Mage::getModel('customer/customer')
                 ->getCollection()
-                ->addFieldToFilter('synerise_send_at', array('notnull' => true));
+                ->addFieldToFilter('synerise_send_at', array('neq' => '0000-00-00 00:00:00'));
         $customerSentCount = $customerCollection2->getSize();           
-       
+
         $url = Mage::helper('adminhtml')->getUrl('adminhtml/synerise_customer/sendHistory');
 
         $html .= '<tr>';
