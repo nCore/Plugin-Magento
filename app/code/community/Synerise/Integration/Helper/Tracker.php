@@ -9,9 +9,7 @@ class Synerise_Integration_Helper_Tracker extends Mage_Core_Helper_Abstract
         Synerise_Integration_Helper_Autoloader::createAndRegister();
 
         $this->defaults = array(
-            'apiKey' => Mage::getStoreConfig('synerise_integration/api/key'),         
-//            'apiVersion' => '2.1.0',
-            'allowFork' => (bool) Mage::getStoreConfig('synerise_integration/tracking/fork')          
+            'apiKey' => Mage::getStoreConfig('synerise_integration/api/key')
         );
 
         $this->rootCategoryId = Mage::app()->getStore()->getRootCategoryId();

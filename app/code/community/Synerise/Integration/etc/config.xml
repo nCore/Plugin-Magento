@@ -190,9 +190,6 @@
             <opengraph>
                 <enable>1</enable>
             </opengraph>
-            <tracking>
-                <fork>1</fork>
-            </tracking>
             <dev>
                 <register_autoloader>1</register_autoloader>
                 <autoloader_basepath>lib</autoloader_basepath>
