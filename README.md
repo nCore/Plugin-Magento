@@ -1,6 +1,7 @@
-Synerise Magento integration
+Synerise extension for Magento 1
 =====================
 This plugin covers basic integration with Synersie system, including tracking and coupon implementation, as well as export of products, customers and orders.
+For more information please visit [Synerise Official](https://synerise.com).
 
 Requirements
 ------------
@@ -25,7 +26,10 @@ Main module provides basic helpers for API and Tracker use.
 
 #### Basic configuration
 1. Go to  *Synerise* --> *Integration*.
-2. Fill in your API key and *save config*.
+![Integration](img/integration.png?raw=true)
+2. Fill in your legacy API key (Default key) and *save config*.
+![Api key](img/api-key.png?raw=true)
+
 
 > You can manage your API keys in Synerise [business profile settings](https://app.synerise.com/api) under API section.  
 > Crate new api key, and remember to set its scope afterwards - check all options.  
