@@ -8,6 +8,14 @@ class Synerise_Newsletter_SubscriberController extends Mage_Newsletter_Subscribe
       */
     public function newAction()
     {
+        $trackerInstance = Mage::helper('synerise_integration/tracker')->getInstance();
+        if(!empty($this->getRequest()->getParam('email'))) {
+            $trackerInstance->client->identifyByEmail($this->getRequest()->getParam('email'));
+        }
+        $label = !empty($this->getRequest()->getParam('label'))
+            ? $this->getRequest()->getParam('label') : 'newsletterDefault';
+         $trackerInstance->formSubmit($label, $this->getRequest()->getParams());
+
         if(!$this->getRequest()->isXmlHttpRequest() || !Mage::helper('synerise_newsletter')->ajaxSubmitFlag()) {
             parent::newAction();
         } else {
@@ -25,20 +33,23 @@ class Synerise_Newsletter_SubscriberController extends Mage_Newsletter_Subscribe
                         Mage::throwException($this->__('Sorry, but administrator denied subscription for guests. Please <a href="%s">register</a>.', Mage::helper('customer')->getRegisterUrl()));
                     }
 
-                    $ownerId = Mage::getModel('customer/customer')
-                            ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
-                            ->loadByEmail($email)
-                            ->getId();
-                    if ($ownerId !== null && $ownerId != $customerSession->getId()) {
-                        Mage::throwException($this->__('This email address is already assigned to another user.'));
+                    if(Mage::helper('synerise_newsletter')->forceLoginFlag()) {
+                        $ownerId = Mage::getModel('customer/customer')
+                                ->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
+                                ->loadByEmail($email)
+                                ->getId();
+                        if ($ownerId !== null && $ownerId != $customerSession->getId()) {
+                            Mage::throwException($this->__('This email address is already assigned to another user.'));
+                        }
                     }
 
                     $status = Mage::getModel('newsletter/subscriber')->subscribe($email);
-                    if ($status == Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE) {
-                        $this->getResponse()->setBody(json_encode(array('message' => 'Confirmation request has been sent.', 'status' => 'ok')));
-                    }
-                    else {
-                        $this->getResponse()->setBody(json_encode(array('message' => 'Thank you for your subscription.', 'status' => 'ok')));
+                    if ($status == Mage_Newsletter_Model_Subscriber::STATUS_UNCONFIRMED) {
+                        $this->getResponse()->setBody(json_encode(array('message' => $this->__('Confirmation request has been sent.'), 'status' => 'ok')));
+                    } elseif ($status == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
+                        $this->getResponse()->setBody(json_encode(array('message' => $this->__('Thank you for your subscription.'), 'status' => 'ok')));
+                    } else {
+                        $this->getResponse()->setBody(json_encode(array('message' => $this->__('There was a problem with your subscription. Please try again later.'), 'status' => 'error')));
                     }
                 }
                 catch (Mage_Core_Exception $e) {

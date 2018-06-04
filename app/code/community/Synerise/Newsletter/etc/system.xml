@@ -40,10 +40,10 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                        </enable>                        
-                        <confirm_registered translate="label,comment">
-                            <label>Require confirmation from registered users</label>
-                            <comment><![CDATA[Confirmation email will be sent.]]></comment>
+                        </enable>
+                        <force_login translate="label,comment">
+                            <label>Force existing users to login</label>
+                            <comment><![CDATA[Enabling this options, brings back default magento behaviour.]]></comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
@@ -51,12 +51,12 @@
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <depends><enable>1</enable></depends>
-                        </confirm_registered>
+                        </force_login>
                         <ajax>
                             <label>Ajax</label>
                             <comment><![CDATA[Use Ajax to submit newslleter subscriptions. <br><u>Notice</u>: Requires jQuery.]]></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>3</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

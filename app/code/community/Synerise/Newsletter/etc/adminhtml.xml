@@ -2,9 +2,6 @@
 <config>
     <menu>
         <synerise translate="title" module="synerise_integration">
-            <title>Synerise</title>
-            <sort_order>80</sort_order>
-            <action>adminhtml/mgt</action>
             <children>
                 <synerise_newsletter translate="title" module="synerise_newsletter">
                     <title>Newsletter</title>
@@ -30,9 +27,6 @@
                         </children>
                     </system>
                     <synerise>
-                        <title>Synerise</title>
-                        <sort_order>75</sort_order>
-                        <action>adminhtml/mgt</action>
                         <children>
                             <synerise_newsletter translate="title" module="synerise_newsletter">
                                 <title>Newsletter</title>

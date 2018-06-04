@@ -10,6 +10,11 @@ class Synerise_Newsletter_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfig('synerise_newsletter/settings/confirm_registered');
     }
+
+    public function forceLoginFlag()
+    {
+        return Mage::getStoreConfig('synerise_newsletter/settings/force_login');
+    }
     
     public function ajaxSubmitFlag()
     {
@@ -25,11 +30,11 @@ class Synerise_Newsletter_Helper_Data extends Mage_Core_Helper_Abstract
                 return Mage_Newsletter_Model_Subscriber::STATUS_UNCONFIRMED;
             case 'disabled':
             default:
-                return Mage_Newsletter_Model_Subscriber::STATUS_NOT_ACTIVE;
+                return Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED;
         endswitch;        
     }
     
-    public function subscribe($email, $postData)
+    public function subscribe($email, $postData = array(), $options = array())
     {
         try{
 

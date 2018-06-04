@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Newsletter>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </Synerise_Newsletter>
     </modules>
     <global>
@@ -22,7 +22,30 @@
                     <subscriber>Synerise_Newsletter_Model_Subscriber</subscriber>
                 </rewrite>    
            </newsletter>
+            <synerise_newsletter>
+                <class>Synerise_Newsletter_Model</class>
+            </synerise_newsletter>
         </models>
+        <events>
+            <customer_login>
+                <observers>
+                    <synerise_newsletter>
+                        <class>synerise_newsletter/observer</class>
+                        <method>updateStatusWithSyneriseValue</method>
+                        <type>singleton</type>
+                    </synerise_newsletter>
+                </observers>
+            </customer_login>
+            <controller_action_predispatch_newsletter_manage_index>
+                <observers>
+                    <synerise_newsletter>
+                        <class>synerise_newsletter/observer</class>
+                        <method>updateStatusWithSyneriseValue</method>
+                        <type>singleton</type>
+                    </synerise_newsletter>
+                </observers>
+            </controller_action_predispatch_newsletter_manage_index>
+        </events>
     </global>
     <adminhtml>
         <translate>

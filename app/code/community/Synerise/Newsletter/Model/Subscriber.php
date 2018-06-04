@@ -19,6 +19,8 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
 
         $postData = Mage::app()->getRequest()->getPost();
         unset($postData['email']);
+        unset($postData['password']);
+        unset($postData['confirmation']);
         
         $this->loadByEmail($email);
         $customerSession = Mage::getSingleton('customer/session');
@@ -58,13 +60,80 @@ class Synerise_Newsletter_Model_Subscriber extends Mage_Newsletter_Model_Subscri
         $this->setIsStatusChanged(true);
 
         try {
-            $this->save();
-            
+            $this->save();            
+
             return $this->getStatus();
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+                throw new Exception($e->getMessage());
+            }
 
     }
+
+    /**
+     * Saving customer subscription status
+     *
+     * @param   Mage_Customer_Model_Customer $customer
+     * @return  Mage_Newsletter_Model_Subscriber
+     */
+    public function subscribeCustomer($customer)
+    {
+        /** @var Synerise_Newsletter_Helper_Data $newsletterHelper */
+        $newsletterHelper = Mage::helper('synerise_newsletter');
+
+        if(!$newsletterHelper->isEnabled()) {
+            return parent::subscribeCustomer($customer);
+        }
+
+        $this->loadByCustomer($customer);
+
+        if ($customer->getImportMode()) {
+            $this->setImportMode(true);
+        }
+
+        if (!$customer->getIsSubscribed() && !$this->getId()) {
+            // If subscription flag not set or customer is not a subscriber
+            // and no subscribe below
+            return $this;
+        }
+
+        $customer->setConfirmation(null);
+
+        $postData = Mage::app()->getRequest()->getPost();
+        unset($postData['email']);
+        unset($postData['password']);
+        unset($postData['confirmation']);
+
+        $clientInstance = Mage::helper('synerise_integration/api')->getInstance('Client');
+        try {
+            /** @var $clientInstance Synerise\SyneriseClient */
+            $response = $clientInstance->addOrUpdateClient(array(
+                'email' => $customer->getEmail(),
+                'newsletterAgreement' => $customer->getIsSubscribed() ? 'enabled' : 'disabled'
+            ));
+        } catch(Exception $e) {
+
+        }
+
+        $status = $customer->getIsSubscribed() ? self::STATUS_SUBSCRIBED : self::STATUS_UNSUBSCRIBED;
+        $this->setStatus($status);
+
+        if(!$this->getId()) {
+            $storeId = $customer->getStoreId();
+            if ($customer->getStoreId() == 0) {
+                $storeId = Mage::app()->getWebsite($customer->getWebsiteId())->getDefaultStore()->getId();
+            }
+            $this->setStoreId($storeId)
+                ->setCustomerId($customer->getId())
+                ->setEmail($customer->getEmail());
+        } else {
+            $this->setStoreId($customer->getStoreId())
+                ->setEmail($customer->getEmail());
+        }
+
+        $this->save();
+
+        return $this;
+    }
+
 
 }
