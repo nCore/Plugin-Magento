@@ -125,5 +125,4 @@ Go to *Synerise* --> *Export*.
 
 Logs
 ------------
-
-By default all api calls are logged to */var/log/synerise.log'*.
+Enable *Synerise* --> *Integration* --> *Developer* --> *Debug* option to enable logging. Api calls will be logged to */var/log/synerise.log'*.
