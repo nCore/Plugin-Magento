@@ -12,8 +12,8 @@
             <tab>synerise</tab>
             <sort_order>100</sort_order>
             <show_in_default>1</show_in_default>
-            <show_in_website>0</show_in_website>
-            <show_in_store>0</show_in_store>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
             <groups>
                 <general translate="label">
                     <label>General</label>
@@ -28,8 +28,8 @@
                     <label>API</label>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <key translate="label,comment">
                             <label>API key</label>
@@ -38,17 +38,26 @@
                             <comment><![CDATA[You'll find your API key in <a href='https://app.synerise.com/api' target='_blank'>profile settings</a> under API section.]]></comment>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </key>
+                        <verify_ssl translate="label,comment">
+                            <label>Verify server SSL</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </key>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </verify_ssl>
                     </fields>
                 </api>
                 <tracking translate="label">
                     <label>Tracking</label>
                     <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <enable translate="label,comment">
                             <label>Enable</label>
@@ -56,8 +65,8 @@
                             <backend_model>synerise_integration/system_config_backend_trackingEnable</backend_model>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </enable>
                     </fields>
@@ -66,16 +75,16 @@
                     <label>Tracking events</label>
                     <sort_order>3</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <customer_login translate="label,comment">
                             <label>customer_login</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customer_login>
                     </fields>
@@ -85,8 +94,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customer_logout>
                     </fields>
@@ -96,8 +105,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </wishlist_product_add_after>
                     </fields>
@@ -107,8 +116,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customer_register_success>
                     </fields>
@@ -118,8 +127,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customer_save_before>
                     </fields>
@@ -129,8 +138,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customer_save_after>
                     </fields>
@@ -140,8 +149,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </checkout_cart_add_product_complete>
                     </fields>
@@ -151,8 +160,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </sales_quote_remove_item>
                     </fields>
@@ -162,8 +171,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </sales_order_place_after>
                     </fields>
@@ -173,8 +182,8 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </sales_order_save_after>
                     </fields>
@@ -183,8 +192,8 @@
                     <label>Config product attr</label>
                     <sort_order>4</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <attr translate="label,comment">
                             <frontend_model>synerise_integration/customattributes</frontend_model>
@@ -193,14 +202,14 @@
                                 <![CDATA[Zaznacz pole które będzie wysyłane do synerise, możesz dowolnie mapować pola wpisujać w input odpowiednia wartość.]]></comment>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </attr>
                     </fields>
                 </productattr>
                 <sync translate="label">
                     <label>Synchronize customers and orders</label>
-                    <sort_order>4</sort_order>
+                    <sort_order>5</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
@@ -220,16 +229,16 @@
                     <label>Open Graph</label>
                     <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <enable translate="label,comment">
                             <label>Enable</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment>Open graph tags are mandatory. Disable only if you are using another implementation.</comment>
                         </enable>  
@@ -238,18 +247,18 @@
                             <frontend_type>select</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                             <source_model>synerise_integration/system_config_source_image</source_model>
                         </image>                         
                     </fields>
-                </opengraph>                
+                </opengraph>
                 <dev translate="label">
                     <label>Developer options</label>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>0</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
                         <register_autoloader translate="label,comment">
                             <label>Use default autolader</label>
@@ -260,7 +269,7 @@
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment>Disable only when using composer</comment>
-                        </register_autoloader>  
+                        </register_autoloader>
                         <autoloader_basepath translate="label,comment">
                             <label>Autoloader path</label>
                             <frontend_type>text</frontend_type>
@@ -268,9 +277,18 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </autoloader_basepath>                          
+                        </autoloader_basepath>
+                        <debug translate="label,comment">
+                            <label>Debug</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </debug>
                     </fields>
-                </dev>                
+                </dev>
             </groups>
         </synerise_integration>
     </sections>

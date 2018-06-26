@@ -9,7 +9,9 @@ class Synerise_Integration_Helper_Tracker extends Mage_Core_Helper_Abstract
         Synerise_Integration_Helper_Autoloader::createAndRegister();
 
         $this->defaults = array(
-            'apiKey' => Mage::getStoreConfig('synerise_integration/api/key')
+            'apiKey' => Mage::getStoreConfig('synerise_integration/api/key'),
+            'verify' => (bool) Mage::getStoreConfig('synerise_integration/api/verify_ssl'),
+            'debug' => (bool) Mage::getStoreConfig('synerise_integration/dev/debug')
         );
 
         $this->rootCategoryId = Mage::app()->getStore()->getRootCategoryId();
@@ -17,10 +19,11 @@ class Synerise_Integration_Helper_Tracker extends Mage_Core_Helper_Abstract
     
     public function getInstance($options = array())
     {
-        $logger = Mage::getModel('synerise_integration/Logger');
+        $options = array_merge($this->defaults, $options);
+        $logger = !empty($options['debug']) ? Mage::getModel('synerise_integration/Logger') : null;
 
         $class = 'Synerise\SyneriseTracker';
-        return $class::getInstance(array_merge($this->defaults, $options), $logger);
+        return $class::getInstance($options, $logger);
     }
     
     /**

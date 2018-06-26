@@ -11,10 +11,10 @@ class Synerise_Integration_Block_System_Config_Form_Status extends Synerise_Inte
     protected function _getProfileDataHtml()
     {
         try {
-            if(!Mage::getStoreConfig('synerise_integration/api/key')) {
+            if(!$this->_getConfigDataValue('synerise_integration/api/key')) {
                 return $this->__('Missing Api Key.');
             }
-            
+
             $instance = $this->_getHelper()->getInstance('Default');
             $data = $instance->test();
             
@@ -23,8 +23,8 @@ class Synerise_Integration_Block_System_Config_Form_Status extends Synerise_Inte
                 $html .= '<p><b>'.$this->__('Business Profile').':</b> '.$data['business-profile']['name'].' (id: '.$data['business-profile']['id'].')</p>';
             }
             
-            $trackingCode = Mage::getStoreConfig('synerise_integration/tracking/code');
-            $status = Mage::getStoreConfig('synerise_integration/tracking/enable') ? $this->__('Enabled') : $this->__('Disabled');
+            $trackingCode = $this->_getConfigDataValue('synerise_integration/tracking/code');
+            $status = $this->_getConfigDataValue('synerise_integration/tracking/enable') ? $this->__('Enabled') : $this->__('Disabled');
             
             if($trackingCode) {
                 $html .= sprintf('<p><b> %s:</b> %s (%s)</p>', $this->__('Tracking'), $status, $trackingCode);                

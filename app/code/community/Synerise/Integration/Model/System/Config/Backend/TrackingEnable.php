@@ -8,7 +8,7 @@ class Synerise_Integration_Model_System_Config_Backend_TrackingEnable extends Ma
      */
     public function save()
     {
-        if(!empty(Mage::getStoreConfig('synerise_integration/tracking/code')) && (!$this->isValueChanged() || $this->getValue() != 1)) {
+        if(!empty($this->_getConfigDataValue('synerise_integration/tracking/code')) && (!$this->isValueChanged() || $this->getValue() != 1)) {
             return parent::save();
         }
 
@@ -18,8 +18,8 @@ class Synerise_Integration_Model_System_Config_Backend_TrackingEnable extends Ma
         $instance = $this->_getHelper()->getInstance('TrackingCode');
         $data = $instance->trackingcode($domain);
         if($data && isset($data) && isset($data['code'])) {
-            if($data['code'] != Mage::getStoreConfig('synerise_integration/tracking/code')) {
-                Mage::getConfig()->saveConfig('synerise_integration/tracking/code', $data['code']);
+            if($data['code'] != $this->_getConfigDataValue('synerise_integration/tracking/code')) {
+                $this->_setConfigDataValue('synerise_integration/tracking/code', $data['code']);
                 Mage::getSingleton('adminhtml/session')->addSuccess($this->_getHelper()->__('Tracking code was successfully obtained (%s).', $data['code']));
             }
         } else {
@@ -29,7 +29,22 @@ class Synerise_Integration_Model_System_Config_Backend_TrackingEnable extends Ma
         
         return parent::save();
     }
-    
+
+    protected function _getConfigDataValue($key)
+    {
+        return Mage::getSingleton('adminhtml/config_data')->getConfigDataValue($key);
+    }
+
+    protected function _setConfigDataValue($key, $value)
+    {
+        return Mage::getConfig()->saveConfig(
+            $key,
+            $value,
+            Mage::getSingleton('adminhtml/config_data')->getScope(),
+            Mage::getSingleton('adminhtml/config_data')->getScopeId()
+        );
+    }
+
     protected function _getHelper()
     {
         return Mage::helper('synerise_integration/api');

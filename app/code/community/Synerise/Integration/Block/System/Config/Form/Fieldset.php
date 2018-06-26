@@ -31,5 +31,10 @@ class Synerise_Integration_Block_System_Config_Form_Fieldset extends Mage_Adminh
     protected function _getHelper()
     {
         return Mage::helper('synerise_integration/api');
-    }    
+    }
+
+    protected function _getConfigDataValue($key)
+    {
+        return Mage::getSingleton('adminhtml/config_data')->getConfigDataValue($key);
+    }
 }

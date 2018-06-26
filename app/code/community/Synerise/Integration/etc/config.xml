@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Synerise_Integration>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </Synerise_Integration>
     </modules>
     <frontend>
@@ -187,6 +187,9 @@
     </frontend>  
     <default>
         <synerise_integration>
+            <api>
+                <verify_ssl>1</verify_ssl>
+            </api>
             <opengraph>
                 <enable>1</enable>
             </opengraph>

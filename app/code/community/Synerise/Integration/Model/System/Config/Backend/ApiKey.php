@@ -45,7 +45,13 @@ class Synerise_Integration_Model_System_Config_Backend_ApiKey extends Mage_Core_
         $this->setValue($apiKey);            
         return parent::save();
     }
-    
+
+    public function delete()
+    {
+        $this->_deleteConfigData('synerise_integration/tracking/code');
+        parent::delete();
+    }
+
     /*
      * Get taracking code for provided api key & save
      */
@@ -69,7 +75,7 @@ class Synerise_Integration_Model_System_Config_Backend_ApiKey extends Mage_Core_
             $instance = $this->_getHelper()->getInstance('TrackingCode', array('apiKey' => $apiKey));
             $data = $instance->trackingcode($domain);
             if($data && isset($data) && isset($data['code'])) {
-                 Mage::getConfig()->saveConfig('synerise_integration/tracking/code', $data['code']);
+                 $this->_setConfigDataValue('synerise_integration/tracking/code', $data['code']);
                  Mage::getSingleton('adminhtml/session')->addSuccess($this->_getHelper()->__('Tracking code was successfully obtained (%s).', $data['code']));
                  return parent::_afterSave();
             } else {
@@ -77,10 +83,28 @@ class Synerise_Integration_Model_System_Config_Backend_ApiKey extends Mage_Core_
             }
         }
 
-        Mage::getConfig()->saveConfig('synerise_integration/tracking/code', null);                
-        Mage::getConfig()->saveConfig('synerise_integration/tracking/enable', 0);
+        $this->_deleteConfigData('synerise_integration/tracking/code');
     }
-    
+
+    protected function _setConfigDataValue($key, $value)
+    {
+        return Mage::getConfig()->saveConfig(
+            $key,
+            $value,
+            Mage::getSingleton('adminhtml/config_data')->getScope(),
+            Mage::getSingleton('adminhtml/config_data')->getScopeId()
+        );
+    }
+
+    protected function _deleteConfigData($key)
+    {
+        return Mage::getConfig()->deleteConfig(
+            $key,
+            Mage::getSingleton('adminhtml/config_data')->getScope(),
+            Mage::getSingleton('adminhtml/config_data')->getScopeId()
+        );
+    }
+
     protected function _getHelper()
     {
         return Mage::helper('synerise_integration/api');
